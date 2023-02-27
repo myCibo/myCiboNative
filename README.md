@@ -38,5 +38,7 @@ To set up the Expo environment with React Native, follow these steps:
 - Install ngrok with ```brew install ngrok```.
 - Install @expo/ngrok@^4.1.0 with ```npm i @expo/ngrok@^4.1.0```.
 - Set up a secure HTTPS tunnel using ngrok with ```ngrok http 3000```. Make sure to run it to check that the session is online.
+
+### Run
 - Start Expo with ```expo start --tunnel```.\
 
