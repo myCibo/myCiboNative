@@ -35,7 +35,6 @@ You can install Expo CLI using yarn or npm.
 ### Installation
 
 To set up the Expo environment with React Native, follow these steps:
-- ```cd cibo``` from our GitHub myCibo repo.
 - Install ngrok with ```brew install ngrok```.
 - Install @expo/ngrok@^4.1.0 with ```npm i @expo/ngrok@^4.1.0```.
 - Set up a secure HTTPS tunnel using ngrok with ```ngrok http 3000```. Make sure to run it to check that the session is online.
