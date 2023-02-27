@@ -1,7 +1,14 @@
 import React, {useState} from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity, Linking  } from 'react-native';
+// import { useFonts } from 'expo-font';
+// import MyCustomFont from '../../assets/fonts/Rubic-Black.ttf';
+// '../../assets/fonts/Rubic-Black.ttf'
 
-const CustomButton = ({ text, onPress, height=50, width= 320,  backgroundColor="#6B987A", textColor="white", }) => {
+
+const CustomButton = ({ text = "Submit", onPress, height=50, width= 320,  
+                      backgroundColor="#6B987A", textColor="white", fontSize=18 }) => {
+
+
   
   const [bgColor, setBgColor] = useState(backgroundColor);
   const [fontColor, setFontColor] = useState(textColor);
@@ -17,11 +24,13 @@ const CustomButton = ({ text, onPress, height=50, width= 320,  backgroundColor="
 
       borderWidth: 1,
       borderColor: '#475753',
+      // fontFamily: 'MyCustomFont',
     },
     buttonText: {
       color: fontColor,
-      fontSize: 18,
-      fontWeight: 'bold',
+      fontSize: fontSize,
+      // fontWeight: 'bold',
+      // fontFamily: 'MyCustomFont',
     },
   });
 

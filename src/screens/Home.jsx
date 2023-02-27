@@ -10,24 +10,11 @@ function HomeScreen() {
   }
 
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center'  }}>
       <Text>Home Screen</Text>
      
-           <RecipeDetails />
-
-     
-     
-     
-     
-      {/* <CustomButton
-      text="jaafhaejhf"
-      onPress={handlePress}
-       height= {500}
-        width= {200}
-        backgroundColor="red"
-        textColor="blue"
-      
-      /> */}
+          <RecipeDetails serving={5} timeInMinutes={30} calorie={234}/>
+          <CustomButton text="jaafhaejhf" onPress={handlePress}/>
 
 
     </View>

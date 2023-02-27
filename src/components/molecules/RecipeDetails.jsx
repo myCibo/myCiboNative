@@ -1,17 +1,18 @@
+import React from "react";
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from "react-native";
 
-import React, {useState} from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity, Linking  } from 'react-native';
-// 
-// const CustomButton = ({ onPress, title }) => {
-const RecipeDetails = () => {
 
+const RecipeDetails = ({timeInMinutes, serving, calorie}) => {
 
   const styles = StyleSheet.create({
     container: {
       backgroundColor: '#CAE1D1',
+      color: '#43615A',
       flexDirection: 'row',
       height: 48,
       width: 338,
+
+      borderRadius:4,
     },
     column: {
       flex: 1,
@@ -19,39 +20,35 @@ const RecipeDetails = () => {
       justifyContent: 'center',
       alignItems: 'center',
     },
-    icon: {
-      marginRight: 8,
-        height:22,
-        widthL:auto,
+
+  icon:{
+    marginRight: 8,
+    height:22,
+    width:20,
+
   },
     text: {
-      fontSize: 16,
-      fontWeight: 'bold',
-      color: '#333',
+      fontSize: 13,
+      color: '#43615A',
+
     },
 
   });
 
   return (
-      <View style={styles.container}>
+    <View style={styles.container}>
         <View style={styles.column}>
-          {/*<Icon name="user" size={24} color="#333" style={styles.icon} />*/}
             {/* <Image source={require('../../assets/icon.png')} style={styles.icon} /> */}
-
-
-            <Text style={styles.text}>Column 1</Text>
+            <Image source={ require('../../assets/images/frozen.png')} style={styles.icon}/>
+            <Text style={styles.text}>{timeInMinutes} min</Text>
         </View>
         <View style={styles.column}>
-          {/*<Icon name="home" size={24} color="#333" style={styles.icon} />*/}
-            {/* <Image source={require('../../assets/icon.png')} style={styles.icon} /> */}
-
-            <Text style={styles.text}>Column 2</Text>
+          <Image source={ require('../../assets/images/frozen.png')} style={styles.icon}/>
+          <Text style={styles.text}>{serving} people</Text>
         </View>
         <View style={styles.column}>
-          {/*<Icon name="gear" size={24} color="#333" style={styles.icon} />*/}
-            {/* <Image source={require('../../assets/icon.png')} style={styles.icon} /> */}
-
-            <Text style={styles.text}>Column 3</Text>
+            <Image source={ require('../../assets/images/frozen.png')} style={styles.icon}/>
+            <Text style={styles.text}>{calorie}kcal</Text> 
         </View>
       </View>
   );
