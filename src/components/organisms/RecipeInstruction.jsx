@@ -3,11 +3,14 @@ import { View, Text, Image, StyleSheet, FlatList, Linking } from 'react-native';
 
 
 
+//Data in this component is coming from spoonacular api, / Get Analyzed Recipe Instructions:
+//GET https://api.spoonacular.com/recipes/{id}/analyzedInstructions
+
 
 const RecipeInstruction = ({ data }) => {
     const styles = StyleSheet.create({
         card: {
-            width: 340,
+            width: 340, //hmmmm
             flexDirection: 'row',
             backgroundColor: '#FFFFFF',
             borderRadius: 4,
@@ -32,9 +35,10 @@ const RecipeInstruction = ({ data }) => {
 
         const step = fullStep.step
         const newStep = { step };
-
         newStep.id = index + 1;
-        newArray.push(newStep);
+        
+
+        newArray.push(newStep); // {step, id}
     });
 
 
