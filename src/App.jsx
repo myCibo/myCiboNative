@@ -5,5 +5,6 @@ import NavigationFooter from './src/navigation/NavigationFooter';
 export default function App() {
   return (
     <NavigationFooter />
+    
   );
 }
