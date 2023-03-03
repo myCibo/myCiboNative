@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, TouchableWithoutFeedback, Image } from 'react-native';
 import Modal from "react-native-modal";
 
-export default function OptionsModal({ showOptions, onToggleModal, options = [{ text: 'option text', icon: './assets/list-icon.png' }], color }) {
+export default function OptionsModal({ showOptions, onToggleModal, options = [{ text: 'option text', icon: '../../assets/images/list-icon.png' }], color }) {
   const styles = {
     optionRow: {
       alignItems: 'center',
@@ -28,7 +28,7 @@ export default function OptionsModal({ showOptions, onToggleModal, options = [{ 
         {options.map(option => (<TouchableWithoutFeedback key={option.text} onPress={() => alert('You clicked on an option!')}>
           <View style={styles.optionRow}>
             <Text style={{ color: 'white' }}>What</Text>
-            <Image source={require('./assets/list-icon.png')}></Image>
+            <Image source={require('../../assets/images/list-icon.png')}></Image>
           </View>
         </TouchableWithoutFeedback>))}
       </View>
