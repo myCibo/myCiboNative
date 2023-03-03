@@ -1,41 +1,117 @@
-import React from 'react';
-import { View, Text } from 'react-native';
+import React, { useState, useEffect } from 'react';
+
+import { View, ScrollView } from 'react-native';
+import RecipeHero from '../components/organisms/RecipeHero';
+import RecipeCarousel from '../components/organisms/RecipeCarousel';
 import axios from 'axios';
 
-import RecipeHero from '../components/organisms/RecipeHero';
 
 
-
+const categorizedRecipes = {
+  hero:[],
+  mainCourse: [],
+  dessert: [],
+  appetizer: [],
+  salad: [],
+  soup: [],
+  sideDish: [],
+  beverage: [],
+  breakfast: [],
+  snack: []
+};
 
 function RecipeScreen() {
 
-  // const API_KEY = process.env.REACT_APP_API_KEY
+  const [data, setData] = useState([]);
+  const [hero, setHero] = useState([]);
 
-  axios.get(`https://api.spoonacular.com/recipes/716429/information?includeNutrition=false&apiKey=65aee4a4d2a24b9a87d272a0efe3dd5d`)
-  .then(response => {
-    // handle the API response data here
-    console.log(response.data); // add this line
-  })
-  .catch(error => {
-    // handle the API error here
-    console.log(error); // add this line
 
-  });
+  useEffect(() => {
+    axios.get(`https://api.spoonacular.com/recipes/random?number=200&apiKey=${process.env.API_KEY}`)
+      .then(response => {
+        const recipes = response.data.recipes;
+        const categorizedRecipes = categorizeRecipes(recipes);
+        setData(categorizedRecipes);
+      
+      })
+      .catch(error => {
+        console.log(error);
+      });
 
+  }, []);
+
+
+
+  // Function to categorize recipes based on type
+  function categorizeRecipes(recipes) {
+
+    recipes.forEach(recipe => {
+      if (recipes[0] == recipe){
+        categorizedRecipes.hero.push(recipe);
+      } else if (recipe.dishTypes.includes('main course')) {
+        categorizedRecipes.mainCourse.push(recipe);
+      } else if (recipe.dishTypes.includes('dessert')) {
+        categorizedRecipes.dessert.push(recipe);
+      } else if (recipe.dishTypes.includes('appetizer')) {
+        categorizedRecipes.appetizer.push(recipe);
+      } else if (recipe.dishTypes.includes('salad')) {
+        categorizedRecipes.salad.push(recipe);
+      } else if (recipe.dishTypes.includes('soup')) {
+        categorizedRecipes.soup.push(recipe);
+      } else if (recipe.dishTypes.includes('side dish')) {
+        categorizedRecipes.sideDish.push(recipe);
+      } else if (recipe.dishTypes.includes('beverage')) {
+        categorizedRecipes.beverage.push(recipe);
+      } else if (recipe.dishTypes.includes('breakfast')) {
+        categorizedRecipes.breakfast.push(recipe);
+      } else if (recipe.dishTypes.includes('snack')) {
+        categorizedRecipes.snack.push(recipe);
+      }
+    });
+    return categorizedRecipes;
+  }
+ 
 
 
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+    <ScrollView>
+            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
 
-      <RecipeHero 
-        imageSrc="https://picsum.photos/400/500?random=1"
-        link="#"
-        title = "title"
-        label="labelText"/>
+       {data.hero && data.hero.length > 0 &&
+          // <h1>{data.hero[0].title}</h1>
+          <RecipeHero imageSrc={data.hero[0].image} link="#" title={data.hero[0].title} label="For You"/>
+      }
 
-
-
-    </View>
+      {data.mainCourse && data.mainCourse.length > 0 &&
+          <RecipeCarousel data={data.mainCourse} title="Main Course"/>
+      }
+      {data.dessert && data.dessert.length > 0 &&
+          <RecipeCarousel data={data.dessert} title="Dessert"/>
+      }
+         {data.appetizer && data.appetizer.length > 0 &&
+          <RecipeCarousel data={data.appetizer} title="Appetizer"/>
+      }
+         {data.salad && data.salad.length > 0 &&
+          <RecipeCarousel data={data.salad} title="Salad"/>
+      }
+         {data.soup && data.soup.length > 0 &&
+          <RecipeCarousel data={data.soup} title="Soup"/>
+      }
+         {data.sideDish && data.sideDish.length > 0 &&
+          <RecipeCarousel data={data.sideDish} title="Side Dish"/>
+      }
+          {data.beverage && data.beverage.length > 0 &&
+          <RecipeCarousel data={data.beverage} title="Beverage"/>
+      }
+          {data.breakfast && data.breakfast.length > 0 &&
+          <RecipeCarousel data={data.breakfast} title="Breakfast"/>
+      }
+          {data.snack && data.snack.length > 0 &&
+          <RecipeCarousel data={data.snack} title="Snack"/>
+      }
+      </View>
+    
+    </ScrollView>
   );
 }
 
