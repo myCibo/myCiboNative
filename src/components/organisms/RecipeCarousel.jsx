@@ -6,9 +6,9 @@ import SingleRecipeCarousel from '../molecules/SingleRecipeCarousel';
 const { width: screenWidth } = Dimensions.get('window');
 
 
-const RecipeCarousel = ({ data }) => {
+const RecipeCarousel = ({ data, title }) => {
 
-    console.log(data)
+    // console.log(data)
 
     const renderItem = ({ item }) => (
         <TouchableOpacity>
@@ -20,7 +20,7 @@ const RecipeCarousel = ({ data }) => {
     return (
         <View style={styles.container}>
             <View style={styles.categoryName}>
-                <p>category name</p>
+                <p>{title}</p>
             </View>
 
             <FlatList
@@ -40,11 +40,17 @@ const RecipeCarousel = ({ data }) => {
 const styles = StyleSheet.create({
     container: {
         height: 250,
-        // marginVertical: 10,
+        marginVertical: 10,
         overflow: 'hidden',
     },
     categoryName: {
         paddingHorizontal:20,
+        fontFamily: "sans-serif",
+        fontWeight:"bold",
+        textTransform:'uppercase',
+        fontSize:16,
+
+    
 
     },
     card: {
