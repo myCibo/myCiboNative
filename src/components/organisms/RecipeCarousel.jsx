@@ -1,41 +1,51 @@
 import React from 'react';
 import { View, StyleSheet, Dimensions, TouchableOpacity, Image, FlatList } from 'react-native';
+import SingleRecipeCarousel from '../molecules/SingleRecipeCarousel';
+
 
 const { width: screenWidth } = Dimensions.get('window');
 
-const data = [
-    { id: '1', image: require('../../assets/splash.png') },
-    { id: '2', image: require('../../assets/splash.png') },
-    { id: '3', image: require('../../assets/splash.png') },
-    { id: '4', image: require('../../assets/splash.png') },
-    { id: '5', image: require('../../assets/splash.png') },
-];
 
-const RecipeCarousel = () => {
+const RecipeCarousel = ({ data }) => {
+
+    console.log(data)
+
     const renderItem = ({ item }) => (
-        <TouchableOpacity style={styles.card}>
-            <Image source={item.image} style={styles.cardImage} />
+        <TouchableOpacity>
+             <SingleRecipeCarousel style={styles.card} imageSrc={item.image} link="#" title={item.title}/>
+            
         </TouchableOpacity>
     );
 
     return (
         <View style={styles.container}>
+            <View style={styles.categoryName}>
+                <p>category name</p>
+            </View>
+
             <FlatList
                 horizontal={true}
                 data={data}
                 renderItem={renderItem}
                 keyExtractor={(item) => item.id}
-                contentContainerStyle={{ paddingHorizontal: 20 }}
+                contentContainerStyle={{ paddingHorizontal: 20, width: screenWidth }}
+                showsHorizontalScrollIndicator={false} // <-- Hide the scrollbar
+
             />
         </View>
     );
 };
 
+
 const styles = StyleSheet.create({
     container: {
         height: 250,
-        marginVertical: 10,
+        // marginVertical: 10,
         overflow: 'hidden',
+    },
+    categoryName: {
+        paddingHorizontal:20,
+
     },
     card: {
         backgroundColor: '#fff',

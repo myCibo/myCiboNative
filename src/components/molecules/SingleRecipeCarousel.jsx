@@ -6,7 +6,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 // import { useNavigation } from '@react-navigation/native';
 
 
-const SingleRecipeCarousel = ({ imageSrc, link, title, label }) => {
+const SingleRecipeCarousel = ({ imageSrc, link, title }) => {
 
   // const navigation = useNavigation();
 
@@ -20,7 +20,6 @@ const SingleRecipeCarousel = ({ imageSrc, link, title, label }) => {
   return (
     <TouchableOpacity onPress={handleCardPress} style={styles.container}>
       <View style={styles.card}>
-   
         <Image style={styles.image} source={imageSrc} />
         <LinearGradient
        colors={[ 'transparent','rgba(3,3,3,0.6)']}
@@ -42,13 +41,15 @@ const SingleRecipeCarousel = ({ imageSrc, link, title, label }) => {
 
 const styles = StyleSheet.create({
   container:{
+    width:200,
+    // height:'auto',
     flexDirection: 'column',
     alignItems: 'flex-start',
     margin:5,
     },
   card: {
-    width: 134,
-    height: 124,
+    width: 200,
+    height: 150,
     flexDirection: 'row',
     backgroundColor: '#FFFFFF',
     borderRadius: 4,
@@ -98,6 +99,8 @@ const styles = StyleSheet.create({
     marginTop:5,
     marginBottom:13,
     marginLeft:2,
+
+    flexWrap: 'wrap',
 
   },
 
