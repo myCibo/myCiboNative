@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Dimensions, TouchableOpacity, Image, FlatList } from 'react-native';
+import { View, StyleSheet, Dimensions, TouchableOpacity, Text, FlatList } from 'react-native';
 import SingleRecipeCarousel from '../molecules/SingleRecipeCarousel';
 
 
@@ -20,7 +20,7 @@ const RecipeCarousel = ({ data, title }) => {
     return (
         <View style={styles.container}>
             <View style={styles.categoryName}>
-                <p>{title}</p>
+                <Text>{title}</Text>
             </View>
 
             <FlatList
@@ -30,7 +30,6 @@ const RecipeCarousel = ({ data, title }) => {
                 keyExtractor={(item) => item.id}
                 contentContainerStyle={{ paddingHorizontal: 20, width: screenWidth }}
                 showsHorizontalScrollIndicator={false} // <-- Hide the scrollbar
-
             />
         </View>
     );
