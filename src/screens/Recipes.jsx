@@ -31,6 +31,7 @@ function RecipeScreen() {
   const [data, setData] = useState([]);
 
   useEffect(() => {
+
     axios.get(`https://api.spoonacular.com/recipes/random?number=20&apiKey=${process.env.API_KEY}`)
       .then(response => {
         const recipes = response.data.recipes;
@@ -43,6 +44,7 @@ function RecipeScreen() {
       });
 
   }, []);
+
 
 
 
@@ -79,6 +81,7 @@ function RecipeScreen() {
 
   return (
     <ScrollView>
+
             <View  
             // style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
             
