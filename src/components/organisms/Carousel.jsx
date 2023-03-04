@@ -17,7 +17,7 @@ const Carousel = ({ data, CardComponent, horizontal = true, Header }) => {
             {Header && <Header />}
 
             <FlatList
-                horizontal={horizontal}
+                horizontal={true}
                 data={data}
                 renderItem={renderItem}
                 keyExtractor={(item) => item.id}

@@ -6,23 +6,26 @@ import { LinearGradient } from 'expo-linear-gradient';
 // import { useNavigation } from '@react-navigation/native';
 
 
-const SingleRecipeCarousel = ({ imageSrc, link, title }) => {
+const SingleRecipeCarousel = ({ image, link, title }) => {
 
   // const navigation = useNavigation();
+  console.log(`-----image:${image}, title:${title}----- `)
 
   const handleCardPress = () => {
     // navigation.navigate({link});
-    Linking.openURL(link);
+    // Linking.openURL(link);
+    console.log("isClicked ")
 
   };
+
 
 
   return (
     <TouchableOpacity onPress={handleCardPress} style={styles.container}>
       <View style={styles.card}>
-        <Image style={styles.image} source={imageSrc} />
+        <Image style={styles.image} source={{uri: image}}/>
         <LinearGradient
-       colors={[ 'transparent','rgba(3,3,3,0.6)']}
+       colors={[ 'transparent','rgba(3,3,3,0.6)']} 
        style={styles.gradient}
       />
         {/* <View style={styles.textContainer}> */}
