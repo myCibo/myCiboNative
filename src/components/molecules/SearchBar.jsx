@@ -29,6 +29,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#2643615A',
     paddingHorizontal: 12,
+    backgroundColor: '#FFFFFF',
   },
   searchContainer: {
     flexDirection: 'row',

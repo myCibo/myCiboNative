@@ -3,7 +3,6 @@ import { View, Text, Image, StyleSheet, ScrollView, TouchableOpacity } from 'rea
 import SearchBar from '../components/molecules/SearchBar';
 import FilterIcon from '../components/atoms/FilterIcon';
 import IngredientItem from '../components/molecules/IngredientItem';
-import AddItemButton from '../components/molecules/AddItemButton';
 import LabelledIcon from '../components/molecules/LabelledIcon';
 
 const FridgeScreen = () => {
@@ -40,7 +39,7 @@ const FridgeScreen = () => {
       <View key={category}>
         <View style={styles.header}>
           <Text style={styles.categoryTitle}>{category}</Text>
-          <LabelledIcon label="Add Item" />
+          <LabelledIcon label="Add Item +" />
         </View>
         {ingredientsByCategory[category].map((ingredient) => (
           <IngredientItem
@@ -75,6 +74,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     width: "100%",
     paddingHorizontal: 20,
+    backgroundColor:"#F6F3F0",
   },
   contentContainer: {
     width:"65%",
