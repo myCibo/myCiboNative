@@ -17,14 +17,14 @@ const FridgeScreen = () => {
         <CategorySquare
           backgroundColor="#CD592E"
           totalItems={8}
-          imageSrc={require("../assets/images/takeout.png")}
+          imageSrc={require("assets/images/takeout.png")}
           title="Takeout"
           size='small'
         />
         <CategorySquare
           backgroundColor="#F0A047"
           totalItems={4}
-          imageSrc={require("../assets/images/dairy.png")}
+          imageSrc={require("assets/images/dairy.png")}
           title="Dairy"
           size = 'small'
         />
@@ -33,14 +33,14 @@ const FridgeScreen = () => {
         <CategorySquare
           backgroundColor="#6B987A"
           totalItems={12}
-          imageSrc={require("../assets/images/produce.png")}
+          imageSrc={require("assets/images/produce.png")}
           title="Produce"
           size = 'small'
         />
         <CategorySquare
           backgroundColor="#F3C238"
           totalItems={7}
-          imageSrc={require("../assets/images/dry.png")}
+          imageSrc={require("assets/images/dry.png")}
           title="Dry"
           size = 'small'
         />
@@ -49,14 +49,14 @@ const FridgeScreen = () => {
         <CategorySquare
           backgroundColor="#D35247"
           totalItems={6}
-          imageSrc={require("../assets/images/meat.png")}
+          imageSrc={require("assets/images/meat.png")}
           title="Meat"
           size = 'medium'
         />
         <CategorySquare
           backgroundColor="#B3A96C"
           totalItems={22}
-          imageSrc={require("../assets/images/spices.png")}
+          imageSrc={require("assets/images/spices.png")}
           title="Spices"
           size = 'medium'
         />
@@ -65,14 +65,14 @@ const FridgeScreen = () => {
         <CategorySquare
           backgroundColor="#DDAE55"
           totalItems={10}
-          imageSrc={require("../assets/images/canned.png")}
+          imageSrc={require("assets/images/canned.png")}
           title="Canned"
           size = 'large'
         />
         <CategorySquare
           backgroundColor="#8F9FC8"
           totalItems={8}
-          imageSrc={require("../assets/images/frozen.png")}
+          imageSrc={require("assets/images/frozen.png")}
           title="Frozen"
           size = 'large'
         />

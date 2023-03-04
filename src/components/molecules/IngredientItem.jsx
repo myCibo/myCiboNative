@@ -12,7 +12,7 @@ export default function IngredientItem({ ingredientName = "Milk", ingredientExpi
             <View style={styles.container}>
                 <Text style={{ color: 'white' }}>{ingredientName}</Text>
                 <Text style={{ color: 'white' }}>Expires in {ingredientExpiration} Days</Text>
-                <TouchableWithoutFeedback onPress={handleToggleModal} hitSlop={{ top: 200, bottom: 200, left: 200, right: 200 }}><Image  source={require('./assets/option-dots-icon.png')}></Image></TouchableWithoutFeedback>
+                <TouchableWithoutFeedback onPress={handleToggleModal} hitSlop={{ top: 200, bottom: 200, left: 200, right: 200 }}><Image  source={require('assets/images/option-dots-icon.png')}></Image></TouchableWithoutFeedback>
                 <OptionsModal onToggleModal={handleToggleModal} showOptions={showOptions} />
             </View>
         </TouchableWithoutFeedback>
