@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 
 import { View, ScrollView, Text, StyleSheet, Image } from 'react-native';
 import RecipeHero from '../components/organisms/RecipeHero';
-import RecipeCarousel from '../components/organisms/RecipeCarousel';
+import Carousel from '../components/organisms/Carousel';
 import axios from 'axios';
+import SingleRecipeCarousel from '../components/molecules/SingleRecipeCarousel';
 
 
 
@@ -28,11 +29,10 @@ function RecipeScreen() {
   // );
 
   const [data, setData] = useState([]);
-  const [hero, setHero] = useState([]);
-
 
   useEffect(() => {
-    axios.get(`https://api.spoonacular.com/recipes/random?number=200&apiKey=${process.env.API_KEY}`)
+
+    axios.get(`https://api.spoonacular.com/recipes/random?number=20&apiKey=${process.env.API_KEY}`)
       .then(response => {
         const recipes = response.data.recipes;
         const categorizedRecipes = categorizeRecipes(recipes);
@@ -47,7 +47,8 @@ function RecipeScreen() {
 
 
 
-  // // Function to categorize recipes based on type
+
+  // Function to categorize recipes based on type
   function categorizeRecipes(recipes) {
 
     recipes.forEach(recipe => {
@@ -80,39 +81,47 @@ function RecipeScreen() {
 
   return (
     <ScrollView>
-            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
 
+            <View  
+            // style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
+            
+            >
+    
        {data.hero && data.hero.length > 0 &&
-          // <h1>{data.hero[0].title}</h1>
+          // <Text>{data.hero[0].title}</Text>
+          <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
           <RecipeHero imageSrc={data.hero[0].image} link="#" title={data.hero[0].title} label="For You"/>
+        </View>
       }
+
+
 
       {data.mainCourse && data.mainCourse.length > 0 &&
-          <RecipeCarousel data={data.mainCourse} title="Main Course"/>
+          <Carousel data={data.mainCourse} title="Main Course" CardComponent={SingleRecipeCarousel}/>
       }
       {data.dessert && data.dessert.length > 0 &&
-          <RecipeCarousel data={data.dessert} title="Dessert"/>
+          <Carousel data={data.dessert} title="Dessert" CardComponent={SingleRecipeCarousel}   />
       }
          {data.appetizer && data.appetizer.length > 0 &&
-          <RecipeCarousel data={data.appetizer} title="Appetizer"/>
+          <Carousel data={data.appetizer} title="Appetizer" CardComponent={SingleRecipeCarousel}/>
       }
          {data.salad && data.salad.length > 0 &&
-          <RecipeCarousel data={data.salad} title="Salad"/>
+          <Carousel data={data.salad} title="Salad" CardComponent={SingleRecipeCarousel}/>
       }
          {data.soup && data.soup.length > 0 &&
-          <RecipeCarousel data={data.soup} title="Soup"/>
+          <Carousel data={data.soup} title="Soup" CardComponent={SingleRecipeCarousel}/>
       }
          {data.sideDish && data.sideDish.length > 0 &&
-          <RecipeCarousel data={data.sideDish} title="Side Dish"/>
+          <Carousel data={data.sideDish} title="Side Dish" CardComponent={SingleRecipeCarousel}/>
       }
           {data.beverage && data.beverage.length > 0 &&
-          <RecipeCarousel data={data.beverage} title="Beverage"/>
+          <Carousel data={data.beverage} title="Beverage" CardComponent={SingleRecipeCarousel}/>
       }
           {data.breakfast && data.breakfast.length > 0 &&
-          <RecipeCarousel data={data.breakfast} title="Breakfast"/>
+          <Carousel data={data.breakfast} title="Breakfast" CardComponent={SingleRecipeCarousel}/>
       }
           {data.snack && data.snack.length > 0 &&
-          <RecipeCarousel data={data.snack} title="Snack"/>
+          <Carousel data={data.snack} title="Snack" CardComponent={SingleRecipeCarousel}/>
       }
       </View>
     
