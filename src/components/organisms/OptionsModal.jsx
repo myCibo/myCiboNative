@@ -89,10 +89,6 @@ export default function OptionsModal({
       <View>
         <TouchableWithoutFeedback onPress={handleDeleteOptionPress}>
           <View style={styles.optionRow}>
-<<<<<<< HEAD
-            <Text style={{ color: 'white' }}>What</Text>
-            <Image source={require('assets/images/list-icon.png')}></Image>
-=======
             <Text style={styles.title}>{title}</Text>
             <TouchableWithoutFeedback onPress={handleDeleteOptionPress}>
               <Image
@@ -100,7 +96,6 @@ export default function OptionsModal({
                 style={styles.optionCancelIcon}
               />
             </TouchableWithoutFeedback>
->>>>>>> da05bb9ded053b9134c7acac7b36068c40486a22
           </View>
         </TouchableWithoutFeedback>
 

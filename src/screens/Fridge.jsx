@@ -60,76 +60,9 @@ const FridgeScreen = () => {
         <SearchBar />
         <FilterIcon />
       </View>
-<<<<<<< HEAD
-      <View style={styles.row}>
-        <CategorySquare
-          backgroundColor="#CD592E"
-          totalItems={8}
-          imageSrc={require("assets/images/takeout.png")}
-          title="Takeout"
-          size='small'
-        />
-        <CategorySquare
-          backgroundColor="#F0A047"
-          totalItems={4}
-          imageSrc={require("assets/images/dairy.png")}
-          title="Dairy"
-          size = 'small'
-        />
-      </View>
-      <View style={styles.row}>
-        <CategorySquare
-          backgroundColor="#6B987A"
-          totalItems={12}
-          imageSrc={require("assets/images/produce.png")}
-          title="Produce"
-          size = 'small'
-        />
-        <CategorySquare
-          backgroundColor="#F3C238"
-          totalItems={7}
-          imageSrc={require("assets/images/dry.png")}
-          title="Dry"
-          size = 'small'
-        />
-      </View>
-      <View style={styles.row}>
-        <CategorySquare
-          backgroundColor="#D35247"
-          totalItems={6}
-          imageSrc={require("assets/images/meat.png")}
-          title="Meat"
-          size = 'medium'
-        />
-        <CategorySquare
-          backgroundColor="#B3A96C"
-          totalItems={22}
-          imageSrc={require("assets/images/spices.png")}
-          title="Spices"
-          size = 'medium'
-        />
-      </View>
-      <View style={styles.row}>
-        <CategorySquare
-          backgroundColor="#DDAE55"
-          totalItems={10}
-          imageSrc={require("assets/images/canned.png")}
-          title="Canned"
-          size = 'large'
-        />
-        <CategorySquare
-          backgroundColor="#8F9FC8"
-          totalItems={8}
-          imageSrc={require("assets/images/frozen.png")}
-          title="Frozen"
-          size = 'large'
-        />
-      </View>
-=======
       <ScrollView showsVerticalScrollIndicator= {false} contentContainerStyle={styles.contentContainer}>
         {renderIngredientsByCategory()}
       </ScrollView>
->>>>>>> da05bb9ded053b9134c7acac7b36068c40486a22
     </View>
   );
 };
