@@ -53,7 +53,7 @@ const CustomText = (props) => {
 
     console.log(fontsLoaded);
 
-    switch (props.weight) {
+    switch (props.type) {
         case 'black':
             return fontsLoaded ? (
                 <Text style={[style.font, { fontFamily: 'Rubik-Black' }]}>{props.children}</Text>

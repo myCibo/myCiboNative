@@ -1,12 +1,13 @@
 import React, {useState} from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity, Linking  } from 'react-native';
+import colors from '../utils/styles';
 // import { useFonts } from 'expo-font';
 // import MyCustomFont from '../../assets/fonts/Rubic-Black.ttf';
 // '../../assets/fonts/Rubic-Black.ttf'
 
 
-const CustomButton = ({ text = "Submit", onPress, height=50, width= 320,  
-                      backgroundColor="#6B987A", textColor="white", fontSize=18 }) => {
+const CustomButton = ({ text = "Submit", onPress, height = 50, width = 320,  
+                      backgroundColor = colors['primaryGreen'], textColor = colors['white'], fontSize=18 }) => {
 
 
   

@@ -1,21 +1,22 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import Icon from 'assets/icons/home.svg';
+import Icon from '../components/atoms/Icon';
 import CustomText from '../components/atoms/CustomText';
+import Colors from '../constants/styles';
 
 
 function ScanScreen() {
 
   const font = {
-    color: '#000',
+    color: Colors.fontBlack,
     fontSize: 30,
-    weight: 'black',
+    type: 'black',
   }
 
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <CustomText {...font}>Scan Screen</CustomText>
-      <Icon height={200} width={200}/>
+      <Icon size={100} color={Colors.white} name='fridge'/>
     </View>
   );
 }
