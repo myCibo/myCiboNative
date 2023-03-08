@@ -1,14 +1,14 @@
 import React from "react";
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from "react-native";
-import { MaterialIcons } from '@expo/vector-icons';
-import SearchIcon from "../atoms/SearchIcon";
+import Icon from "../atoms/Icon";
+import Colors from "../../constants/styles";
 
 const SearchBar = () => {
 
 
   return (
     <View style={styles.container}>
-        <SearchIcon />
+        <Icon name='magnifying-glass' size={24} color={Colors['fontGray']} />
         <TextInput
           style={styles.input}
           placeholder="Search Recipe"
