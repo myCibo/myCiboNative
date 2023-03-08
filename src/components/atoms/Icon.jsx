@@ -135,6 +135,12 @@ const Icon = ({ name = 'default', size = 100, color = 'white' }) => {
                     <Fridge color={color} width={size} height={size} />
                 </View>
             );
+        case 'hash':
+            return (
+                <View>
+                    <Hash color={color} width={size} height={size} />
+                </View>
+            );
         case 'home':
             return (
                 <View>

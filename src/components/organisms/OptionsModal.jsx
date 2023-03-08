@@ -5,6 +5,7 @@ import {
   TouchableWithoutFeedback,
   Image,
 } from "react-native";
+import { useState } from "react";
 import Modal from "react-native-modal";
 import Icon from "../atoms/Icon";
 import Colors from "../../constants/styles";
@@ -13,6 +14,7 @@ export default function OptionsModal({
   showOptions,
   optionsType,
   onToggleModal,
+  onToggleItemModal,
   title,
   // options = [
   //   { text: "option text", icon: "../../assets/images/list-icon.png" },
@@ -66,11 +68,15 @@ export default function OptionsModal({
     },
   });
 
+  // const [showItemModal, setShowItemModal] = useState(false);
+  // const handleItemModal = () => {
+  //   setItemModal(!itemModal);
+  // };
+
   const handleEditOptionPress = () => {
     console.log("Edit option pressed");
-
-
     onToggleModal();
+    onToggleItemModal();
   };
 
   const handleUploadOptionPress = () => {

@@ -7,16 +7,22 @@ import {
   Image,
 } from "react-native";
 import OptionsModal from "../organisms/OptionsModal";
+import ItemModal from "../organisms/ItemModal";
 import Colors from "../../constants/styles";
 import Icon from "../atoms/Icon";
 
+// Need to add a prop for the ingredient object, so we can pass it to the modal
 export default function IngredientItem({
   ingredientName = "Milk",
   ingredientExpiration = 3,
 }) {
   const [showOptions, setShowOptions] = useState(false);
+  const [showItemModal, setShowItemModal] = useState(false);
   const handleToggleModal = () => {
     setShowOptions(!showOptions);
+  };
+  const handleToggleItemModal = () => {
+    setShowItemModal(!showItemModal);
   };
 
   const color =
@@ -68,8 +74,15 @@ export default function IngredientItem({
         </View>
         <OptionsModal
           onToggleModal={handleToggleModal}
+          onToggleItemModal={handleToggleItemModal}
           showOptions={showOptions}
           optionsType="ingredient"
+          title={ingredientName}
+        />
+        <ItemModal
+          onToggleItemModal={handleToggleItemModal}
+          showItemModal={showItemModal}
+          itemType="edit"
           title={ingredientName}
         />
       </View>
