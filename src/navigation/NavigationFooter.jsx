@@ -2,7 +2,9 @@ import React from "react";
 import { View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import Icon from "../components/atoms/Icon";
+import colors from "../constants/styles"
+// import { MaterialCommunityIcons } from "@expo/vector-icons";
 import FridgeScreen from "../screens/Fridge";
 import HomeScreen from "../screens/Home";
 import RecipeScreen from "../screens/Recipes";
@@ -22,14 +24,21 @@ function MyTabs() {
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
           let iconBgStyle = {
-            backgroundColor: focused ? "#FFFFFF" : "#BA2D1B",
+            backgroundColor: focused ? colors['white'] : colors['primaryRed'],
           };
-          let iconColor = focused ? "#BA2D1B" : "#FFFFFF";
-          let iconBorderStyle = focused
-            ? { borderColor: "#BA2D1B", borderWidth: 5, borderRadius: 30 }
-            : {};
-          let iconPadding =
-            route.name === "Scan" ? { paddingLeft: 10, paddingRight: 10 } : {};
+          let iconColor = focused ? colors['primaryRed'] : colors['white'];
+
+          // let iconBorderStyle = focused
+          //   ? {
+          //     // borderColor: colors['primaryRed'],
+          //     // borderWidth: 5,
+          //     // borderRadius: 20
+          //   }
+          //   : {};
+          // let iconPadding =
+          //   route.name === "Scan" ? { paddingLeft: 10, paddingRight: 10 } : {};
+          let iconPadding = {};
+          let iconBorderStyle = {};
 
           if (route.name === "Home") {
             iconName = "home";
@@ -37,41 +46,50 @@ function MyTabs() {
             iconName = "fridge";
           } else if (route.name === "Scan") {
             iconName = "camera";
-            iconBgStyle = {
-              backgroundColor: "#FFFFFF",
-              borderRadius: 30,
-            };
-            iconColor = "#BA2D1B";
+            // iconBgStyle = {
+            //   backgroundColor: colors['white'],
+            //   borderRadius: 30,
+            // };
+            // iconColor = colors['primaryRed'];
           } else if (route.name === "Recipes") {
-            iconName = "food";
-          } else if (route.name === "Shopping") {
-            iconName = "cart";
+            iconName = "book";
+          } else if (route.name === "Lists") {
+            iconName = "bag";
           }
 
           return (
-            <View style={[{ padding: 5 }, iconBorderStyle, iconPadding]}>
+            <View style={[{ 
+              // padding: 5 
+            },
+              // iconBorderStyle, iconPadding
+            ]}>
               <View
                 style={[
-                  { backgroundColor: "#BA2D1B", borderRadius: 30, padding: 5 },
+                  { backgroundColor: colors['primaryRed'], borderRadius: 40, padding: 8 },
                   iconBgStyle,
                 ]}
               >
-                <MaterialCommunityIcons
+                <Icon
                   name={iconName}
                   color={iconColor}
-                  size={size}
+                  size={35}
                 />
               </View>
             </View>
           );
         },
-        tabBarActiveTintColor: "#FFFFFF",
-        tabBarInactiveTintColor: "#FFFFFF",
+        tabBarActiveTintColor: colors['white'],
+        tabBarInactiveTintColor: colors['white'],
         tabBarStyle: {
           display: "flex",
-          backgroundColor: "#BA2D1B",
-          height: 90,
+          backgroundColor: colors['primaryRed'],
+          height: 100,
           paddingBottom: 10,
+          paddingTop: 10,
+          paddingRight: 5,
+          paddingLeft: 5,
+          borderTopRightRadius: 10,
+          borderTopLeftRadius: 10,
         },
       })}
     >
@@ -79,7 +97,7 @@ function MyTabs() {
       <Tab.Screen name="Fridge" component={FridgeScreen} />
       <Tab.Screen name="Scan" component={ScanScreen} />
       <Tab.Screen name="Recipes" component={RecipeScreen} />
-      <Tab.Screen name="Shopping" component={ShoppingScreen} />
+      <Tab.Screen name="Lists" component={ShoppingScreen} />
     </Tab.Navigator>
   );
 }

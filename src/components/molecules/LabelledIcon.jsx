@@ -1,5 +1,5 @@
 import { TouchableWithoutFeedback, Text, Image, View } from 'react-native';
-import localIconSources from './localIconSources';
+// import localIconSources from './localIconSources';
 
 export default function LabelledIcon({ icon, label, iconPos = 0 }) {
     const styles = {
@@ -13,7 +13,7 @@ export default function LabelledIcon({ icon, label, iconPos = 0 }) {
     return (
         <TouchableWithoutFeedback onPress={() => alert('You clicked on a labelled icon!')}>
             <View style={styles.container}>
-                <Image source={localIconSources[icon]}></Image>
+                <Image source={require("../../assets/images/edit-icon.png")}></Image>
                 <Text>{label}</Text>
             </View>
         </TouchableWithoutFeedback>
