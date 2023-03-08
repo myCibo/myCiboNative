@@ -4,7 +4,6 @@ import Icon from "../atoms/Icon";
 import Colors from "../../constants/styles";
 
 export default function ModalInput({
-  placeholder = 'Search',
   type = 'search',
   data = [],
 }) {
@@ -20,33 +19,62 @@ export default function ModalInput({
       height: 48,
       width: '100%',
       backgroundColor: Colors['white'],
+      borderTopLeftRadius: 4,
+      borderTopRightRadius: 4,
+      borderBottomLeftRadius: 4,
+      borderBottomRightRadius: 4,
+    },
+    searchContainerOpen: {
+      borderBottomLeftRadius: 0,
+      borderBottomRightRadius: 0,
     },
     dropdownContainer: {
       width: '100%',
       maxHeight: 5 * 48,
+      backgroundColor: Colors['white'],
+      borderBottomLeftRadius: 4,
+      borderBottomRightRadius: 4,
     },
     dropdownShadow: {
       shadowColor: 'black',
       shadowOffset: { width: 0, height: 2 },
       shadowOpacity: 0.2,
       shadowRadius: 4,
+      elevation: 5,
+      zIndex: 1,
+      // backgroundColor: Colors['white'],
     },
     dropdownRow: {
       flexDirection: 'row',
       alignItems: 'center',
       height: 48,
       width: '100%',
-      backgroundColor: Colors['white'],
       paddingLeft: 16,
+      borderRadius: 4,
     },
     searchInput: {
       flexDirection: 'row',
       alignItems: 'center',
+      width: '80%',
     },
     input: {
       flex: 1,
       fontSize: 16,
       color: Colors['fontBlack'],
+    },
+    numberContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      height: 48,
+      width: 90,
+      backgroundColor: Colors['white'],
+      borderRadius: 4,
+    },
+    numberInput: {
+      flex: 1,
+      fontSize: 16,
+      color: Colors['fontBlack'],
+      paddingRight: 16,
     },
     icon: {
       paddingHorizontal: 16,
@@ -70,6 +98,15 @@ export default function ModalInput({
     setCurrentData(newData);
     setSearchQuery(text);
     setDropdownVisible(true);
+    if (text === '' || newData.length === 0) {
+      setDropdownVisible(false);
+    }
+  };
+
+  const handleAmount = (text) => {
+    if (text.length <= 3 && !isNaN(text)) {
+      setAmountValue(text);
+    }
   };
 
   const handleSelectItem = (item) => {
@@ -87,10 +124,9 @@ export default function ModalInput({
   );
 
   return (
-
     <View style={[styles.container, dropdownVisible ? styles.dropdownShadow : null]}>
       {type === "search" && (
-        <View style={styles.searchContainer}>
+        <View style={[styles.searchContainer, dropdownVisible ? styles.searchContainerOpen : null]}>
           <View style={styles.searchInput}>
             <View style={styles.icon}>
               <Icon name="magnifying-glass" size={32} color={Colors['fontGray']} />
@@ -103,9 +139,9 @@ export default function ModalInput({
             />
           </View>
           {searchQuery ? (
-            <TouchableWithoutFeedback style={styles.icon} onPress={() => setSearchQuery('')}>
+            <TouchableWithoutFeedback onPress={() => {setSearchQuery(''), setDropdownVisible(false)}}>
               <View style={styles.icon}>
-                <Icon name="close" size={32} color={Colors['primaryBlack']} />
+                <Icon name="close" size={32} color={Colors['fontGray']} />
               </View>
             </TouchableWithoutFeedback>
           ) : null}
@@ -113,22 +149,24 @@ export default function ModalInput({
       )}
       {type === "number" && (
         <View style={styles.numberContainer}>
-          <Icon name="hash" size={32} color={Colors['fontGray']} />
+          <View style={styles.icon}>
+            <Icon name="hash" size={16} color={Colors['fontGray']} />
+          </View>
           <TextInput
             placeholder=""
             value={amountValue}
-            onChangeText={handleSearch}
+            onChangeText={handleAmount}
             style={styles.input}
           />
         </View>
       )}
-      {dropdownVisible === true && (
+      {searchQuery && dropdownVisible ? (
         <FlatList
           data={currentData}
           renderItem={renderDropdownItem}
           style={styles.dropdownContainer}
         />
-      )}
+      ) : null}
     </View>
 
   );
