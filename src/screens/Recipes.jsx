@@ -37,7 +37,6 @@ function RecipeScreen() {
         const recipes = response.data.recipes;
         const categorizedRecipes = categorizeRecipes(recipes);
         setData(categorizedRecipes);
-      
       })
       .catch(error => {
         console.log(error);
