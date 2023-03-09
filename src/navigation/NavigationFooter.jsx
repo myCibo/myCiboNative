@@ -3,7 +3,7 @@ import { View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Icon from "../components/atoms/Icon";
-import colors from "../constants/styles"
+import Colors from "../constants/styles"
 // import { MaterialCommunityIcons } from "@expo/vector-icons";
 import FridgeScreen from "../screens/Fridge";
 import HomeScreen from "../screens/Home";
@@ -24,13 +24,13 @@ function MyTabs() {
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
           let iconBgStyle = {
-            backgroundColor: focused ? colors['white'] : colors['primaryRed'],
+            backgroundColor: focused ? Colors['white'] : Colors['primaryRed'],
           };
-          let iconColor = focused ? colors['primaryRed'] : colors['white'];
+          let iconColor = focused ? Colors['primaryRed'] : Colors['white'];
 
           // let iconBorderStyle = focused
           //   ? {
-          //     // borderColor: colors['primaryRed'],
+          //     // borderColor: Colors['primaryRed'],
           //     // borderWidth: 5,
           //     // borderRadius: 20
           //   }
@@ -47,10 +47,10 @@ function MyTabs() {
           } else if (route.name === "Scan") {
             iconName = "camera";
             // iconBgStyle = {
-            //   backgroundColor: colors['white'],
+            //   backgroundColor: Colors['white'],
             //   borderRadius: 30,
             // };
-            // iconColor = colors['primaryRed'];
+            // iconColor = Colors['primaryRed'];
           } else if (route.name === "Recipes") {
             iconName = "book";
           } else if (route.name === "Lists") {
@@ -65,7 +65,7 @@ function MyTabs() {
             ]}>
               <View
                 style={[
-                  { backgroundColor: colors['primaryRed'], borderRadius: 40, padding: 8 },
+                  { backgroundColor: Colors['primaryRed'], borderRadius: 40, padding: 8 },
                   iconBgStyle,
                 ]}
               >
@@ -78,11 +78,11 @@ function MyTabs() {
             </View>
           );
         },
-        tabBarActiveTintColor: colors['white'],
-        tabBarInactiveTintColor: colors['white'],
+        tabBarActiveTintColor: Colors['white'],
+        tabBarInactiveTintColor: Colors['white'],
         tabBarStyle: {
           display: "flex",
-          backgroundColor: colors['primaryRed'],
+          backgroundColor: Colors['primaryRed'],
           height: 100,
           paddingBottom: 10,
           paddingTop: 10,

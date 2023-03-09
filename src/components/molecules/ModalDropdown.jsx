@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { View, TextInput, StyleSheet, TouchableWithoutFeedback, TouchableOpacity, Text } from 'react-native';
+import { View, Text, StyleSheet, TouchableWithoutFeedback, TouchableHighlight } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import Icon from '../atoms/Icon';
 import Colors from '../../constants/styles';
@@ -11,16 +11,16 @@ export default function ModalDropdown({
 
     const styles = StyleSheet.create({
         container: {
-            width: '100%',
+            // width: '100%',
+            flex: 1,
+            height: 48,
             position: 'relative',
-            zIndex: 10,
         },
         itemContainer: {
             flexDirection: 'row',
             justifyContent: 'space-between',
             alignItems: 'center',
-            height: 48,
-            width: '100%',
+            flex: 1,
             backgroundColor: Colors['white'],
             borderTopLeftRadius: 4,
             borderTopRightRadius: 4,
@@ -40,12 +40,13 @@ export default function ModalDropdown({
         },
         dropdownContainer: {
             position: 'absolute',
-            width: '100%',
             top: 48,
-            left: 0,
+            flex: 1,
+            height: 5 * 48,
             backgroundColor: Colors['white'],
             borderBottomLeftRadius: 4,
             borderBottomRightRadius: 4,
+            zIndex: 10,
             ...Platform.select({
                 ios: {
                     shadowColor: 'black',
@@ -58,15 +59,20 @@ export default function ModalDropdown({
                 },
             }),
         },
-        // dropdownList: {
-        //     height: 5 * 48,
-
-        // },
         dropdownRow: {
             flexDirection: 'row',
             alignItems: 'center',
             height: 48,
-            width: '100%',
+            flex: 1,
+            paddingLeft: 16,
+            borderBottomWidth: 1,
+            borderBottomColor: Colors['creamyWhite'],
+        },
+        lastDropdownRow: {
+            flexDirection: 'row',
+            alignItems: 'center',
+            height: 48,
+            flex: 1,
             paddingLeft: 16,
         },
         item: {
@@ -96,22 +102,25 @@ export default function ModalDropdown({
 
     const renderDropdown = () => {
         return (
-            <View style={styles.dropdownContainer}>
-                <View style={{ height: 48 * 5 }}>
+            // <View style={{position: 'absolute', top: 48, flex: 1}}>
+                <View style={styles.dropdownContainer}>
                     <FlatList
                         data={data}
-                        contentContainerStyle={{ paddingBottom: 30 }}
-                        renderItem={({ item }) => (
-                            <TouchableOpacity onPress={() => handleSelect(item)}>
-                                <View style={styles.dropdownRow}>
+                        renderItem={({ item, index }) => (
+                            <TouchableHighlight 
+                                onPress={() => handleSelect(item)}
+                                activeOpacity={0.9}
+                                underlayColor={Colors['lightGreen']}
+                            >
+                                <View style={index === data.length - 1 ? styles.lastDropdownRow : styles.dropdownRow}>
                                     <Text>{item.name}</Text>
                                 </View>
-                            </TouchableOpacity>
+                            </TouchableHighlight>
                         )}
                         keyExtractor={(item) => item.id}
                     />
                 </View>
-            </View>
+            // </View>
         );
     }
 

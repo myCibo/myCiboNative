@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { View, TextInput, FlatList, StyleSheet, TouchableWithoutFeedback, TouchableOpacity, Text } from 'react-native';
+import { View, TextInput, StyleSheet, TouchableWithoutFeedback, TouchableHighlight, Text } from 'react-native';
+import { FlatList } from 'react-native-gesture-handler';
 import Icon from "../atoms/Icon";
 import Colors from "../../constants/styles";
 
@@ -13,6 +14,7 @@ export default function ModalInput({
     container: {
       width: '100%',
       position: 'relative',
+      zIndex: 1,
     },
     searchContainer: {
       flexDirection: 'row',
@@ -23,29 +25,50 @@ export default function ModalInput({
       backgroundColor: Colors['white'],
       borderTopLeftRadius: 4,
       borderTopRightRadius: 4,
-      borderBottomLeftRadius: 4,
-      borderBottomRightRadius: 4,
+      borderBottomLeftRadius: dropdownVisible ? 0 : 4,
+      borderBottomRightRadius: dropdownVisible ? 0 : 4,
+      zIndex: 1,
+      ...Platform.select({
+        ios: {
+          shadowColor: 'black',
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: dropdownVisible ? 0.2 : 0,
+          shadowRadius: 4,
+        },
+        android: {
+          elevation: dropdownVisible ? 5 : 0,
+        },
+      }),
     },
-    searchContainerOpen: {
-      borderBottomLeftRadius: 0,
-      borderBottomRightRadius: 0,
-    },
-    dropdownContainer: {
+    dropdownList: {
+      height: 5 * 48,
       width: '100%',
-      maxHeight: 5 * 48,
       backgroundColor: Colors['white'],
       borderBottomLeftRadius: 4,
       borderBottomRightRadius: 4,
-    },
-    dropdownShadow: {
-      shadowColor: 'black',
-      shadowOffset: { width: 0, height: 2 },
-      shadowOpacity: 0.2,
-      shadowRadius: 4,
-      elevation: 5,
-      zIndex: 1,
+      zIndex: 10,
+      ...Platform.select({
+        ios: {
+          shadowColor: 'black',
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 0.2,
+          shadowRadius: 4,
+        },
+        android: {
+          elevation: 5,
+        },
+      }),
     },
     dropdownRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      height: 48,
+      width: '100%',
+      paddingLeft: 16,
+      borderBottomWidth: 1,
+      borderBottomColor: Colors['creamyWhite'],
+    },
+    lastDropdownRow: {
       flexDirection: 'row',
       alignItems: 'center',
       height: 48,
@@ -113,18 +136,34 @@ export default function ModalInput({
     setDropdownVisible(false);
   };
 
-  const renderDropdownItem = ({ item }) => (
-    <TouchableOpacity onPress={() => handleSelectItem(item)}>
-      <View style={styles.dropdownRow}>
-        <Text>{item.name}</Text>
-      </View>
-    </TouchableOpacity>
-  );
+  const renderDropdown = () => {
+    return (
+      <View style={{ position: 'absolute', top: 48 }}>
+          <View style={styles.dropdownList}>
+            <FlatList
+              data={currentData}
+              renderItem={({ item, index }) => (
+                <TouchableHighlight
+                  onPress={() => handleSelectItem(item)}
+                  activeOpacity={0.9}
+                  underlayColor={Colors['lightGreen']}
+                >
+                  <View style={index === data.length - 1 ? styles.lastDropdownRow : styles.dropdownRow}>
+                    <Text>{item.name}</Text>
+                  </View>
+                </TouchableHighlight>
+              )}
+              keyExtractor={(item) => item.id}
+            />
+          </View>
+        </View>
+    )
+  }
 
   return (
-    <View style={[styles.container, dropdownVisible ? styles.dropdownShadow : null]}>
-      {type === "search" && (
-        <View style={[styles.searchContainer, dropdownVisible ? styles.searchContainerOpen : null]}>
+    <View style={styles.container}>
+      {/* {type === "search" && ( */}
+        <View style={styles.searchContainer}>
           <View style={styles.searchInput}>
             <View style={styles.icon}>
               <Icon name="magnifying-glass" size={32} color={Colors['fontGray']} />
@@ -137,14 +176,16 @@ export default function ModalInput({
             />
           </View>
           {searchQuery ? (
-            <TouchableWithoutFeedback onPress={() => {setSearchQuery(''), setDropdownVisible(false)}}>
+            <TouchableWithoutFeedback onPress={() => { setSearchQuery(''), setDropdownVisible(false) }}>
               <View style={styles.icon}>
                 <Icon name="close" size={32} color={Colors['fontGray']} />
               </View>
             </TouchableWithoutFeedback>
           ) : null}
+          
         </View>
-      )}
+        {dropdownVisible && renderDropdown()}
+      {/* )}
       {type === "number" && (
         <View style={styles.numberContainer}>
           <View style={styles.icon}>
@@ -157,16 +198,8 @@ export default function ModalInput({
             style={styles.input}
           />
         </View>
-      )}
-      {searchQuery && dropdownVisible ? (
-        <FlatList
-          data={currentData}
-          renderItem={renderDropdownItem}
-          style={styles.dropdownContainer}
-          keyExtractor={(item) => item.id}
-        />
-      ) : null}
-    </View>
+      )} */}
+    </View >
 
   );
 };

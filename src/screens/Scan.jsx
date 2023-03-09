@@ -4,13 +4,13 @@ import Icon from '../components/atoms/Icon';
 import ModalInput from '../components/molecules/ModalInput';
 import Colors from '../constants/styles';
 import ModalDropdown from '../components/molecules/ModalDropdown';
-import Test from '../components/molecules/Test';
 
 
 function ScanScreen() {
 
   const styles = StyleSheet.create({
     body: {
+      position: 'relative',
       flexDirection: 'column',
       alignItems: 'flex-start',
       // justifyContent: 'center',
@@ -18,6 +18,7 @@ function ScanScreen() {
       // width: '100%',
       padding: 16,
       backgroundColor: Colors['creamyWhite'],
+      zIndex: 0,
     },
     selection: {
       flexDirection: 'row',
@@ -75,13 +76,22 @@ function ScanScreen() {
 
   return (
     <View style={styles.body}>
-
+      <View>
       <Text style={styles.font}>Name</Text>
+      </View>
       <View style={styles.selection}>
         <ModalInput placeholder='Find Ingredient' type='search' data={ingredientData} />
       </View>
-
+      <View>
       <Text style={styles.font}>Number</Text>
+      </View>
+      <View style={styles.selection}>
+        {/* <ModalInput placeholder='0' type='number' /> */}
+        <ModalDropdown placeholder={'Select Measurement'} data={measurementData} />
+      </View>
+      <View>
+      <Text style={styles.font}>Number</Text>
+      </View>
       <View style={styles.selection}>
         {/* <ModalInput placeholder='0' type='number' /> */}
         <ModalDropdown placeholder={'Select Measurement'} data={measurementData} />
