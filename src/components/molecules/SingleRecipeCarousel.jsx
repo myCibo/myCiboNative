@@ -4,9 +4,9 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
 
 
-import DynamicRecipe from '../../screens/DynamicRecipe';  // <--- import the DynamicRecipe screen
-import { createStackNavigator } from '@react-navigation/stack';
-import LabelHero from '../atoms/LabelHero';
+// import DynamicRecipe from '../../screens/DynamicRecipe';  // <--- import the DynamicRecipe screen
+// import { createStackNavigator } from '@react-navigation/stack';
+// import LabelHero from '../atoms/LabelHero';
 
 
 
