@@ -12,6 +12,7 @@ export default function ModalInput({
   const styles = StyleSheet.create({
     container: {
       width: '100%',
+      position: 'relative',
     },
     searchContainer: {
       flexDirection: 'row',
@@ -57,7 +58,6 @@ export default function ModalInput({
       width: '80%',
     },
     input: {
-      flex: 1,
       fontSize: 16,
       color: Colors['fontBlack'],
     },
@@ -70,7 +70,6 @@ export default function ModalInput({
       borderRadius: 4,
     },
     numberInput: {
-      flex: 1,
       fontSize: 16,
       color: Colors['fontBlack'],
       paddingRight: 16,

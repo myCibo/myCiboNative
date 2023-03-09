@@ -84,7 +84,7 @@ function ScanScreen() {
       <Text style={styles.font}>Number</Text>
       <View style={styles.selection}>
         {/* <ModalInput placeholder='0' type='number' /> */}
-        <Test placeholder='Select Measurement' data={measurementData} />
+        <ModalDropdown placeholder={'Select Measurement'} data={measurementData} />
       </View>
     </View>
   );

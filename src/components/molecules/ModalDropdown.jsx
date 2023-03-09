@@ -1,17 +1,21 @@
 import { useState } from 'react';
-import { View, TextInput, FlatList, StyleSheet, TouchableWithoutFeedback, TouchableOpacity, Text } from 'react-native';
+import { View, TextInput, StyleSheet, TouchableWithoutFeedback, TouchableOpacity, Text } from 'react-native';
+import { FlatList } from 'react-native-gesture-handler';
 import Icon from '../atoms/Icon';
 import Colors from '../../constants/styles';
 
 export default function ModalDropdown({
+    placeholder = 'Item',
     data = [],
 }) {
 
     const styles = StyleSheet.create({
         container: {
             width: '100%',
+            position: 'relative',
+            zIndex: 10,
         },
-        searchContainer: {
+        itemContainer: {
             flexDirection: 'row',
             justifyContent: 'space-between',
             alignItems: 'center',
@@ -20,28 +24,44 @@ export default function ModalDropdown({
             backgroundColor: Colors['white'],
             borderTopLeftRadius: 4,
             borderTopRightRadius: 4,
-            borderBottomLeftRadius: 4,
-            borderBottomRightRadius: 4,
-        },
-        searchContainerOpen: {
-            borderBottomLeftRadius: 0,
-            borderBottomRightRadius: 0,
+            borderBottomLeftRadius: open ? 0 : 4,
+            borderBottomRightRadius: open ? 0 : 4,
+            ...Platform.select({
+                ios: {
+                    shadowColor: 'black',
+                    shadowOffset: { width: 0, height: 2 },
+                    shadowOpacity: open ? 0.2 : 0,
+                    shadowRadius: 4,
+                },
+                android: {
+                    elevation: open ? 5 : 0,
+                },
+            }),
         },
         dropdownContainer: {
+            position: 'absolute',
             width: '100%',
-            maxHeight: 5 * 48,
+            top: 48,
+            left: 0,
             backgroundColor: Colors['white'],
             borderBottomLeftRadius: 4,
             borderBottomRightRadius: 4,
+            ...Platform.select({
+                ios: {
+                    shadowColor: 'black',
+                    shadowOffset: { width: 0, height: 2 },
+                    shadowOpacity: 0.2,
+                    shadowRadius: 4,
+                },
+                android: {
+                    elevation: 5,
+                },
+            }),
         },
-        dropdownShadow: {
-            shadowColor: 'black',
-            shadowOffset: { width: 0, height: 2 },
-            shadowOpacity: 0.2,
-            shadowRadius: 4,
-            elevation: 5,
-            zIndex: 1,
-        },
+        // dropdownList: {
+        //     height: 5 * 48,
+
+        // },
         dropdownRow: {
             flexDirection: 'row',
             alignItems: 'center',
@@ -49,55 +69,48 @@ export default function ModalDropdown({
             width: '100%',
             paddingLeft: 16,
         },
-        searchInput: {
-            flexDirection: 'row',
-            alignItems: 'center',
-            width: '80%',
-        },
-        input: {
-            flex: 1,
+        item: {
             fontSize: 16,
             color: Colors['fontBlack'],
+            paddingLeft: 16,
         },
         icon: {
             paddingHorizontal: 16,
         },
         iconOpen: {
-            transform: [{ rotate: '180deg' }],
+            transform: [{ rotate: '90deg' }],
         },
     });
 
     const [open, setOpen] = useState(false);
-    const [input, setInput] = useState('');
+    const [selectedItem, setSelectedItem] = useState(null);
+
+    const handleSelect = (item) => {
+        setSelectedItem(item);
+        setOpen(false);
+    };
 
     const handleOpen = () => {
         setOpen(!open);
     };
 
-    const handleInput = (text) => {
-        setInput(text);
-    };
-
-    const handleSelect = (item) => {
-        setInput(item.name);
-        setOpen(false);
-    };
-
     const renderDropdown = () => {
         return (
             <View style={styles.dropdownContainer}>
-                <FlatList
-                    data={data}
-                    renderItem={({ item }) => (
-                        <TouchableOpacity
-                            style={styles.dropdownRow}
-                            onPress={() => handleSelect(item)}
-                        >
-                            <Text>{item.name}</Text>
-                        </TouchableOpacity>
-                    )}
-                    keyExtractor={(item) => item.id}
-                />
+                <View style={{ height: 48 * 5 }}>
+                    <FlatList
+                        data={data}
+                        contentContainerStyle={{ paddingBottom: 30 }}
+                        renderItem={({ item }) => (
+                            <TouchableOpacity onPress={() => handleSelect(item)}>
+                                <View style={styles.dropdownRow}>
+                                    <Text>{item.name}</Text>
+                                </View>
+                            </TouchableOpacity>
+                        )}
+                        keyExtractor={(item) => item.id}
+                    />
+                </View>
             </View>
         );
     }
@@ -105,17 +118,12 @@ export default function ModalDropdown({
     return (
         <View style={styles.container}>
             <TouchableWithoutFeedback onPress={handleOpen}>
-                <View style={[styles.searchContainer, open && styles.searchContainerOpen]}>
-                    <View style={styles.searchInput}>
-                        <TextInput
-                            style={styles.input}
-                            placeholder="Search"
-                            value={input}
-                            onChangeText={handleInput}
-                        />
+                <View style={styles.itemContainer}>
+                    <View style={styles.item}>
+                        <Text>{selectedItem ? selectedItem.name : placeholder}</Text>
                     </View>
                     <View style={[styles.icon, open && styles.iconOpen]}>
-                        <Icon name="arrow" />
+                        <Icon name="arrow-down" size={24} color={Colors['fontGray']} />
                     </View>
                 </View>
             </TouchableWithoutFeedback>
