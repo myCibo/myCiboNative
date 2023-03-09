@@ -39,15 +39,15 @@ const RecipeDetails = ({timeInMinutes, serving, calorie}) => {
     <View style={styles.container}>
         <View style={styles.column}>
             {/* <Image source={require('../../assets/icon.png')} style={styles.icon} /> */}
-            <Image source={ require('assets/images/frozen.png')} style={styles.icon}/>
+            <Image source={ require('../../../assets/icons/book.svg')} style={styles.icon}/>
             <Text style={styles.text}>{timeInMinutes} min</Text>
         </View>
         <View style={styles.column}>
-          <Image source={ require('assets/images/frozen.png')} style={styles.icon}/>
+        <Image source={ require('../../../assets/icons/book.svg')} style={styles.icon}/>
           <Text style={styles.text}>{serving} people</Text>
         </View>
         <View style={styles.column}>
-            <Image source={ require('assets/images/frozen.png')} style={styles.icon}/>
+        <Image source={ require('../../../assets/icons/book.svg')} style={styles.icon}/>
             <Text style={styles.text}>{calorie}kcal</Text> 
         </View>
       </View>

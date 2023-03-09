@@ -21,12 +21,12 @@ const categorizedRecipes = {
   snack: []
 };
 
+function CarouselHeader({title="this is title"}) {
+  return <Text style={styles.categoryName}>{title}</Text>;
+}
+
 function RecipeScreen() {
-  // return (
-  //   <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-  //     <Text>Recipe Screen</Text>
-  //   </View>
-  // );
+
 
   const [data, setData] = useState([]);
 
@@ -81,52 +81,64 @@ function RecipeScreen() {
 
   return (
     <ScrollView>
-
+    <View style={{ height:120, flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <Text>Recipe Screen Header</Text>
+    </View>
             <View  
             // style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
-            
             >
+
+
     
        {data.hero && data.hero.length > 0 &&
           // <Text>{data.hero[0].title}</Text>
           <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-          <RecipeHero imageSrc={data.hero[0].image} link="#" title={data.hero[0].title} label="For You"/>
+          <RecipeHero id={data.hero[0].id} image={data.hero[0].image} link="#" title={data.hero[0].title} label="For You"/>
         </View>
       }
 
 
 
-      {data.mainCourse && data.mainCourse.length > 0 &&
-          <Carousel data={data.mainCourse} title="Main Course" CardComponent={SingleRecipeCarousel}/>
+      {data.mainCourse && data.mainCourse.length > 2 &&
+          <Carousel data={data.mainCourse} title="Main Course" CardComponent={SingleRecipeCarousel}  Header={CarouselHeader}/>
       }
-      {data.dessert && data.dessert.length > 0 &&
-          <Carousel data={data.dessert} title="Dessert" CardComponent={SingleRecipeCarousel}   />
+      {data.dessert && data.dessert.length > 2 &&
+          <Carousel data={data.dessert} title="Dessert" CardComponent={SingleRecipeCarousel} Header={CarouselHeader}/>
       }
-         {data.appetizer && data.appetizer.length > 0 &&
-          <Carousel data={data.appetizer} title="Appetizer" CardComponent={SingleRecipeCarousel}/>
+         {data.appetizer && data.appetizer.length > 2 &&
+          <Carousel data={data.appetizer} title="Appetizer" CardComponent={SingleRecipeCarousel} Header={CarouselHeader}/>
       }
-         {data.salad && data.salad.length > 0 &&
-          <Carousel data={data.salad} title="Salad" CardComponent={SingleRecipeCarousel}/>
+         {data.salad && data.salad.length > 2 &&
+          <Carousel data={data.salad} title="Salad" CardComponent={SingleRecipeCarousel} Header={CarouselHeader}/>
       }
-         {data.soup && data.soup.length > 0 &&
-          <Carousel data={data.soup} title="Soup" CardComponent={SingleRecipeCarousel}/>
+         {data.soup && data.soup.length > 2 &&
+          <Carousel data={data.soup} title="Soup" CardComponent={SingleRecipeCarousel} Header={CarouselHeader}/>
       }
-         {data.sideDish && data.sideDish.length > 0 &&
-          <Carousel data={data.sideDish} title="Side Dish" CardComponent={SingleRecipeCarousel}/>
+         {data.sideDish && data.sideDish.length > 2 &&
+          <Carousel data={data.sideDish} title="Side Dish" CardComponent={SingleRecipeCarousel} Header={CarouselHeader}/>
       }
-          {data.beverage && data.beverage.length > 0 &&
-          <Carousel data={data.beverage} title="Beverage" CardComponent={SingleRecipeCarousel}/>
+          {data.beverage && data.beverage.length > 2 &&
+          <Carousel data={data.beverage} title="Beverage" CardComponent={SingleRecipeCarousel} Header={CarouselHeader}/>
       }
-          {data.breakfast && data.breakfast.length > 0 &&
-          <Carousel data={data.breakfast} title="Breakfast" CardComponent={SingleRecipeCarousel}/>
+          {data.breakfast && data.breakfast.length > 2 &&
+          <Carousel data={data.breakfast} title="Breakfast" CardComponent={SingleRecipeCarousel} Header={CarouselHeader}/>
       }
-          {data.snack && data.snack.length > 0 &&
-          <Carousel data={data.snack} title="Snack" CardComponent={SingleRecipeCarousel}/>
+          {data.snack && data.snack.length > 2 &&
+          <Carousel data={data.snack} title="Snack" CardComponent={SingleRecipeCarousel} Header={CarouselHeader}/>
       }
       </View>
     
     </ScrollView>
   );
 }
+const styles = StyleSheet.create({
+
+categoryName:{
+  color:'#0D302F',
+  fontSize:16,
+  textTransform: 'uppercase'
+}
+
+})
 
 export default RecipeScreen;

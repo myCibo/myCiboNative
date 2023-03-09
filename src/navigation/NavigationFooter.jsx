@@ -5,13 +5,35 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Icon from "../components/atoms/Icon";
 import colors from "../constants/styles"
 // import { MaterialCommunityIcons } from "@expo/vector-icons";
+//import { createStackNavigator } from "@react-navigation/stack";
+
 import FridgeScreen from "../screens/Fridge";
 import HomeScreen from "../screens/Home";
 import RecipeScreen from "../screens/Recipes";
 import ScanScreen from "../screens/Scan";
 import ShoppingScreen from "../screens/Shopping";
+import DynamicRecipe from "../screens/DynamicRecipe";
 
 const Tab = createBottomTabNavigator();
+// const Stack = createStackNavigator();
+
+function RecipeStack() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Recipes"
+        component={RecipeScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="DynamicRecipe"
+        component={DynamicRecipe}
+        options={{ headerShown: false }}
+      />
+    </Stack.Navigator>
+  );
+}
+
 
 function MyTabs() {
   return (
@@ -98,7 +120,9 @@ function MyTabs() {
       <Tab.Screen name="Scan" component={ScanScreen} />
       <Tab.Screen name="Recipes" component={RecipeScreen} />
       <Tab.Screen name="Lists" component={ShoppingScreen} />
+      <Tab.Screen name="DynamicRecipe" component={DynamicRecipe} />
     </Tab.Navigator>
+    
   );
 }
 
