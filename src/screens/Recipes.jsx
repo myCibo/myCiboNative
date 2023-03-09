@@ -29,11 +29,9 @@ function RecipeScreen() {
   // );
 
   const [data, setData] = useState([]);
-  const [hero, setHero] = useState([]);
-
 
   useEffect(() => {
-    axios.get(`https://api.spoonacular.com/recipes/random?number=200&apiKey=${process.env.API_KEY}`)
+    axios.get(`https://api.spoonacular.com/recipes/random?number=20&apiKey=${process.env.API_KEY}`)
       .then(response => {
         const recipes = response.data.recipes;
         const categorizedRecipes = categorizeRecipes(recipes);
@@ -80,18 +78,25 @@ function RecipeScreen() {
 
   return (
     <ScrollView>
-            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-
+            <View  
+            // style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
+            
+            >
+    
        {data.hero && data.hero.length > 0 &&
-          // <h1>{data.hero[0].title}</h1>
+          // <Text>{data.hero[0].title}</Text>
+          <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
           <RecipeHero imageSrc={data.hero[0].image} link="#" title={data.hero[0].title} label="For You"/>
+        </View>
       }
+
+
 
       {data.mainCourse && data.mainCourse.length > 0 &&
           <Carousel data={data.mainCourse} title="Main Course" CardComponent={SingleRecipeCarousel}/>
       }
       {data.dessert && data.dessert.length > 0 &&
-          <Carousel data={data.dessert} title="Dessert" CardComponent={SingleRecipeCarousel}/>
+          <Carousel data={data.dessert} title="Dessert" CardComponent={SingleRecipeCarousel}   />
       }
          {data.appetizer && data.appetizer.length > 0 &&
           <Carousel data={data.appetizer} title="Appetizer" CardComponent={SingleRecipeCarousel}/>

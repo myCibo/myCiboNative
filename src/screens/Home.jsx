@@ -7,19 +7,19 @@ function HomeScreen() {
   const caroulselDummy = [{
     id: 1,
     title: 'Yuckery',
-    imageSrc: {uri:'https://spoonacular.com/recipeImages/716429-312x231.jpg'}
+    image: 'https://spoonacular.com/recipeImages/716429-312x231.jpg'
   }, {
     id: 2,
     title: 'Fafafafa',
-    imageSrc: {uri:'https://spoonacular.com/recipeImages/716429-312x231.jpg'}
+    image: 'https://spoonacular.com/recipeImages/716429-312x231.jpg'
   }, {
     id: 3,
     title: 'Yayaya',
-    imageSrc: {uri:'https://spoonacular.com/recipeImages/716429-312x231.jpg'}
+    image: 'https://spoonacular.com/recipeImages/716429-312x231.jpg'
   },{
     id: 4,
     title: 'Yoyoyo',
-    imageSrc: {uri:'https://spoonacular.com/recipeImages/716429-312x231.jpg'}
+    image: 'https://spoonacular.com/recipeImages/716429-312x231.jpg'
   }]
 
   const FridgeHeader = () => <View><Text>Fridge</Text></View>
