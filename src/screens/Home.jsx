@@ -22,10 +22,12 @@ function HomeScreen() {
     image: 'https://spoonacular.com/recipeImages/716429-312x231.jpg'
   }]
 
+  const FridgeHeader = () => <View><Text>Fridge</Text></View>
+  const RecipeHeader = () => <View><Text>Recipe</Text></View>
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Carousel title="Fridge" data={caroulselDummy} CardComponent={SingleRecipeCarousel}/>
-      <Carousel title="Recipes" data={caroulselDummy} CardComponent={SingleRecipeCarousel}/>
+    <View style={{ flex: 1 }}>
+      <Carousel data={caroulselDummy} CardComponent={SingleRecipeCarousel} Header={FridgeHeader}/>
+      <Carousel data={caroulselDummy} CardComponent={SingleRecipeCarousel} Header={RecipeHeader}/>
     </View>
   );
 }
