@@ -10,99 +10,6 @@ export default function ModalInput({
   data = [],
 }) {
 
-  const styles = StyleSheet.create({
-    container: {
-      width: '100%',
-      position: 'relative',
-      zIndex: 1,
-    },
-    searchContainer: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      height: 48,
-      width: '100%',
-      backgroundColor: Colors['white'],
-      borderTopLeftRadius: 4,
-      borderTopRightRadius: 4,
-      borderBottomLeftRadius: dropdownVisible ? 0 : 4,
-      borderBottomRightRadius: dropdownVisible ? 0 : 4,
-      zIndex: 1,
-      ...Platform.select({
-        ios: {
-          shadowColor: 'black',
-          shadowOffset: { width: 0, height: 2 },
-          shadowOpacity: dropdownVisible ? 0.2 : 0,
-          shadowRadius: 4,
-        },
-        android: {
-          elevation: dropdownVisible ? 5 : 0,
-        },
-      }),
-    },
-    dropdownList: {
-      height: 5 * 48,
-      width: '100%',
-      backgroundColor: Colors['white'],
-      borderBottomLeftRadius: 4,
-      borderBottomRightRadius: 4,
-      zIndex: 10,
-      ...Platform.select({
-        ios: {
-          shadowColor: 'black',
-          shadowOffset: { width: 0, height: 2 },
-          shadowOpacity: 0.2,
-          shadowRadius: 4,
-        },
-        android: {
-          elevation: 5,
-        },
-      }),
-    },
-    dropdownRow: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      height: 48,
-      width: '100%',
-      paddingLeft: 16,
-      borderBottomWidth: 1,
-      borderBottomColor: Colors['creamyWhite'],
-    },
-    lastDropdownRow: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      height: 48,
-      width: '100%',
-      paddingLeft: 16,
-    },
-    searchInput: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      width: '80%',
-    },
-    input: {
-      fontSize: 16,
-      color: Colors['fontBlack'],
-    },
-    numberContainer: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      height: 48,
-      width: 100,
-      backgroundColor: Colors['white'],
-      borderRadius: 4,
-    },
-    numberInput: {
-      fontSize: 16,
-      color: Colors['fontBlack'],
-      paddingRight: 16,
-    },
-    icon: {
-      paddingHorizontal: 16,
-    },
-  });
-
-
   const [searchQuery, setSearchQuery] = useState('');
   const [amountValue, setAmountValue] = useState('');
   const [dropdownVisible, setDropdownVisible] = useState(false);
@@ -136,55 +43,148 @@ export default function ModalInput({
     setDropdownVisible(false);
   };
 
+  const styles = StyleSheet.create({
+    container: {
+      // width: '100%',
+      flex: 1,
+      height: dropdownVisible ? 6 * 48 : 48,
+      position: 'relative',
+    },
+    searchContainer: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      height: 48,
+      // width: '100%',
+      backgroundColor: Colors['white'],
+      borderTopLeftRadius: 4,
+      borderTopRightRadius: 4,
+      borderBottomLeftRadius: dropdownVisible ? 0 : 4,
+      borderBottomRightRadius: dropdownVisible ? 0 : 4,
+      ...Platform.select({
+        ios: {
+          shadowColor: 'black',
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: dropdownVisible ? 0.2 : 0,
+          shadowRadius: 4,
+        },
+        android: {
+          elevation: dropdownVisible ? 5 : 0,
+        },
+      }),
+    },
+    dropdownContainer: {
+      position: 'absolute',
+      top: 48,
+      height: 5 * 48,
+      width: '100%',
+      backgroundColor: Colors['white'],
+      borderBottomLeftRadius: 4,
+      borderBottomRightRadius: 4,
+      // zIndex: 10,
+      ...Platform.select({
+        ios: {
+          shadowColor: 'black',
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 0.2,
+          shadowRadius: 4,
+        },
+        android: {
+          elevation: 5,
+        },
+      }),
+    },
+    dropdownRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      height: 48,
+      width: '100%',
+      paddingLeft: 16,
+      borderBottomWidth: 1,
+      borderBottomColor: Colors['creamyWhite'],
+    },
+    lastDropdownRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      height: 48,
+      width: '100%',
+      paddingLeft: 16,
+    },
+    searchInput: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      flex: 1,
+    },
+    input: {
+      fontSize: 16,
+      color: Colors['fontBlack'],
+    },
+    numberContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      height: 48,
+      width: 100,
+      backgroundColor: Colors['white'],
+      borderRadius: 4,
+    },
+    numberInput: {
+      fontSize: 16,
+      color: Colors['fontBlack'],
+      paddingRight: 16,
+    },
+    icon: {
+      paddingHorizontal: 16,
+    },
+  });
+
   const renderDropdown = () => {
     return (
-      <View style={{ position: 'absolute', top: 48 }}>
-          <View style={styles.dropdownList}>
-            <FlatList
-              data={currentData}
-              renderItem={({ item, index }) => (
-                <TouchableHighlight
-                  onPress={() => handleSelectItem(item)}
-                  activeOpacity={0.9}
-                  underlayColor={Colors['lightGreen']}
-                >
-                  <View style={index === data.length - 1 ? styles.lastDropdownRow : styles.dropdownRow}>
-                    <Text>{item.name}</Text>
-                  </View>
-                </TouchableHighlight>
-              )}
-              keyExtractor={(item) => item.id}
-            />
-          </View>
-        </View>
+      <View style={styles.dropdownContainer}>
+        <FlatList
+          data={currentData}
+          renderItem={({ item, index }) => (
+            <TouchableHighlight
+              onPress={() => handleSelectItem(item)}
+              activeOpacity={0.9}
+              underlayColor={Colors['lightGreen']}
+            >
+              <View style={index === data.length - 1 ? styles.lastDropdownRow : styles.dropdownRow}>
+                <Text>{item.name}</Text>
+              </View>
+            </TouchableHighlight>
+          )}
+          keyExtractor={(item) => item.id}
+        />
+      </View>
+
     )
   }
 
   return (
     <View style={styles.container}>
       {/* {type === "search" && ( */}
-        <View style={styles.searchContainer}>
-          <View style={styles.searchInput}>
-            <View style={styles.icon}>
-              <Icon name="magnifying-glass" size={32} color={Colors['fontGray']} />
-            </View>
-            <TextInput
-              placeholder={placeholder}
-              value={searchQuery}
-              onChangeText={handleSearch}
-              style={styles.input}
-            />
+      <View style={styles.searchContainer}>
+        <View style={styles.searchInput}>
+          <View style={styles.icon}>
+            <Icon name="magnifying-glass" size={32} color={Colors['fontGray']} />
           </View>
-          {searchQuery ? (
-            <TouchableWithoutFeedback onPress={() => { setSearchQuery(''), setDropdownVisible(false) }}>
-              <View style={styles.icon}>
-                <Icon name="close" size={32} color={Colors['fontGray']} />
-              </View>
-            </TouchableWithoutFeedback>
-          ) : null}
-          
+          <TextInput
+            placeholder={placeholder}
+            value={searchQuery}
+            onChangeText={handleSearch}
+            style={styles.input}
+          />
         </View>
-        {dropdownVisible && renderDropdown()}
+        {searchQuery ? (
+          <TouchableWithoutFeedback onPress={() => { setSearchQuery(''), setDropdownVisible(false) }}>
+            <View style={styles.icon}>
+              <Icon name="close" size={32} color={Colors['fontGray']} />
+            </View>
+          </TouchableWithoutFeedback>
+        ) : null}
+
+      </View>
+      {dropdownVisible && renderDropdown()}
       {/* )}
       {type === "number" && (
         <View style={styles.numberContainer}>
