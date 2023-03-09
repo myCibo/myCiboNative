@@ -4,6 +4,7 @@ import Icon from "../atoms/Icon";
 import Colors from "../../constants/styles";
 
 export default function ModalInput({
+  placeholder = 'Search',
   type = 'search',
   data = [],
 }) {
@@ -42,7 +43,6 @@ export default function ModalInput({
       shadowRadius: 4,
       elevation: 5,
       zIndex: 1,
-      // backgroundColor: Colors['white'],
     },
     dropdownRow: {
       flexDirection: 'row',
@@ -50,7 +50,6 @@ export default function ModalInput({
       height: 48,
       width: '100%',
       paddingLeft: 16,
-      borderRadius: 4,
     },
     searchInput: {
       flexDirection: 'row',
@@ -66,7 +65,7 @@ export default function ModalInput({
       flexDirection: 'row',
       alignItems: 'center',
       height: 48,
-      width: 90,
+      width: 100,
       backgroundColor: Colors['white'],
       borderRadius: 4,
     },
@@ -132,7 +131,7 @@ export default function ModalInput({
               <Icon name="magnifying-glass" size={32} color={Colors['fontGray']} />
             </View>
             <TextInput
-              placeholder="Find Ingredient"
+              placeholder={placeholder}
               value={searchQuery}
               onChangeText={handleSearch}
               style={styles.input}
@@ -153,7 +152,7 @@ export default function ModalInput({
             <Icon name="hash" size={16} color={Colors['fontGray']} />
           </View>
           <TextInput
-            placeholder=""
+            placeholder={placeholder}
             value={amountValue}
             onChangeText={handleAmount}
             style={styles.input}
@@ -165,6 +164,7 @@ export default function ModalInput({
           data={currentData}
           renderItem={renderDropdownItem}
           style={styles.dropdownContainer}
+          keyExtractor={(item) => item.id}
         />
       ) : null}
     </View>

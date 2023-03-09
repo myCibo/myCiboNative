@@ -42,13 +42,13 @@ const Icon = ({ name = 'default', size = 100, color = 'white' }) => {
                     <Add color={color} width={size} height={size} />
                 </View>
             );
-        case 'arrow-back':
+        case 'arrow-left':
             return (
                 <View>
                     <ArrowBack color={color} width={size} height={size} />
                 </View>
             );
-        case 'arrow-forward':
+        case 'arrow-right':
             return (
                 <View>
                     <ArrowForward color={color} width={size} height={size} />
