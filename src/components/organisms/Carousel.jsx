@@ -1,27 +1,30 @@
-import React from 'react';
 import { View, StyleSheet, Dimensions, TouchableOpacity, Text, FlatList } from 'react-native';
+import React, { useState, useEffect } from 'react';
+
 import SingleRecipeCarousel from '../molecules/SingleRecipeCarousel';
 
 
 const { width: screenWidth } = Dimensions.get('window');
 
 
-const Carousel = ({ data, CardComponent, horizontal = true, Header }) => {
+const Carousel = ({ data, title = null,  CardComponent, horizontal = true, Header }) => {
+    // const [link, setLink] = useState("#");
 
-    const renderItem = ({ item }) => (
-        <CardComponent {...item} />
-    );
+    const renderItem = ({ item }) => {
+        // const link = `https://example.com/${item.id}`;
+        return <CardComponent {...item} />;
+      };
+
 
     return (
-        <View>
-            {Header && <Header />}
-
+        <View style = {styles.container}>
+            {Header && <Header title={title}/>}
             <FlatList
                 horizontal={horizontal}
                 data={data}
                 renderItem={renderItem}
                 keyExtractor={(item) => item.id}
-                showsHorizontalScrollIndicator={false} // <-- Hide the scrollbar
+                showsHorizontalScrollIndicator={false}
             />
         </View>
     );
@@ -29,12 +32,11 @@ const Carousel = ({ data, CardComponent, horizontal = true, Header }) => {
 
 
 const styles = StyleSheet.create({
-    categoryName: {
-        paddingHorizontal: 20,
-        fontFamily: "sans-serif",
-        fontWeight: "bold",
-        textTransform: 'uppercase',
-        fontSize: 16,
+    container:{
+        marginVertical:5,
+        width: '95%',
+        alignSelf:'center',
+        // backgroundColor:'red',
     },
 });
 

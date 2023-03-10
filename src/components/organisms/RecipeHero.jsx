@@ -1,18 +1,16 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity, Linking  } from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity, Linking } from 'react-native';
 import LabelHero from '../atoms/LabelHero';
 import { LinearGradient } from 'expo-linear-gradient';
 
-// import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 
-
-const RecipeCard = ({ imageSrc, link, title, label }) => {
-
-  // const navigation = useNavigation();
+const RecipeHero = ({ id, image, link, title, label }) => {
+  const navigation = useNavigation();
 
   const handleCardPress = () => {
-    // navigation.navigate({link});
-    Linking.openURL(link);
+    navigation.navigate('DynamicRecipe', { id, image, title });
+
 
   };
 
@@ -21,14 +19,14 @@ const RecipeCard = ({ imageSrc, link, title, label }) => {
     <TouchableOpacity onPress={handleCardPress}>
       <View style={styles.card}>
 
-        <Image style={styles.image} source={imageSrc} />
+        <Image style={styles.image} source={{ uri: image }} />
         <LinearGradient
-       colors={[ 'transparent','rgba(0,0,0,0.6)']}
-       style={styles.gradient}
-      />
+          colors={['transparent', 'rgba(0,0,0,0.6)']}
+          style={styles.gradient}
+        />
         <View style={styles.textContainer}>
-        <LabelHero message={label}/>
-        <Text style={styles.title}>{title}</Text>
+          <LabelHero message={label} />
+          <Text style={styles.title}>{title}</Text>
         </View>
 
       </View>
@@ -40,30 +38,30 @@ const RecipeCard = ({ imageSrc, link, title, label }) => {
 
 const styles = StyleSheet.create({
   card: {
-    width: 352,
-    height: 257,
+    width: '95%',
+    // width: 370, //on web 
+    height: 252,
+    // height: '95%',
     flexDirection: 'row',
     backgroundColor: '#FFFFFF',
-
-    // position: relative,
-    // padding: 16,
 
     elevation: 5,
     shadowOffset: { width: 0, height: 8 },
     shadowColor: '#000000',
     shadowOpacity: 0.1,
     shadowRadius: 20,
-    borderRadius:6,
+    borderRadius: 6,
 
-},
+    marginBottom: 30,
+
+  },
   image: {
     width: '100%',
     height: '100%',
     resizeMode: 'cover',
-    borderRadius:6,
+    borderRadius: 6,
 
-    
-    // marginRight: 16,
+
 
   },
   gradient: {
@@ -73,7 +71,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     height: 200,
 
-    borderRadius:6,
+    borderRadius: 6,
 
   },
 
@@ -88,25 +86,24 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 24,
-    color:'#EDF3F4',
+    color: '#EDF3F4',
     fontWeight: 'medium',
 
-    marginTop:5,
-    marginBottom:13,
-    marginLeft:5,
-    
+    marginTop: 5,
+    marginBottom: 13,
+    marginLeft: 5,
+
 
   },
   description: {
-    color:'#7B817F',
+    color: '#7B817F',
     fontSize: 16,
     // marginBottom: ,
   },
-  inventory:{
-    // display:'none',
-    position:'absolute',
-    bottom:10,
+  inventory: {
+    position: 'absolute',
+    bottom: 10,
   }
 
 });
-export default RecipeCard;
+export default RecipeHero;
