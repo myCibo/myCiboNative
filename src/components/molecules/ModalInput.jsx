@@ -7,7 +7,8 @@ import Colors from "../../constants/styles";
 export default function ModalInput({
   placeholder = 'Search',
   type = 'search',
-  data = [],
+  data = {},
+  onInput,
 }) {
 
   const [amountValue, setAmountValue] = useState('');
@@ -16,6 +17,7 @@ export default function ModalInput({
   const handleAmount = (text) => {
     if (text.length <= 3 && !isNaN(text)) {
       setAmountValue(text);
+      // onInput(text);
     }
   };
 

@@ -13,23 +13,35 @@ import CustomButton from "../atoms/CustomButton";
 import ModalSearch from "../molecules/ModalSearch";
 import ModalInput from "../molecules/ModalInput";
 import ModalDropdown from "../molecules/ModalDropdown";
+import ModalDatePicker from "../molecules/ModalDatePicker";
 
 export default function ItemModal({
   showItemModal,
-  itemType,
+  type,
   onToggleItemModal,
-  title,
+  title = 'Milk',
+  expanded = false,
   data,
   color,
 }) {
 
   const [disabled, setDisabled] = useState(true);
-  const [showExpanded, setShowExpanded] = useState(false);
+  const [showExpanded, setShowExpanded] = useState(expanded);
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [selectedMeasurement, setSelectedMeasurement] = useState(null);
+  const [selectedQuantity, setSelectedQuantity] = useState(null);
+
+  const handleToggleExpanded = () => {
+    console.log("Toggling expanded");
+    setShowExpanded(!showExpanded);
+  };
 
   const handleCancelOptionPress = () => {
     console.log("Cancel option pressed");
     onToggleItemModal();
   };
+
+
 
   const ingredientData = [
     { id: 1, name: 'Apples' },
@@ -63,6 +75,18 @@ export default function ItemModal({
     { id: 11, name: 'Scoop' },
   ]
 
+  const categoryData = [
+    { id: 1, name: 'Dairy' },
+    { id: 2, name: 'Meat' },
+    { id: 3, name: 'Vegetables' },
+    { id: 4, name: 'Fruits' },
+    { id: 5, name: 'Grains' },
+    { id: 6, name: 'Spices' },
+    { id: 7, name: 'Condiments' },
+    { id: 8, name: 'Baking' },
+    { id: 9, name: 'Misc' },
+  ]
+
   const styles = StyleSheet.create({
     modal: {
       position: "absolute",
@@ -75,7 +99,7 @@ export default function ItemModal({
       paddingVertical: 16,
       bottom: 0,
       width: "100%",
-      gap: 32,
+      gap: showExpanded ? 16 : 32,
       flexDirection: "column",
       alignItems: "center",
       justifyContent: "flex-start",
@@ -116,7 +140,7 @@ export default function ItemModal({
     },
     bottom: {
       flex: 1,
-      padding: 32,
+      padding: showExpanded ? 16 : 32,
       gap: 32,
     },
   });
@@ -130,7 +154,7 @@ export default function ItemModal({
       backdropTransitionOutTiming={0}
       style={styles.modal}
     >
-      {itemType === "edit" && (
+      {type === "edit" && (
         <TouchableWithoutFeedback onPress={handleCancelOptionPress}>
           <View style={styles.optionRow}>
             <Text style={styles.title}>Edit {title}</Text>
@@ -139,7 +163,16 @@ export default function ItemModal({
             </TouchableWithoutFeedback>
           </View>
         </TouchableWithoutFeedback>
-
+      )}
+      {type === "add" && (
+        <TouchableWithoutFeedback onPress={handleCancelOptionPress}>
+          <View style={styles.optionRow}>
+            <Text style={styles.title}>Add New Item</Text>
+            <TouchableWithoutFeedback onPress={handleCancelOptionPress}>
+              <Icon name="close" size={32} color={Colors['primaryBlack']} />
+            </TouchableWithoutFeedback>
+          </View>
+        </TouchableWithoutFeedback>
       )}
       <View style={styles.category}>
         <Text style={styles.categoryTitle}>Item Name</Text>
@@ -154,9 +187,35 @@ export default function ItemModal({
           <ModalDropdown placeholder={'Select Measurement'} data={measurementData} />
         </View>
       </View>
+      {showExpanded === true && (
+        <View style={styles.category}>
+          <Text style={styles.categoryTitle}>Food Type</Text>
+          <View style={styles.row}>
+            <ModalDropdown placeholder={'Select Category'} data={categoryData} />
+          </View>
+        </View>
+      )}
+      {showExpanded === true && (
+        <View style={styles.category}>
+          <Text style={styles.categoryTitle}>Purchase Date</Text>
+          <View style={styles.row}>
+            <ModalDatePicker />
+          </View>
+        </View>
+      )}
+      {showExpanded === true && (
+        <View style={styles.category}>
+          <Text style={styles.categoryTitle}>Expiration Date</Text>
+          <View style={styles.row}>
+            <ModalDatePicker />
+          </View>
+        </View>
+      )}
       <View style={styles.bottom}>
-        <CustomButton text='More Options' backgroundColor={Colors.primaryYellow} />
-        <CustomButton text='Add New Item' backgroundColor={Colors.primaryGreen} disabled={disabled} />
+        {showExpanded === false && (
+          <CustomButton text='More Options' backgroundColor={Colors.primaryYellow} onPress={() => handleToggleExpanded()} />
+        )}
+        <CustomButton text={type === 'add' ? 'Add New Item' : 'Confirm Changes'} backgroundColor={Colors.primaryGreen} disabled={disabled} />
       </View>
     </Modal>
   );

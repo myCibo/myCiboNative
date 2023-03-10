@@ -82,7 +82,9 @@ export default function IngredientItem({
         <ItemModal
           onToggleItemModal={handleToggleItemModal}
           showItemModal={showItemModal}
-          itemType="edit"
+          type="edit"
+          expanded={true}
+          data={{ name: ingredientName, expiration: ingredientExpiration}}
           title={ingredientName}
         />
       </View>
