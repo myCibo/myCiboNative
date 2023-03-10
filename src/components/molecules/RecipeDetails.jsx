@@ -1,18 +1,24 @@
 import React from "react";
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from "react-native";
+import Icon from '../atoms/Icon';
+import Colors from '../../constants/styles';
 
 
-const RecipeDetails = ({timeInMinutes, serving, calorie}) => {
+
+
+const RecipeDetails = ({timeInMinutes, serving, healthScore}) => {
 
   const styles = StyleSheet.create({
     container: {
       backgroundColor: '#CAE1D1',
       color: '#43615A',
       flexDirection: 'row',
-      height: 48,
+      height: 50,
       width: 338,
 
       borderRadius:4,
+      marginTop:36,
+
     },
     column: {
       flex: 1,
@@ -29,6 +35,7 @@ const RecipeDetails = ({timeInMinutes, serving, calorie}) => {
   },
     text: {
       fontSize: 13,
+      fontWeight: '700',
       color: '#43615A',
 
     },
@@ -39,16 +46,16 @@ const RecipeDetails = ({timeInMinutes, serving, calorie}) => {
     <View style={styles.container}>
         <View style={styles.column}>
             {/* <Image source={require('../../assets/icon.png')} style={styles.icon} /> */}
-            <Image source={ require('../../../assets/icons/book.svg')} style={styles.icon}/>
-            <Text style={styles.text}>{timeInMinutes} min</Text>
+            <Icon name='clock' size={22} color={'#43615A'}/>
+            <Text style={styles.text}> {timeInMinutes} min</Text>
         </View>
         <View style={styles.column}>
-        <Image source={ require('../../../assets/icons/book.svg')} style={styles.icon}/>
-          <Text style={styles.text}>{serving} people</Text>
+        <Icon name='cooking' size={22} color={'#43615A'}/>
+          <Text style={styles.text}> {serving} people</Text>
         </View>
         <View style={styles.column}>
-        <Image source={ require('../../../assets/icons/book.svg')} style={styles.icon}/>
-            <Text style={styles.text}>{calorie}kcal</Text> 
+        <Icon name='ecg-heart' size={22} color={'#43615A'}/>
+            <Text style={styles.text}> {healthScore}%</Text> 
         </View>
       </View>
   );
