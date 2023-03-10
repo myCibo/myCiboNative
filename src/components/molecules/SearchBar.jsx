@@ -12,7 +12,7 @@ export default function SearchBar({}) {
       alignItems: 'center',
       justifyContent: 'space-between',
       height: 48,
-      width: 284,
+      flex: 1,
       borderRadius: 4,
       borderWidth: 1,
       borderColor: '#2643615A',

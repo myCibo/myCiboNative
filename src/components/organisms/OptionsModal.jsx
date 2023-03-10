@@ -29,7 +29,7 @@ export default function OptionsModal({
       borderTopRightRadius: 10,
       marginHorizontal: 0,
       marginVertical: 0,
-      bottom: 100,
+      bottom: 0,
       width: "100%",
       // elevation: 0,
     },

@@ -1,5 +1,5 @@
-import React from "react";
-import { View } from "react-native";
+import { useState, useEffect, useRef } from "react";
+import { View, KeyboardAvoidingView, Platform, Dimensions, Keyboard } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Icon from "../components/atoms/Icon";
@@ -21,6 +21,7 @@ function MyTabs() {
           fontSize: 15,
           fontWeight: "bold",
         },
+        tabBarHideOnKeyboard: true,
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
           let iconBgStyle = {

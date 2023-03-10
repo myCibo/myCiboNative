@@ -23,9 +23,8 @@ export default function ModalDropdown({
 
     const styles = StyleSheet.create({
         container: {
-            // width: '100%',
             flex: 1,
-            height: open ? 6 * 48 : 48,
+            height: open ? 7 * 48 : 48,
             position: 'relative',
         },
         itemContainer: {
@@ -33,7 +32,7 @@ export default function ModalDropdown({
             justifyContent: 'space-between',
             alignItems: 'center',
             height: 48,
-            //flex: 1,
+            width: '100%',
             backgroundColor: Colors['white'],
             borderTopLeftRadius: 4,
             borderTopRightRadius: 4,
@@ -55,7 +54,6 @@ export default function ModalDropdown({
             position: 'absolute',
             width: '100%',
             top: 48,
-            // flex: 1,
             height: 5 * 48,
             backgroundColor: Colors['white'],
             borderBottomLeftRadius: 4,
@@ -77,7 +75,7 @@ export default function ModalDropdown({
             flexDirection: 'row',
             alignItems: 'center',
             height: 48,
-            flex: 1,
+            width: '100%',
             paddingLeft: 16,
             borderBottomWidth: 1,
             borderBottomColor: Colors['creamyWhite'],
@@ -86,7 +84,7 @@ export default function ModalDropdown({
             flexDirection: 'row',
             alignItems: 'center',
             height: 48,
-            flex: 1,
+            width: '100%',
             paddingLeft: 16,
         },
         item: {
