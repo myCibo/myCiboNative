@@ -1,9 +1,10 @@
 import * as React from 'react';
 import { View, Text, Image, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import SearchBar from '../components/molecules/SearchBar';
-import FilterIcon from '../components/atoms/FilterIcon';
+import Icon from '../components/atoms/Icon';
 import IngredientItem from '../components/molecules/IngredientItem';
 import LabelledIcon from '../components/molecules/LabelledIcon';
+import Colors from '../constants/styles';
 
 const FridgeScreen = () => {
   // define the ingredients data
@@ -33,13 +34,48 @@ const FridgeScreen = () => {
     return acc;
   }, {});
 
+
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      alignItems: "center",
+      justifyContent: "center",
+      width: "100%",
+      backgroundColor: Colors['creamyWhite'],
+    },
+    contentContainer: {
+      width: "60%",
+    },
+    header: {
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
+      width: "100%",
+      paddingVertical: 10,
+      paddingHorizontal: 20,
+      gap: 10,
+    },
+    categoryHeader: {
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
+      width: "100%",
+      marginTop: 20,
+      marginBottom: 20,
+    },
+    categoryTitle: {
+      fontSize: 24,
+      fontWeight: "bold",
+    },
+  });
+
   // render the ingredients under each category
   const renderIngredientsByCategory = () => {
     return Object.keys(ingredientsByCategory).map((category) => (
       <View key={category}>
-        <View style={styles.header}>
+        <View style={styles.categoryHeader}>
           <Text style={styles.categoryTitle}>{category}</Text>
-          <LabelledIcon label="Add Item +" />
+          <LabelledIcon label="Add Item" iconPos={1} iconName='add' />
         </View>
         {ingredientsByCategory[category].map((ingredient) => (
           <IngredientItem
@@ -51,59 +87,29 @@ const FridgeScreen = () => {
       </View>
     ));
   };
-  
-  
+
+
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <SearchBar />
-        <FilterIcon />
+        <TouchableOpacity
+          onPress={() => {
+            console.log("Filter");
+          }}
+
+        >
+        <Icon name='filter' size={32} color={Colors.primaryBlack}/>
+        </TouchableOpacity>
       </View>
-      <ScrollView showsVerticalScrollIndicator= {false} contentContainerStyle={styles.contentContainer}>
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.contentContainer} >
         {renderIngredientsByCategory()}
       </ScrollView>
     </View>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    width: "100%",
-    paddingHorizontal: 20,
-    backgroundColor:"#F6F3F0",
-  },
-  contentContainer: {
-    width:"65%",
-  },
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    width: "100%",
-    marginTop: 10,
-    marginBottom: 20,
-  },
-  categoryTitle: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginVertical: 10,
-    marginLeft: 10,
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: "bold",
-    marginBottom: 10,
-  },
-  categoryHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-});
 
 
 export default FridgeScreen;

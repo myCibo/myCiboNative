@@ -18,6 +18,9 @@ import ECGHeart from 'assets/icons/ecg-heart.svg';
 import Edit from 'assets/icons/edit.svg';
 import Filter from 'assets/icons/filter.svg';
 import Fridge from 'assets/icons/fridge.svg';
+// import Heart from 'assets/icons/heart.svg';
+// import HeartFilled from 'assets/icons/heart-filled.svg';
+import Hash from 'assets/icons/hash.svg';
 import Home from 'assets/icons/home.svg';
 import List from 'assets/icons/list.svg';
 import MagnifyingGlass from 'assets/icons/magnifying-glass.svg';
@@ -39,13 +42,13 @@ const Icon = ({ name = 'default', size = 100, color = 'white' }) => {
                     <Add color={color} width={size} height={size} />
                 </View>
             );
-        case 'arrow-back':
+        case 'arrow-left':
             return (
                 <View>
                     <ArrowBack color={color} width={size} height={size} />
                 </View>
             );
-        case 'arrow-forward':
+        case 'arrow-right':
             return (
                 <View>
                     <ArrowForward color={color} width={size} height={size} />
@@ -133,6 +136,12 @@ const Icon = ({ name = 'default', size = 100, color = 'white' }) => {
             return (
                 <View>
                     <Fridge color={color} width={size} height={size} />
+                </View>
+            );
+        case 'hash':
+            return (
+                <View>
+                    <Hash color={color} width={size} height={size} />
                 </View>
             );
         case 'home':
