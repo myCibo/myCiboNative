@@ -2,16 +2,19 @@ import React from "react";
 import { View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createStackNavigator } from "@react-navigation/stack";
 import Icon from "../components/atoms/Icon";
 import colors from "../constants/styles"
-// import { MaterialCommunityIcons } from "@expo/vector-icons";
+
 import FridgeScreen from "../screens/Fridge";
 import HomeScreen from "../screens/Home";
 import RecipeScreen from "../screens/Recipes";
 import ScanScreen from "../screens/Scan";
 import ShoppingScreen from "../screens/Shopping";
+import DynamicRecipe from "../screens/DynamicRecipe";
 
 const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator();
 
 function MyTabs() {
   return (
@@ -27,16 +30,6 @@ function MyTabs() {
             backgroundColor: focused ? colors['white'] : colors['primaryRed'],
           };
           let iconColor = focused ? colors['primaryRed'] : colors['white'];
-
-          // let iconBorderStyle = focused
-          //   ? {
-          //     // borderColor: colors['primaryRed'],
-          //     // borderWidth: 5,
-          //     // borderRadius: 20
-          //   }
-          //   : {};
-          // let iconPadding =
-          //   route.name === "Scan" ? { paddingLeft: 10, paddingRight: 10 } : {};
           let iconPadding = {};
           let iconBorderStyle = {};
 
@@ -46,11 +39,6 @@ function MyTabs() {
             iconName = "fridge";
           } else if (route.name === "Scan") {
             iconName = "camera";
-            // iconBgStyle = {
-            //   backgroundColor: colors['white'],
-            //   borderRadius: 30,
-            // };
-            // iconColor = colors['primaryRed'];
           } else if (route.name === "Recipes") {
             iconName = "book";
           } else if (route.name === "Lists") {
@@ -59,9 +47,7 @@ function MyTabs() {
 
           return (
             <View style={[{ 
-              // padding: 5 
             },
-              // iconBorderStyle, iconPadding
             ]}>
               <View
                 style={[
@@ -99,13 +85,17 @@ function MyTabs() {
       <Tab.Screen name="Recipes" component={RecipeScreen} />
       <Tab.Screen name="Lists" component={ShoppingScreen} />
     </Tab.Navigator>
+    
   );
 }
 
 const NavigationFooter = () => {
   return (
     <NavigationContainer>
-      <MyTabs />
+      <Stack.Navigator>
+        <Stack.Screen name="Main" component={MyTabs} options={{ headerShown: false }} />
+        <Stack.Screen name="DynamicRecipe" component={DynamicRecipe} />
+      </Stack.Navigator>
     </NavigationContainer>
   );
 };
