@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { View, Text, Image, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import SearchBar from '../components/molecules/SearchBar';
-import Icon from '../components/atoms/Icon';
 import IngredientItem from '../components/molecules/IngredientItem';
 import LabelledIcon from '../components/molecules/LabelledIcon';
+import Icon from '../components/atoms/Icon';
 import Colors from '../constants/styles';
 
 const FridgeScreen = () => {

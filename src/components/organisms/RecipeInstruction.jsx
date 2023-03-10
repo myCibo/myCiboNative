@@ -49,17 +49,18 @@ const RecipeInstruction = ({ data }) => {
     };
 
     return (
-        <SafeAreaView style={{flex: 1}}>
-            <View>
-                <Text style={styles.title}>Preparation</Text>
-                <FlatList
-                    data={newArray}
-                    renderItem={renderStep}
-                    keyExtractor={(item) => item.id.toString()}
-                />
-            </View>
+        <SafeAreaView style={{ flex: 1 }}>
+          <View>
+            <Text style={styles.title}>Preparation</Text>
+            {newArray.map((step, index) => (
+              <View style={styles.card} key={index}>
+                <Text>{step.id}. </Text>
+                <Text>{step.step}</Text>
+              </View>
+            ))}
+          </View>
         </SafeAreaView>
-    );
+      );
 };
 
 export default RecipeInstruction;
