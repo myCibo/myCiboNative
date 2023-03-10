@@ -18,8 +18,8 @@ import ECGHeart from 'assets/icons/ecg-heart.svg';
 import Edit from 'assets/icons/edit.svg';
 import Filter from 'assets/icons/filter.svg';
 import Fridge from 'assets/icons/fridge.svg';
-// import Heart from 'assets/icons/heart.svg';
-// import HeartFilled from 'assets/icons/heart-filled.svg';
+import Heart from 'assets/icons/heart.svg';
+import HeartFilled from 'assets/icons/heart-filled.svg';
 import Hash from 'assets/icons/hash.svg';
 import Home from 'assets/icons/home.svg';
 import List from 'assets/icons/list.svg';
@@ -142,6 +142,18 @@ const Icon = ({ name = 'default', size = 100, color = 'white' }) => {
             return (
                 <View>
                     <Hash color={color} width={size} height={size} />
+                </View>
+            );
+        case 'heart':
+            return (
+                <View>
+                    <Heart color={color} width={size} height={size} />
+                </View>
+            );
+        case 'heart-filled':
+            return (
+                <View>
+                    <HeartFilled color={color} width={size} height={size} />
                 </View>
             );
         case 'home':
