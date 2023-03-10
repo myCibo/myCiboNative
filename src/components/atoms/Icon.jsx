@@ -10,6 +10,8 @@ import Bag from 'assets/icons/bag.svg';
 import Book from 'assets/icons/book.svg';
 import Calendar from 'assets/icons/calendar.svg';
 import Camera from 'assets/icons/camera.svg';
+import CheckCircle from 'assets/icons/check-circle.svg';
+import Circle from 'assets/icons/circle.svg';
 import Clock from 'assets/icons/clock.svg';
 import Close from 'assets/icons/close.svg';
 import Cooking from 'assets/icons/cooking.svg';
@@ -88,6 +90,18 @@ const Icon = ({ name = 'default', size = 100, color = 'white' }) => {
             return (
                 <View>
                     <Camera color={color} width={size} height={size} />
+                </View>
+            );
+        case 'check-circle':
+            return (
+                <View>
+                    <CheckCircle color={color} width={size} height={size} />
+                </View>
+            );
+        case 'circle':
+            return (
+                <View>
+                    <Circle color={color} width={size} height={size} />
                 </View>
             );
         case 'clock':

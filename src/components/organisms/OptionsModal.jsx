@@ -13,12 +13,10 @@ import Colors from "../../constants/styles";
 export default function OptionsModal({
   showOptions,
   optionsType,
-  onToggleModal,
-  onToggleItemModal,
+  onToggleModal = {},
+  onToggleItemModal = {},
+  onToggleListModal = {},
   title,
-  // options = [
-  //   { text: "option text", icon: "../../assets/images/list-icon.png" },
-  // ],
   color,
 }) {
   const styles = StyleSheet.create({
@@ -68,15 +66,17 @@ export default function OptionsModal({
     },
   });
 
-  // const [showItemModal, setShowItemModal] = useState(false);
-  // const handleItemModal = () => {
-  //   setItemModal(!itemModal);
-  // };
 
   const handleEditOptionPress = () => {
     console.log("Edit option pressed");
     onToggleModal();
     onToggleItemModal();
+  };
+
+  const handleListEditOptionPress = () => {
+    console.log("List edit option pressed");
+    onToggleModal();
+    onToggleListModal();
   };
 
   const handleUploadOptionPress = () => {
@@ -117,6 +117,17 @@ export default function OptionsModal({
             <View style={styles.optionRow}>
               <Text style={styles.optionText}>edit</Text>
               <TouchableWithoutFeedback onPress={handleEditOptionPress}>
+                <Icon name="edit" size={24} color={Colors['primaryBlack']} />
+              </TouchableWithoutFeedback>
+            </View>
+          </TouchableWithoutFeedback>
+        )}
+
+        {optionsType === "list" && (
+          <TouchableWithoutFeedback onPress={handleListEditOptionPress}>
+            <View style={styles.optionRow}>
+              <Text style={styles.optionText}>rename list</Text>
+              <TouchableWithoutFeedback onPress={handleListEditOptionPress}>
                 <Icon name="edit" size={24} color={Colors['primaryBlack']} />
               </TouchableWithoutFeedback>
             </View>

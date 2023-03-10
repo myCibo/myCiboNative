@@ -103,7 +103,6 @@ export default function ItemModal({
       flexDirection: "column",
       alignItems: "center",
       justifyContent: "flex-start",
-      // elevation: 0,
     },
     optionRow: {
       alignItems: "center",
@@ -154,26 +153,14 @@ export default function ItemModal({
       backdropTransitionOutTiming={0}
       style={styles.modal}
     >
-      {type === "edit" && (
-        <TouchableWithoutFeedback onPress={handleCancelOptionPress}>
-          <View style={styles.optionRow}>
-            <Text style={styles.title}>Edit {title}</Text>
-            <TouchableWithoutFeedback onPress={handleCancelOptionPress}>
-              <Icon name="close" size={32} color={Colors['primaryBlack']} />
-            </TouchableWithoutFeedback>
-          </View>
-        </TouchableWithoutFeedback>
-      )}
-      {type === "add" && (
-        <TouchableWithoutFeedback onPress={handleCancelOptionPress}>
-          <View style={styles.optionRow}>
-            <Text style={styles.title}>Add New Item</Text>
-            <TouchableWithoutFeedback onPress={handleCancelOptionPress}>
-              <Icon name="close" size={32} color={Colors['primaryBlack']} />
-            </TouchableWithoutFeedback>
-          </View>
-        </TouchableWithoutFeedback>
-      )}
+      <TouchableWithoutFeedback onPress={handleCancelOptionPress}>
+        <View style={styles.optionRow}>
+          <Text style={styles.title}>{type === 'edit' ? `Edit ${title}` : 'Add New Item'}</Text>
+          <TouchableWithoutFeedback onPress={handleCancelOptionPress}>
+            <Icon name="close" size={32} color={Colors['primaryBlack']} />
+          </TouchableWithoutFeedback>
+        </View>
+      </TouchableWithoutFeedback>
       <View style={styles.category}>
         <Text style={styles.categoryTitle}>Item Name</Text>
         <View style={styles.row}>
