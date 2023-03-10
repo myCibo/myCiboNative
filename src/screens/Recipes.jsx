@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from "react";
 
-import { View, ScrollView, Text, StyleSheet, Image } from "react-native";
+import { View, ScrollView, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import RecipeHero from "../components/organisms/RecipeHero";
 import Carousel from "../components/organisms/Carousel";
+import SearchBar from '../components/molecules/SearchBar';
+import Icon from '../components/atoms/Icon';
+import Colors from '../constants/styles';
+
 import axios from "axios";
 import SingleRecipeCarousel from "../components/molecules/SingleRecipeCarousel";
 
@@ -74,6 +78,35 @@ function RecipeScreen() {
       <View
       // style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
       >
+      <View style={styles.header}>
+        <SearchBar />
+        <TouchableOpacity
+          onPress={() => {
+            console.log("Filter");
+          }}
+
+        >
+        <Icon name='filter' size={32} color={Colors.primaryBlack}/>
+        </TouchableOpacity>
+      </View>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         {data.hero && data.hero.length > 0 && (
           // <Text>{data.hero[0].title}</Text>
           <View
@@ -170,6 +203,16 @@ const styles = StyleSheet.create({
     color: "#0D302F",
     fontSize: 16,
     textTransform: "uppercase",
+  },
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    width: "100%",
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    gap: 10,
+    marginVertical:10,
   },
 });
 

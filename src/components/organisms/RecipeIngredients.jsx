@@ -5,8 +5,8 @@ import { View, Text, Image, StyleSheet, FlatList, Linking, SafeAreaView } from '
 //GET https://api.spoonacular.com/recipes/{id}/ingredientWidget.json
 
 const RecipeIngredients = ({ data }) => {
-  console.log('dataaaaaa');
-  console.log(data);
+  // console.log('dataaaaaa');
+  // console.log(data);
 
   const styles = StyleSheet.create({
     card: {
@@ -66,13 +66,15 @@ const RecipeIngredients = ({ data }) => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View>
-        <Text style={styles.title}>ingredients</Text>
-        <FlatList
-          data={newArray}
-          renderItem={renderIngredient}
-          keyExtractor={(item) => item.id.toString()}
-        />
-      </View>
+      <Text style={styles.title}>ingredients</Text>
+      {newArray.map((ingredient, index) => (
+        <View style={styles.card} key={index}>
+          <Text>{ingredient.value} </Text>
+          <Text>{ingredient.unit} </Text>
+          <Text>{ingredient.name}</Text>
+        </View>
+      ))}
+    </View>
     </SafeAreaView>
   );
 };
