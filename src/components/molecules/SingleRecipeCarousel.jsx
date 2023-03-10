@@ -1,41 +1,59 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity, Linking  } from 'react-native';
-import LabelHero from '../atoms/LabelHero';
+import { View, Text, Image, StyleSheet, TouchableOpacity, Linking } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useNavigation } from '@react-navigation/native';
 
-// import { useNavigation } from '@react-navigation/native';
+
+// import DynamicRecipe from '../../screens/DynamicRecipe';  // <--- import the DynamicRecipe screen
+// import { createStackNavigator } from '@react-navigation/stack';
+// import LabelHero from '../atoms/LabelHero';
 
 
-const SingleRecipeCarousel = ({ image, link, title }) => {
 
-  // const navigation = useNavigation();
-  console.log(`-----image:${image}, title:${title}----- `)
+function truncateTitle(title) {
+  const words = title.split(' ');
+  if (words.length > 6) {
+    return words.slice(0, 6).join(' ') + '...';
+  } else {
+    return title;
+  }
+}
 
-  const handleCardPress = () => {
-    // navigation.navigate({link});
-    // Linking.openURL(link);
-    console.log("isClicked ")
 
+
+const SingleRecipeCarousel = ({ image, id, title }) => {
+  const navigation = useNavigation();
+  // const stack = createStackNavigator();
+
+
+
+
+  const handlePressRecipe = (id) => {
+    console.log(`the post with id:"${id}" is pressed`)
+    // <Linking
+    navigation.navigate('DynamicRecipe', { id, image, title });
+    // stack.navigat
+    // Linking.openURL('https://www.example.com')
   };
 
 
 
+
   return (
-    <TouchableOpacity onPress={handleCardPress} style={styles.container}>
+    <TouchableOpacity  key={id} onPress={() => handlePressRecipe(id)} style={styles.container}>
       <View style={styles.card}>
-        <Image style={styles.image} source={{uri: image}}/>
+        <Image style={styles.image} source={{ uri: image }} />
         <LinearGradient
-       colors={[ 'transparent','rgba(3,3,3,0.6)']} 
-       style={styles.gradient}
-      />
+          colors={['transparent', 'rgba(3,3,3,0.6)']}
+          style={styles.gradient}
+        />
         {/* <View style={styles.textContainer}> */}
-         {/* heart has to be places insdie here */}
+        {/* heart has to be places insdie here */}
         {/* </View> */}
 
 
       </View>
-      <Text style={styles.title}>{title}</Text>
-
+      <Text style={styles.title}>{truncateTitle(title)}</Text>
     </TouchableOpacity>
 
 
@@ -43,16 +61,16 @@ const SingleRecipeCarousel = ({ image, link, title }) => {
 };
 
 const styles = StyleSheet.create({
-  container:{
-    width:200,
+  container: {
+    width: 200,
     // height:'auto',
     flexDirection: 'column',
     alignItems: 'flex-start',
-    margin:5,
-    },
+    margin: 5,
+  },
   card: {
     width: 200,
-    height: 150,
+    // height: 150,
     flexDirection: 'row',
     backgroundColor: '#FFFFFF',
     borderRadius: 4,
@@ -67,13 +85,14 @@ const styles = StyleSheet.create({
     shadowRadius: 20,
     // borderRadius:4,
 
-},
+  },
   image: {
     width: '100%',
-    height: '100%',
+    height:150,
+    // height: '100%',
     resizeMode: 'cover',
     // marginRight: 16,
-    borderRadius:6,
+    borderRadius: 6,
 
   },
   gradient: {
@@ -85,23 +104,15 @@ const styles = StyleSheet.create({
     borderRadius: 4,
 
   },
-  // textContainer: {
-  //   position: 'absolute',
-  //   top: 0,
-  //   left: 0,
-  //   right: 0,
-  //   bottom: 0,
-  //   justifyContent: 'flex-end',
-  //   alignItems: 'flex-start',
-  // },
+
   title: {
     fontSize: 16,
-    color:'#2B2F2E',
+    color: '#2B2F2E',
     fontWeight: 'regular',
 
-    marginTop:5,
-    marginBottom:13,
-    marginLeft:2,
+    marginTop: 5,
+    marginBottom: 13,
+    marginLeft: 2,
 
     flexWrap: 'wrap',
 
