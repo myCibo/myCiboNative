@@ -33,7 +33,7 @@ const Carousel = ({ data, title = null,  CardComponent, horizontal = true, Heade
 
 const styles = StyleSheet.create({
     container:{
-        marginVertical:10,
+        marginVertical:5,
         width: '95%',
         alignSelf:'center',
         // backgroundColor:'red',

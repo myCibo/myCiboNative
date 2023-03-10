@@ -203,6 +203,7 @@ const styles = StyleSheet.create({
     color: "#0D302F",
     fontSize: 16,
     textTransform: "uppercase",
+    marginVertical:10,
   },
   header: {
     flexDirection: "row",

@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
     shadowRadius: 20,
     borderRadius: 6,
 
-    marginBottom: 10,
+    marginBottom: 30,
 
   },
   image: {
