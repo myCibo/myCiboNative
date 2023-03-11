@@ -1,4 +1,5 @@
 const colors = {
+    
     // Primary colors
     "white": "#FFFFFF",
     "primaryBlack": "#323232",
@@ -10,6 +11,7 @@ const colors = {
     "primaryRed": "#BA2D1B",
     "primaryYellow": "#F0A047",
     "creamyWhite": "#F6F3F0",
+
     // Friendly colors
     "friendlyGreen": "#74855D",
     "friendlyRed": "#D35247",

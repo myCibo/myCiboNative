@@ -73,6 +73,7 @@ export default function ItemModal({
     { id: 9, name: 'Pinch' },
     { id: 10, name: 'Dash' },
     { id: 11, name: 'Scoop' },
+    { id: 12, name: 'Count' },
   ]
 
   const categoryData = [

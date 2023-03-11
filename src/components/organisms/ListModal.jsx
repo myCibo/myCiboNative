@@ -162,7 +162,7 @@ export default function ListModal({
         >
             <TouchableWithoutFeedback onPress={handleCancelOptionPress}>
                 <View style={styles.optionRow}>
-                    <Text style={styles.title}>{type === 'edit' ? `Edit List ${title}` : type === 'add' ? 'Add New List' : 'Add New List Item'}</Text>
+                    <Text style={styles.title}>{type === 'edit' ? `Rename ${title} List` : type === 'add' ? 'Add New List' : 'Add New List Item'}</Text>
                     <TouchableWithoutFeedback onPress={handleCancelOptionPress}>
                         <Icon name="close" size={32} color={Colors['primaryBlack']} />
                     </TouchableWithoutFeedback>

@@ -7,95 +7,138 @@ import {
   Image,
 } from "react-native";
 import OptionsModal from "../organisms/OptionsModal";
-import ItemModal from "../organisms/ItemModal";
+import ListModal from "../organisms/ListModal";
 import Icon from "../atoms/Icon";
+import Colors from "../../constants/styles";
 
 export default function ShoppingListCategory({
   listCategoryName = "Walmart",
   listCount = 3,
 }) {
-  const [showOptions, setShowOptions] = useState(false);
-  const [showItemModal, setShowItemModal] = useState(false);
+  const [showOptionsModal, setShowOptionsModal] = useState(false);
+  const [showListModal, setShowListModal] = useState(false);
 
-  const [iconName, setIconName] = useState("arrow-right");
+  const [open, setOpen] = useState(false);
+  const [checked, setChecked] = useState(false);
 
-  const handleToggleModal = () => {
-    setShowOptions(!showOptions);
+  const handleOpen = () => {
+    setOpen(!open);
   };
 
-  const handleToggleItemModal = () => {
-    setShowItemModal(!showItemModal);
+  const handleChecked = () => {
+    setChecked(!checked);
   };
 
-  const handleToggleDropdownIcon = () => {
-    setIconName(iconName === "arrow-right" ? "arrow-down" : "arrow-right");
-    setShowShoppingList(!showShoppingList);
+  const handleToggleOptionsModal = () => {
+    setShowOptionsModal(!showOptionsModal);
   };
 
-  const [showShoppingList, setShowShoppingList] = useState(false);
+  const handleToggleListModal = () => {
+    setShowListModal(!showListModal);
+  };
 
   // Define some example items for the shopping list
   const shoppingListItems = [
-    { itemName: "Milk", quantity: "24 Grams" },
-    { itemName: "Eggs", quantity: "12" },
-    { itemName: "Bread", quantity: "1 Loaf" },
+    { itemName: "Milk", quantity: "24", measurement: "Ounces" },
+    { itemName: "Eggs", quantity: "12", measurement: "Count" },
+    { itemName: "Bread", quantity: "1", measurement: "Count" },
   ];
+
   const styles = {
     container: {
-      padding: 10,
-      height: 50,
-      width: "93%",
-      backgroundColor: "white",
-      borderRadius: 8,
-      alignItems: "center",
-      justifyContent: "space-between",
-      flexDirection: "row",
-      marginBottom: 10,
+      flex: 1,
+      position: 'relative',
+      height: '100%',
+    },
+    cardContainer: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      height: 48,
+      width: '100%',
+      backgroundColor: open ? Colors['primaryGreen'] : Colors['white'],
+      borderRadius: 4,
       borderWidth: 1,
-      borderColor: "black",
+      borderColor: Colors['primaryBlack']
     },
     textContainer: {
       width: "80%",
       justifyContent: "flex-start",
       alignItems: "center",
       flexDirection: "row",
+      gap: 10,
     },
     text: {
       fontSize: 16,
-      color: "black",
+      color: Colors['fontBlack'],
       paddingRight: 20,
       paddingLeft: 10,
     },
+    dropdownContainer: {
+      width: "100%",
+      flexDirection: 'column',
+      justifyContent: 'flex-start',
+      alignItems: 'center',
+    },
+    dropdownRow: {
+      width: "100%",
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center'
+    },
+    dropdownTextContainer: {
+      flexDirection: 'row',
+      justifyContent: 'flex-start',
+      alignItem: 'center',
+    },
+    dropdownFont: {
+      fontSize: 16,
+      color: Colors['fontGray']
+    },
+    icon: {
+      paddingHorizontal: 16,
+    },
+    iconOpen: {
+      transform: [{ rotate: open ? '90deg' : '0deg' }],
+    },
   };
 
-  // Render the shopping list as a table
   const renderShoppingList = () => {
     return (
-      <View>
-        <View style={styles.tableRow}>
-          <Text style={[styles.tableHeader, styles.tableEmptyCell]}></Text>
-          <Text style={[styles.tableHeader, styles.tableCell]}>Item Name</Text>
-          <Text style={[styles.tableHeader, styles.tableCell]}>Quantity</Text>
-          <Text style={[styles.tableHeader, styles.tableEmptyCell]}></Text>
+      <View style={styles.dropdownContainer}>
+        <View style={styles.dropdownHeader}>
+          <Text style={styles.dropdownFont}>Ingredient</Text>
+          <Text style={styles.dropdownFont}>Quantity</Text>
+
+          {/* This might be jank, double check */}
+          <View style={{ width: '80%', height: 0, borderBottomWidth: 1, borderBottomColor: Colors['fontGray'] }} />
+
         </View>
         {shoppingListItems.map((item, index) => {
-          return (
-            <View key={index} style={styles.tableRow}>
-              <CheckBox style={styles.tableEmptyCell} />
-              <Text style={[styles.tableCell, styles.tableText]}>
+          <View key={index} style={styles.dropdownRow}>
+            {!checked && (
+              <TouchableWithoutFeedback onPress={handleChecked}>
+                <Icon name="circle" size={20} color={Colors['primaryBlack']} />
+              </TouchableWithoutFeedback>
+            )}
+            {checked && (
+              <TouchableWithoutFeedback onPress={handleChecked}>
+                <Icon name="check-circle" size={20} color={Colors['primaryGreen']} />
+              </TouchableWithoutFeedback>
+            )}
+            <View style={styles.dropdownTextContainer}>
+              <Text style={styles.dropdownFont}>
                 {item.itemName}
               </Text>
-              <Text style={[styles.tableCell, styles.tableText]}>
+              <Text style={styles.dropdownFont}>
                 {item.quantity}
               </Text>
-              <Icon
-                name="trash"
-                size={20}
-                color={"black"}
-                style={styles.tableEmptyCell}
-              />
+              <Text style={styles.dropdownFont}>
+                {item.measurement}
+              </Text>
             </View>
-          );
+            <Icon name="trash" size={20} color={Colors['primaryBlack']} />
+          </View>
         })}
       </View>
     );
@@ -103,36 +146,32 @@ export default function ShoppingListCategory({
 
   return (
     <View style={styles.container}>
-      <TouchableWithoutFeedback onPress={handleToggleDropdownIcon}>
-        <View style={styles.textContainer}>
-          <Icon name={iconName} color={"black"} size={15} />
-          <Text style={styles.text}>{listCategoryName}</Text>
-          <Text style={[styles.text, { color: "grey" }]}>{listCount}</Text>
-        </View>
-      </TouchableWithoutFeedback>
-
-      {/* Render the shopping list dropdown toggle */}
-      {showShoppingList && <View>{renderShoppingList()}</View>}
-
-      <TouchableWithoutFeedback onPress={handleToggleModal}>
-        <View>
-          <Icon name="dots-vertical" size={26} color={"black"} />
-        </View>
-      </TouchableWithoutFeedback>
-
+      <View style={styles.cardContainer}>
+        <TouchableWithoutFeedback onPress={handleOpen}>
+          <View style={styles.textContainer}>
+            <Icon name={iconName} color={open ? Colors['primaryBlack'] : Colors['white']} size={15} />
+            <Text style={styles.text}>{listCategoryName}</Text>
+            <Text style={[styles.text, { color: Colors['fontGray'] }]}>{listCount}</Text>
+          </View>
+        </TouchableWithoutFeedback>
+        <TouchableWithoutFeedback onPress={handleToggleOptionsModal}>
+          <Icon name="dots-vertical" size={26} color={open ? Colors['primaryBlack'] : Colors['white']} />
+        </TouchableWithoutFeedback>
+      </View>
+      {open && renderShoppingList()}
       <OptionsModal
-        onToggleModal={handleToggleModal}
-        onToggleItemModal={handleToggleItemModal}
-        showOptions={showOptions}
-        optionsType="ingredient"
+        onToggleModal={handleToggleOptionsModal}
+        onToggleListModal={handleToggleListModal}
+        showOptionsModal={showOptionsModal}
+        optionsType="list"
         title={listCategoryName}
       />
-      <ItemModal
-        onToggleItemModal={handleToggleItemModal}
-        showItemModal={showItemModal}
+      <ListModal
+        onToggleListModal={handleToggleListModal}
+        showListModal={showListModal}
         type="edit"
-        expanded={true}
         title={listCategoryName}
+        placeholder={listCategoryName}
       />
     </View>
   );
