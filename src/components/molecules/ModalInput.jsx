@@ -50,10 +50,10 @@ export default function ModalInput({
     },
   });
 
-    const renderCloseIcon = () => {
-    if (searchQuery !== '') {
+  const renderCloseIcon = () => {
+    if (textValue !== '') {
       return (
-        <TouchableWithoutFeedback onPress={() => { setSearchQuery(''), setDropdownVisible(false) }}>
+        <TouchableWithoutFeedback onPress={() => { setTextValue('') }}>
           <View style={styles.icon}>
             <Icon name="close" size={32} color={Colors['fontGray']} />
           </View>

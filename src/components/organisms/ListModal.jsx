@@ -147,7 +147,7 @@ export default function ListModal({
         },
         bottom: {
             flex: 1,
-            padding: showExpanded ? 16 : 32,
+            padding: 32,
             gap: 32,
         },
     });

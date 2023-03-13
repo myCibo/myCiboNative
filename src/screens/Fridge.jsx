@@ -100,10 +100,13 @@ const FridgeScreen = () => {
           }}
 
         >
-        <Icon name='filter' size={32} color={Colors.primaryBlack}/>
+          <Icon name='filter' size={32} color={Colors.primaryBlack} />
         </TouchableOpacity>
       </View>
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.contentContainer} >
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.contentContainer}
+      >
         {renderIngredientsByCategory()}
       </ScrollView>
     </View>

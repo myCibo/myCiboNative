@@ -10,7 +10,6 @@ import OptionsModal from "../organisms/OptionsModal";
 import ListModal from "../organisms/ListModal";
 import Icon from "../atoms/Icon";
 import Colors from "../../constants/styles";
-
 export default function ShoppingListCategory({
   listCategoryName = "Walmart",
   listCount = 3,
@@ -39,57 +38,69 @@ export default function ShoppingListCategory({
 
   // Define some example items for the shopping list
   const shoppingListItems = [
-    { itemName: "Milk", quantity: "24", measurement: "Ounces" },
-    { itemName: "Eggs", quantity: "12", measurement: "Count" },
-    { itemName: "Bread", quantity: "1", measurement: "Count" },
+    { itemName: "Milk", amount: "24", unit: "Ounces" },
+    { itemName: "Eggs", amount: "12", unit: "Count" },
+    { itemName: "Bread", amount: "1", unit: "Count" },
   ];
 
   const styles = {
     container: {
-      flex: 1,
       position: 'relative',
-      height: '100%',
+      flex: open ? 1 : 0,
+      minWidth: '100%'
     },
     cardContainer: {
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
       height: 48,
-      width: '100%',
       backgroundColor: open ? Colors['primaryGreen'] : Colors['white'],
       borderRadius: 4,
       borderWidth: 1,
       borderColor: Colors['primaryBlack']
     },
-    textContainer: {
-      width: "80%",
+    cardContainerContent: {
+      width: '70%',
       justifyContent: "flex-start",
       alignItems: "center",
       flexDirection: "row",
-      gap: 10,
+    },
+    cardContainerText: {
+      flexDirection: 'row',
+      justifyContent: 'flex-start',
+      gap: 32,
     },
     text: {
       fontSize: 16,
-      color: Colors['fontBlack'],
-      paddingRight: 20,
-      paddingLeft: 10,
+      color: open ? Colors['white'] : Colors['fontBlack'],
     },
     dropdownContainer: {
-      width: "100%",
       flexDirection: 'column',
       justifyContent: 'flex-start',
       alignItems: 'center',
     },
+    dropdownHeader: {
+      width: '90%',
+      flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems: 'center',
+      gap: 64,
+      borderBottomWidth: 1,
+      borderColor: Colors['fontGray'],
+      padding: 16,
+    },
     dropdownRow: {
-      width: "100%",
       flexDirection: 'row',
       justifyContent: 'space-between',
-      alignItems: 'center'
+      alignItems: 'center',
+      height: 48,
     },
     dropdownTextContainer: {
       flexDirection: 'row',
       justifyContent: 'flex-start',
       alignItem: 'center',
+      borderWidth: 1,
+      borderColor: 'red',
     },
     dropdownFont: {
       fontSize: 16,
@@ -99,7 +110,7 @@ export default function ShoppingListCategory({
       paddingHorizontal: 16,
     },
     iconOpen: {
-      transform: [{ rotate: open ? '90deg' : '0deg' }],
+      transform: [{ rotate: open ? '0deg' : '-90deg' }],
     },
   };
 
@@ -109,60 +120,65 @@ export default function ShoppingListCategory({
         <View style={styles.dropdownHeader}>
           <Text style={styles.dropdownFont}>Ingredient</Text>
           <Text style={styles.dropdownFont}>Quantity</Text>
-
-          {/* This might be jank, double check */}
-          <View style={{ width: '80%', height: 0, borderBottomWidth: 1, borderBottomColor: Colors['fontGray'] }} />
-
         </View>
         {shoppingListItems.map((item, index) => {
-          <View key={index} style={styles.dropdownRow}>
-            {!checked && (
-              <TouchableWithoutFeedback onPress={handleChecked}>
-                <Icon name="circle" size={20} color={Colors['primaryBlack']} />
-              </TouchableWithoutFeedback>
-            )}
-            {checked && (
-              <TouchableWithoutFeedback onPress={handleChecked}>
-                <Icon name="check-circle" size={20} color={Colors['primaryGreen']} />
-              </TouchableWithoutFeedback>
-            )}
-            <View style={styles.dropdownTextContainer}>
-              <Text style={styles.dropdownFont}>
-                {item.itemName}
-              </Text>
-              <Text style={styles.dropdownFont}>
-                {item.quantity}
-              </Text>
-              <Text style={styles.dropdownFont}>
-                {item.measurement}
-              </Text>
+          return (
+            <View key={index} style={styles.dropdownRow}>
+              {!checked && (
+                <TouchableWithoutFeedback onPress={handleChecked}>
+                  <Icon name="circle" size={20} color={Colors['primaryBlack']} />
+                </TouchableWithoutFeedback>
+              )}
+              {checked && (
+                <TouchableWithoutFeedback onPress={handleChecked}>
+                  <Icon name="check-circle" size={20} color={Colors['primaryGreen']} />
+                </TouchableWithoutFeedback>
+              )}
+              <View style={styles.dropdownTextContainer}>
+                <Text style={styles.dropdownFont}>
+                  {item.itemName}
+                </Text>
+                <Text style={styles.dropdownFont}>
+                  {item.amount}
+                </Text>
+                <Text style={styles.dropdownFont}>
+                  {item.unit}
+                </Text>
+              </View>
+              <Icon name="trash" size={20} color={Colors['primaryBlack']} />
             </View>
-            <Icon name="trash" size={20} color={Colors['primaryBlack']} />
-          </View>
+          );
         })}
       </View>
     );
   };
+  
 
   return (
     <View style={styles.container}>
       <View style={styles.cardContainer}>
         <TouchableWithoutFeedback onPress={handleOpen}>
-          <View style={styles.textContainer}>
-            <Icon name={iconName} color={open ? Colors['primaryBlack'] : Colors['white']} size={15} />
-            <Text style={styles.text}>{listCategoryName}</Text>
-            <Text style={[styles.text, { color: Colors['fontGray'] }]}>{listCount}</Text>
+          <View style={styles.cardContainerContent}>
+            <View style={[styles.icon, styles.iconOpen]}>
+              <Icon name={'arrow-down'} color={open ? Colors['white'] : Colors['primaryBlack']} size={15} />
+            </View>
+            <View style={styles.cardContainerText}>
+              <Text style={styles.text}>{listCategoryName}</Text>
+              <Text style={[styles.text, { color: open ? Colors['white'] : Colors['fontGray'] }]}>{listCount}</Text>
+            </View>
           </View>
         </TouchableWithoutFeedback>
         <TouchableWithoutFeedback onPress={handleToggleOptionsModal}>
-          <Icon name="dots-vertical" size={26} color={open ? Colors['primaryBlack'] : Colors['white']} />
+          <View style={styles.icon}>
+            <Icon name="dots-vertical" size={26} color={open ? Colors['white'] : Colors['primaryBlack']} />
+          </View>
         </TouchableWithoutFeedback>
       </View>
       {open && renderShoppingList()}
       <OptionsModal
         onToggleModal={handleToggleOptionsModal}
         onToggleListModal={handleToggleListModal}
-        showOptionsModal={showOptionsModal}
+        showOptions={showOptionsModal}
         optionsType="list"
         title={listCategoryName}
       />
@@ -171,6 +187,7 @@ export default function ShoppingListCategory({
         showListModal={showListModal}
         type="edit"
         title={listCategoryName}
+        data={{ listCategoryName, listCount }}
         placeholder={listCategoryName}
       />
     </View>

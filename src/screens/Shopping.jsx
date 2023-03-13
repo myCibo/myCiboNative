@@ -41,6 +41,29 @@ const Shopping = () => {
     },
   ];
 
+
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      alignItems: "center",
+      justifyContent: "center",
+      width: "100%",
+      backgroundColor: Colors["creamyWhite"],
+    },
+    header: {
+      flexDirection: "row",
+      justifyContent: "flex-end",
+      width: "100%",
+      paddingVertical: 10,
+      paddingHorizontal: 20,
+    },
+    contentContainer: {
+      width: "100%",
+      paddingHorizontal: 20,
+      gap: 20,
+    },
+  });
+
   const renderingCategories = () => {
     return listCategory.map((category) => {
       const listCount = category.list.length;
@@ -54,32 +77,10 @@ const Shopping = () => {
     });
   };
 
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      alignItems: "center",
-      justifyContent: "center",
-      width: "100%",
-      backgroundColor: Colors["creamyWhite"],
-      borderColor:"black",
-      borderWidth:1,
-    },
-    contentContainer: {
-      alignItems: "center",
-      justifyContent: "center",
-    },
-    header: {
-      flexDirection: "row",
-      justifyContent: "flex-end",
-      width: "100%",
-      paddingHorizontal: 20,
-    },
-  });
-
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <LabelledIcon label="New List" iconPos={0} iconName="add" />
+        <LabelledIcon label="New List" iconPos={0} iconName="add" variant="grocery"/>
       </View>
       <ScrollView
         showsVerticalScrollIndicator={false}
@@ -88,6 +89,7 @@ const Shopping = () => {
         {renderingCategories()}
       </ScrollView>
     </View>
+    
   );
 };
 
