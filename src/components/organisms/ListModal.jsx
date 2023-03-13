@@ -11,6 +11,7 @@ import Icon from "../atoms/Icon";
 import Colors from "../../constants/styles";
 import CustomButton from "../atoms/CustomButton";
 import ModalInput from "../molecules/ModalInput";
+import ModalSearch from "../molecules/ModalSearch";
 import ModalDropdown from "../molecules/ModalDropdown";
 
 export default function ListModal({
@@ -162,19 +163,21 @@ export default function ListModal({
         >
             <TouchableWithoutFeedback onPress={handleCancelOptionPress}>
                 <View style={styles.optionRow}>
-                    <Text style={styles.title}>{type === 'edit' ? `Rename ${title} List` : type === 'add' ? 'Add New List' : 'Add New List Item'}</Text>
+                    <Text style={styles.title}>{type === 'edit' ? `Rename ${title} List` : type === 'add' ? 'Add New Grocery List' : 'Add New Grocery Item'}</Text>
                     <TouchableWithoutFeedback onPress={handleCancelOptionPress}>
                         <Icon name="close" size={32} color={Colors['primaryBlack']} />
                     </TouchableWithoutFeedback>
                 </View>
             </TouchableWithoutFeedback>
+            {type !== 'list' && (
             <View style={styles.category}>
                 <Text style={styles.categoryTitle}>List Name</Text>
                 <View style={styles.row}>
                     <ModalInput placeholder={placeholder} type='text' />
                 </View>
             </View>
-            {type === 'item' && (
+            )}
+            {type === 'list' && (
                 <View style={styles.category}>
                     <Text style={styles.categoryTitle}>Item Name</Text>
                     <View style={styles.row}>
@@ -182,7 +185,7 @@ export default function ListModal({
                     </View>
                 </View>
             )}
-            {type === 'item' && (
+            {type === 'list' && (
                 <View style={styles.category}>
                     <Text style={styles.categoryTitle}>Amount</Text>
                     <View style={styles.row}>

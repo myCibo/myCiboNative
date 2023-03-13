@@ -37,6 +37,7 @@ export default function ModalInput({
       flexDirection: 'row',
       alignItems: 'center',
       width: type === 'number' ? 100 : '100%',
+      paddingHorizontal: type === 'number' ? 0 : 16,
       height: 48,
       backgroundColor: Colors['white'],
       borderRadius: 4,

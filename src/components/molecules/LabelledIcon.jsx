@@ -51,7 +51,7 @@ export default function LabelledIcon({
                 <ListModal
                     onToggleListModal={handleToggleListModal}
                     showListModal={showListModal}
-                    type="add"
+                    type={variant === 'grocery' ? "add" : "list"}
                     data={{ category: data.category ? data.category : 'Dairy' }}
                 />
             </View>

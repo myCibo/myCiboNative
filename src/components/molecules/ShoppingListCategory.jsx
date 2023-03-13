@@ -5,15 +5,33 @@ import {
   View,
   TouchableWithoutFeedback,
   Image,
+  TouchableHighlight,
 } from "react-native";
 import OptionsModal from "../organisms/OptionsModal";
 import ListModal from "../organisms/ListModal";
+import ShoppingListItem from "./ShoppingListItem";
 import Icon from "../atoms/Icon";
 import Colors from "../../constants/styles";
+import LabelledIcon from "./LabelledIcon";
+
+
 export default function ShoppingListCategory({
   listCategoryName = "Walmart",
   listCount = 3,
+  data = {},
+  onRemove,
 }) {
+
+  // data is an object with the following structure:
+  // {
+  //   name: "Walmart",
+  //   list: [
+  //     { name: "Milk", amount: 24, unit: "Grams" },
+  //     { name: "Eggs", amount: 24, unit: "Grams" },
+  //   ],
+  // }
+
+
   const [showOptionsModal, setShowOptionsModal] = useState(false);
   const [showListModal, setShowListModal] = useState(false);
 
@@ -28,6 +46,11 @@ export default function ShoppingListCategory({
     setChecked(!checked);
   };
 
+  // the handle remove function needs to remove the item from the list object being fed into this component
+  const handleRemove = (item) => {
+    onRemove(item);
+  };
+
   const handleToggleOptionsModal = () => {
     setShowOptionsModal(!showOptionsModal);
   };
@@ -39,8 +62,8 @@ export default function ShoppingListCategory({
   // Define some example items for the shopping list
   const shoppingListItems = [
     { itemName: "Milk", amount: "24", unit: "Ounces" },
-    { itemName: "Eggs", amount: "12", unit: "Count" },
-    { itemName: "Bread", amount: "1", unit: "Count" },
+    { itemName: "Eggs", amount: "12", unit: "Unit" },
+    { itemName: "Bread", amount: "1", unit: "Unit" },
   ];
 
   const styles = {
@@ -80,31 +103,30 @@ export default function ShoppingListCategory({
       alignItems: 'center',
     },
     dropdownHeader: {
-      width: '90%',
-      flexDirection: 'row',
-      justifyContent: 'center',
-      alignItems: 'center',
-      gap: 64,
-      borderBottomWidth: 1,
-      borderColor: Colors['fontGray'],
-      padding: 16,
-    },
-    dropdownRow: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      height: 48,
-    },
-    dropdownTextContainer: {
+      width: '100%',
       flexDirection: 'row',
       justifyContent: 'flex-start',
-      alignItem: 'center',
-      borderWidth: 1,
-      borderColor: 'red',
+      alignItems: 'center',
+      gap: 88,
+      borderBottomWidth: 1,
+      borderColor: Colors['fontGray'],
+      paddingHorizontal: 48,
+      paddingVertical: 16,
     },
     dropdownFont: {
       fontSize: 16,
-      color: Colors['fontGray']
+      color: Colors['fontBlack'],
+    },
+    dropdownRow: {
+      width: '100%',
+    },
+    dropdownFooter: {
+      flexDirection: 'row',
+      justifyContent: 'flex-start',
+      alignItems: 'center',
+      padding: 16,
+      borderBottomWidth: 1,
+      borderColor: Colors['fontGray'],
     },
     icon: {
       paddingHorizontal: 16,
@@ -118,41 +140,23 @@ export default function ShoppingListCategory({
     return (
       <View style={styles.dropdownContainer}>
         <View style={styles.dropdownHeader}>
-          <Text style={styles.dropdownFont}>Ingredient</Text>
-          <Text style={styles.dropdownFont}>Quantity</Text>
+          <Text style={styles.dropdownFont}>Name</Text>
+          <Text style={styles.dropdownFont}>Amount</Text>
         </View>
         {shoppingListItems.map((item, index) => {
           return (
             <View key={index} style={styles.dropdownRow}>
-              {!checked && (
-                <TouchableWithoutFeedback onPress={handleChecked}>
-                  <Icon name="circle" size={20} color={Colors['primaryBlack']} />
-                </TouchableWithoutFeedback>
-              )}
-              {checked && (
-                <TouchableWithoutFeedback onPress={handleChecked}>
-                  <Icon name="check-circle" size={20} color={Colors['primaryGreen']} />
-                </TouchableWithoutFeedback>
-              )}
-              <View style={styles.dropdownTextContainer}>
-                <Text style={styles.dropdownFont}>
-                  {item.itemName}
-                </Text>
-                <Text style={styles.dropdownFont}>
-                  {item.amount}
-                </Text>
-                <Text style={styles.dropdownFont}>
-                  {item.unit}
-                </Text>
-              </View>
-              <Icon name="trash" size={20} color={Colors['primaryBlack']} />
+              <ShoppingListItem item={item} onRemove={handleRemove} />
             </View>
           );
         })}
+        <View style={[styles.dropdownRow, styles.dropdownFooter]}>
+          <LabelledIcon icon="plus" label=" New Item" variant="list" />
+        </View>
       </View>
     );
   };
-  
+
 
   return (
     <View style={styles.container}>
