@@ -109,7 +109,7 @@ export default function ShoppingListCategory({
       alignItems: 'center',
       gap: 88,
       borderBottomWidth: 1,
-      borderColor: Colors['fontGray'],
+      borderColor: Colors['primaryGray'],
       paddingHorizontal: 48,
       paddingVertical: 16,
     },
@@ -126,7 +126,7 @@ export default function ShoppingListCategory({
       alignItems: 'center',
       padding: 16,
       borderBottomWidth: 1,
-      borderColor: Colors['fontGray'],
+      borderColor: Colors['primaryGray'],
     },
     icon: {
       paddingHorizontal: 16,
@@ -151,7 +151,7 @@ export default function ShoppingListCategory({
           );
         })}
         <View style={[styles.dropdownRow, styles.dropdownFooter]}>
-          <LabelledIcon icon="plus" label=" New Item" variant="list" />
+          <LabelledIcon icon="plus" label=" New Item" variant="list" color={Colors['primaryGray']} fontColor={Colors['primaryGray']} />
         </View>
       </View>
     );

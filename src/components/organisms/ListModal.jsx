@@ -134,6 +134,13 @@ export default function ListModal({
             width: 30,
             height: 30,
         },
+        category: {
+            flexDirection: "column",
+            alignItems: "flex-start",
+            justifyContent: "center",
+            width: "100%",
+            gap: 16,
+        },
         categoryTitle: {
             fontSize: 18,
             fontWeight: "bold",
@@ -170,12 +177,12 @@ export default function ListModal({
                 </View>
             </TouchableWithoutFeedback>
             {type !== 'list' && (
-            <View style={styles.category}>
-                <Text style={styles.categoryTitle}>List Name</Text>
-                <View style={styles.row}>
-                    <ModalInput placeholder={placeholder} type='text' />
+                <View style={styles.category}>
+                    <Text style={styles.categoryTitle}>List Name</Text>
+                    <View style={styles.row}>
+                        <ModalInput placeholder={placeholder} type='text' />
+                    </View>
                 </View>
-            </View>
             )}
             {type === 'list' && (
                 <View style={styles.category}>

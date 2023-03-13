@@ -111,7 +111,7 @@ export default function ShoppingListItem({
             alignItems: 'center',
             height: 48,
             borderBottomWidth: 1,
-            borderBottomColor: Colors['fontGray'],
+            borderBottomColor: Colors['primaryGray'],
             backgroundColor: checked ? Colors['lightGreen'] : null,
         },
         firstCell: {

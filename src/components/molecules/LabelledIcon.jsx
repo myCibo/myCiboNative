@@ -12,6 +12,8 @@ export default function LabelledIcon({
     iconPos = 0,
     iconName = 'add',
     variant = 'item',
+    color = Colors['fontBlack'],
+    fontColor = Colors['fontBlack'],
 }) {
 
     const [showItemModal, setShowItemModal] = useState(false);
@@ -39,8 +41,8 @@ export default function LabelledIcon({
     return (
         <TouchableWithoutFeedback onPress={variant === 'item' ? handleToggleItemModal : handleToggleListModal}>
             <View style={styles.container}>
-                <Icon name={iconName} size={16} color={Colors['primaryBlack']} />
-                <Text>{label}</Text>
+                <Icon name={iconName} size={16} color={color} />
+                <Text style={{ color: fontColor }}>{label}</Text>
                 <ItemModal
                     onToggleItemModal={handleToggleItemModal}
                     showItemModal={showItemModal}
