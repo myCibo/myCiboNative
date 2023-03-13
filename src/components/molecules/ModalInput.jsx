@@ -12,6 +12,7 @@ export default function ModalInput({
 }) {
 
   const [amountValue, setAmountValue] = useState('');
+  const [textValue, setTextValue] = useState('');
 
 
   const handleAmount = (text) => {
@@ -21,24 +22,25 @@ export default function ModalInput({
     }
   };
 
+  const handleText = (text) => {
+    setTextValue(text);
+    // onInput(text);
+  };
+
   const styles = StyleSheet.create({
     container: {
-      width: 100,
+      width: type === 'number' ? 100 : '100%',
       height: 48,
       position: 'relative',
     },
-    numberContainer: {
+    insideContainer: {
       flexDirection: 'row',
       alignItems: 'center',
-      width: 100,
+      width: type === 'number' ? 100 : '100%',
+      paddingHorizontal: type === 'number' ? 0 : 16,
       height: 48,
       backgroundColor: Colors['white'],
       borderRadius: 4,
-    },
-    numberInput: {
-      fontSize: 16,
-      color: Colors['fontBlack'],
-      paddingRight: 16,
     },
     icon: {
       paddingHorizontal: 16,
@@ -49,10 +51,22 @@ export default function ModalInput({
     },
   });
 
+  const renderCloseIcon = () => {
+    if (textValue !== '') {
+      return (
+        <TouchableWithoutFeedback onPress={() => { setTextValue('') }}>
+          <View style={styles.icon}>
+            <Icon name="close" size={32} color={Colors['fontGray']} />
+          </View>
+        </TouchableWithoutFeedback>
+      )
+    }
+  }
+
   return (
     <View style={styles.container}>
       {type === "number" && (
-        <View style={styles.numberContainer}>
+        <View style={styles.insideContainer}>
           <View style={styles.icon}>
             <Icon name="hash" size={16} color={Colors['fontGray']} />
           </View>
@@ -65,7 +79,17 @@ export default function ModalInput({
           />
         </View>
       )}
+      {type === "text" && (
+        <View style={styles.insideContainer}>
+          <TextInput
+            placeholder={placeholder}
+            value={textValue}
+            onChangeText={handleText}
+            style={styles.input}
+          />
+          {renderCloseIcon()}
+        </View>
+      )}
     </View >
-
   );
 };
