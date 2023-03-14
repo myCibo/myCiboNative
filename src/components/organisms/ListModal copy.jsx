@@ -3,8 +3,9 @@ import {
     Text,
     View,
     TouchableWithoutFeedback,
+    Image,
 } from "react-native";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Modal from "react-native-modal";
 import Icon from "../atoms/Icon";
 import Colors from "../../constants/styles";
@@ -12,45 +13,54 @@ import CustomButton from "../atoms/CustomButton";
 import ModalInput from "../molecules/ModalInput";
 import ModalSearch from "../molecules/ModalSearch";
 import ModalDropdown from "../molecules/ModalDropdown";
-import { getIngredients, getMeasurements } from '../../constants/data';
 
 export default function ListModal({
     showListModal,
     type = 'list',
     onToggleListModal,
     title = 'Milk',
+    placeholder = 'Enter a list name',
     data,
-    onSaveGroceryObject,
+    color,
 }) {
 
-    // groceryObject = {
-    //     listName: 'Walmart',
-    //     ingredientData: {
-    //         itemName: 'Milk',
-    //         measurement: 'Cup',
-    //         quantity: 1,
-    //     }
-    // }
+    const ingredientData = [
+        { id: 1, name: 'Apples' },
+        { id: 2, name: 'Milk' },
+        { id: 3, name: 'Grapes' },
+        { id: 4, name: 'Rice' },
+        { id: 5, name: 'Cereal' },
+        { id: 6, name: 'Bread' },
+        { id: 7, name: 'Eggs' },
+        { id: 8, name: 'Chicken' },
+        { id: 9, name: 'Beef' },
+        { id: 10, name: 'Pork' },
+        { id: 11, name: 'Fish' },
+        { id: 12, name: 'Cheese' },
+        { id: 13, name: 'Butter' },
+        { id: 14, name: 'Sour Cream' },
+        { id: 15, name: 'Salsa' },
+    ];
 
-    const ingredientList = getIngredients();
-    const measurementList = getMeasurements();
-    const groceryObject = data?.groceryObject || {};
+    const measurementData = [
+        { id: 1, name: 'Cup' },
+        { id: 2, name: 'Tbsp' },
+        { id: 3, name: 'Tsp' },
+        { id: 4, name: 'Oz' },
+        { id: 5, name: 'Grams' },
+        { id: 6, name: 'Pound' },
+        { id: 7, name: 'Liter' },
+        { id: 8, name: 'Milliliter' },
+        { id: 9, name: 'Pinch' },
+        { id: 10, name: 'Dash' },
+        { id: 11, name: 'Scoop' },
+    ]
 
-    const [selectedItem, setSelectedItem] = useState(groceryObject?.ingredientData?.itemName || null);
-    const [selectedMeasurement, setSelectedMeasurement] = useState(groceryObject?.ingredientData?.measurement || null);
-    const [selectedQuantity, setSelectedQuantity] = useState(groceryObject?.ingredientData?.quantity || null);
-    const [listName, setListName] = useState(groceryObject?.listName || '');
     const [disabled, setDisabled] = useState(true);
+    const [selectedItem, setSelectedItem] = useState(null);
+    const [selectedMeasurement, setSelectedMeasurement] = useState(null);
+    const [selectedQuantity, setSelectedQuantity] = useState(null);
 
-    useEffect(() => {
-        if (type === 'list' && selectedItem && selectedMeasurement && selectedQuantity && listName) {
-            setDisabled(false);
-        } else if (type !== 'list' && selectedQuantity && listName) {
-            setDisabled(false);
-        } else {
-            setDisabled(true);
-        }
-    }, [selectedItem, selectedMeasurement, selectedQuantity, type, listName]);
 
     const handleCancelOptionPress = () => {
         console.log("Cancel option pressed");
@@ -59,15 +69,6 @@ export default function ListModal({
 
     const handleSaveOptionPress = () => {
         console.log("Save option pressed");
-        const newGroceryObject = {
-            listName: listName,
-            ingredientData: {
-                itemName: selectedItem,
-                measurement: selectedMeasurement,
-                quantity: selectedQuantity,
-            }
-        };
-        onSaveGroceryObject(newGroceryObject);
         onToggleListModal();
     };
 
@@ -99,11 +100,6 @@ export default function ListModal({
     const handleMeasurementChange = (measurement) => {
         console.log("Measurement changed");
         setSelectedMeasurement(measurement);
-    };
-
-    const handleListNameChange = (name) => {
-        console.log("List name changed");
-        setListName(name);
     };
 
     const styles = StyleSheet.create({
@@ -184,7 +180,7 @@ export default function ListModal({
                 <View style={styles.category}>
                     <Text style={styles.categoryTitle}>List Name</Text>
                     <View style={styles.row}>
-                        <ModalInput placeholder={'Name your list'} type='text' value={listName} onChange={handleListNameChange} />
+                        <ModalInput placeholder={placeholder} type='text' />
                     </View>
                 </View>
             )}
@@ -192,7 +188,7 @@ export default function ListModal({
                 <View style={styles.category}>
                     <Text style={styles.categoryTitle}>Item Name</Text>
                     <View style={styles.row}>
-                        <ModalSearch placeholder='Find the ingredient' data={ingredientList} onSelect={handleItemSelect} />
+                        <ModalSearch placeholder='Find Ingredient' data={ingredientData} />
                     </View>
                 </View>
             )}
@@ -200,17 +196,14 @@ export default function ListModal({
                 <View style={styles.category}>
                     <Text style={styles.categoryTitle}>Amount</Text>
                     <View style={styles.row}>
-                        <ModalInput placeholder='0' type='number' value={selectedQuantity} onChange={handleQuantityChange} />
-                        <ModalDropdown placeholder={'Select a measurement'} data={measurementList} onSelect={handleMeasurementSelect} />
+                        <ModalInput placeholder='0' type='number' />
+                        <ModalDropdown placeholder={'Select Measurement'} data={measurementData} />
                     </View>
                 </View>
             )}
             <View style={styles.bottom}>
-                <CustomButton text={type === 'edit' ? 'Confirm Changes' : type === 'add' ? 'Add New List' : 'Add New Item'} backgroundColor={Colors.primaryGreen} disabled={disabled} onPress={handleSaveOptionPress} />
+                <CustomButton text={type === 'edit' ? 'Confirm Changes' : type === 'add' ? 'Add New List' : 'Add New Item'} backgroundColor={Colors.primaryGreen} disabled={type === 'edit' ? false : disabled} />
             </View>
         </Modal>
     );
-};
-
-
-
+}

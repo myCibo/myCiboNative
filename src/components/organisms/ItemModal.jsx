@@ -41,8 +41,6 @@ export default function ItemModal({
     onToggleItemModal();
   };
 
-
-
   const ingredientData = [
     { id: 1, name: 'Apples' },
     { id: 2, name: 'Milk' },
