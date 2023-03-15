@@ -7,40 +7,40 @@ import {
   ScrollView,
   TouchableOpacity,
 } from "react-native";
-import SearchBar from "../components/molecules/SearchBar";
-import Icon from "../components/atoms/Icon";
-import ShoppingListCategory from "../components/molecules/ShoppingListCategory";
+import ShoppingList from "../components/molecules/ShoppingList";
 import LabelledIcon from "../components/molecules/LabelledIcon";
 import Colors from "../constants/styles";
 
 const Shopping = () => {
-  // define the list category data
-  const listCategory = [
+  const [shoppingLists, setShoppingLists] = React.useState([
     {
-      category: "Walmart",
+      id: 42,
+      listName: "Walmart",
       list: [
-        { checked: true, name: "Milk", amount: 24, unit: "Grams" },
-        { checked: false, name: "Eggs", amount: 24, unit: "Grams" },
+        { id: 12, itemName: "Milk", amount: 1, unit: "Litre" },
+        { id: 32, itemName: "Eggs", amount: 12, unit: "Item" },
       ],
     },
     {
-      category: "IGA",
-      list: [{ checked: false, name: "Potatoes", amount: 24, unit: "Grams" }],
+      id: 17,
+      listName: "IGA",
+      list: [{ id: 52, itemName: "Potatoes", amount: 44, unit: "Item" }],
     },
     {
-      category: "Save On Foods",
-      list: [{ checked: false, name: "Rice", amount: 24, unit: "Grams" }],
+      id: 12,
+      listName: "Save On Foods",
+      list: [{ id: 37, itemName: "Rice", amount: 32, unit: "Grams" }],
     },
     {
-      category: "Today",
+      id: 23,
+      listName: "Today",
       list: [
-        { checked: false, name: "Beef", amount: 24, unit: "Grams" },
-        { checked: true, name: "Chicken", amount: 24, unit: "Grams" },
-        { checked: false, name: "Salt", amount: 24, unit: "Grams" },
+        { id: 24, itemName: "Beef", amount: 50, unit: "Grams" },
+        { id: 27, itemName: "Chicken", amount: 20, unit: "Grams" },
+        { id: 29, itemName: "Salt", amount: 12, unit: "Grams" },
       ],
     },
-  ];
-
+  ]);
 
   const styles = StyleSheet.create({
     container: {
@@ -64,14 +64,31 @@ const Shopping = () => {
     },
   });
 
+  const handleNewListEntry = (data) => {
+    const { listName } = data;
+    const newList = {
+      id: Date.now(),
+      listName,
+      list: [],
+    };
+    setShoppingLists((prevShoppingLists) => [...prevShoppingLists, newList]);
+  };
+
+  const handleUpdateListEntry = (id, list) => {
+    setShoppingLists((prevShoppingLists) =>
+      prevShoppingLists.map((shoppingList) =>
+        shoppingList.id === id ? { ...shoppingList, list } : shoppingList
+      )
+    );
+  };
+
   const renderingCategories = () => {
-    return listCategory.map((category) => {
-      const listCount = category.list.length;
+    return shoppingLists.map((shoppingList) => {
       return (
-        <ShoppingListCategory
-          key={category.category}
-          listCategoryName={category.category}
-          listCount={listCount}
+        <ShoppingList
+          key={shoppingList.id}
+          data={shoppingList}
+          onUpdateList={(list) => handleUpdateListEntry(shoppingList.id, list)}
         />
       );
     });
@@ -80,7 +97,13 @@ const Shopping = () => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <LabelledIcon label="New List" iconPos={0} iconName="add" variant="grocery"/>
+        <LabelledIcon
+          label="New List"
+          iconPos={0}
+          iconName="add"
+          variant="add"
+          onNewList={handleNewListEntry}
+        />
       </View>
       <ScrollView
         showsVerticalScrollIndicator={false}
@@ -89,7 +112,6 @@ const Shopping = () => {
         {renderingCategories()}
       </ScrollView>
     </View>
-    
   );
 };
 

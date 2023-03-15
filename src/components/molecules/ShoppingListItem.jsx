@@ -100,8 +100,8 @@ export default function ShoppingListItem({
         setChecked(!checked);
     };
 
-    const handleRemove = (data) => {
-        onRemove(data);
+    const handleRemove = (itemId) => {
+        onRemove(itemId);
     };
 
     const styles = StyleSheet.create({
@@ -163,7 +163,7 @@ export default function ShoppingListItem({
                     {item.unit}
                 </Text>
             </View>
-            <TouchableOpacity onPress={() => handleRemove(item)} style={styles.icon}>
+            <TouchableOpacity onPress={() => handleRemove(item.id)} style={styles.icon}>
                 <Icon name="trash" size={20} color={Colors['primaryBlack']} />
             </TouchableOpacity>
         </TouchableOpacity>

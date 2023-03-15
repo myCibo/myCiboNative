@@ -1858,7 +1858,15 @@ const measurementData =
         {
             id: 42,
             name: 'Kilogram',
-        }
+        },
+        {
+            id: 43,
+            name: 'Milligram',
+        },
+        {
+            id: 44,
+            name: 'Item',
+        },
     ]
 
 export const getIngredients = () => {

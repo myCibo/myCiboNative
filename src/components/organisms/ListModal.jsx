@@ -12,40 +12,45 @@ import CustomButton from "../atoms/CustomButton";
 import ModalInput from "../molecules/ModalInput";
 import ModalSearch from "../molecules/ModalSearch";
 import ModalDropdown from "../molecules/ModalDropdown";
-import { getIngredients, getMeasurements } from '../../constants/data';
+import { getIngredients, getMeasurements } from '../../constants/FoodData';
 
 export default function ListModal({
     showListModal,
-    type = 'list',
+    type = 'item',
     onToggleListModal,
-    title = 'Milk',
-    data,
-    onSaveGroceryObject,
+    data = {},
+    onSave,
 }) {
+    // type is either 'item' or 'list' or 'edit'
 
-    // groceryObject = {
-    //     listName: 'Walmart',
-    //     ingredientData: {
+    // data will be one of these two objects:
+
+    // data = {
+    //     ingredient: {
     //         itemName: 'Milk',
-    //         measurement: 'Cup',
-    //         quantity: 1,
+    //         amount: 1,
+    //         unit: 'Cup',
     //     }
+    // }
+
+    // data = {
+    //     listName: 'Walmart'
     // }
 
     const ingredientList = getIngredients();
     const measurementList = getMeasurements();
-    const groceryObject = data?.groceryObject || {};
+    const groceryObject = data || {};
 
-    const [selectedItem, setSelectedItem] = useState(groceryObject?.ingredientData?.itemName || null);
-    const [selectedMeasurement, setSelectedMeasurement] = useState(groceryObject?.ingredientData?.measurement || null);
-    const [selectedQuantity, setSelectedQuantity] = useState(groceryObject?.ingredientData?.quantity || null);
+    const [selectedItem, setSelectedItem] = useState(groceryObject?.ingredient?.itemName || null);
+    const [selectedMeasurement, setSelectedMeasurement] = useState(groceryObject?.ingredient?.unit || null);
+    const [selectedQuantity, setSelectedQuantity] = useState(groceryObject?.ingredient?.amount || null);
     const [listName, setListName] = useState(groceryObject?.listName || '');
     const [disabled, setDisabled] = useState(true);
 
     useEffect(() => {
-        if (type === 'list' && selectedItem && selectedMeasurement && selectedQuantity && listName) {
+        if (type === 'item' && selectedItem && selectedMeasurement && selectedQuantity) {
             setDisabled(false);
-        } else if (type !== 'list' && selectedQuantity && listName) {
+        } else if (type !== 'item' && listName) {
             setDisabled(false);
         } else {
             setDisabled(true);
@@ -59,15 +64,15 @@ export default function ListModal({
 
     const handleSaveOptionPress = () => {
         console.log("Save option pressed");
-        const newGroceryObject = {
-            listName: listName,
-            ingredientData: {
+        if (type === 'item') {
+            onSave({
                 itemName: selectedItem,
-                measurement: selectedMeasurement,
-                quantity: selectedQuantity,
-            }
-        };
-        onSaveGroceryObject(newGroceryObject);
+                unit: selectedMeasurement,
+                amount: selectedQuantity,
+            });
+        } else {
+            onSave(listName);
+        }
         onToggleListModal();
     };
 
@@ -81,6 +86,7 @@ export default function ListModal({
         setSelectedMeasurement(measurement);
     };
 
+    // flag
     const handleQuantitySelect = (quantity) => {
         console.log("Quantity selected");
         setSelectedQuantity(quantity);
@@ -91,11 +97,13 @@ export default function ListModal({
         setSelectedQuantity(quantity);
     };
 
+    // flag
     const handleItemChange = (item) => {
         console.log("Item changed");
         setSelectedItem(item);
     };
 
+    // flag
     const handleMeasurementChange = (measurement) => {
         console.log("Measurement changed");
         setSelectedMeasurement(measurement);
@@ -174,13 +182,13 @@ export default function ListModal({
         >
             <TouchableWithoutFeedback onPress={handleCancelOptionPress}>
                 <View style={styles.optionRow}>
-                    <Text style={styles.title}>{type === 'edit' ? `Rename ${title} List` : type === 'add' ? 'Add New Grocery List' : 'Add New Grocery Item'}</Text>
+                    <Text style={styles.title}>{type === 'edit' ? `Rename ${selectedItem} List` : type === 'add' ? 'Add New Grocery List' : 'Add New Grocery Item'}</Text>
                     <TouchableWithoutFeedback onPress={handleCancelOptionPress}>
                         <Icon name="close" size={32} color={Colors['primaryBlack']} />
                     </TouchableWithoutFeedback>
                 </View>
             </TouchableWithoutFeedback>
-            {type !== 'list' && (
+            {type !== 'item' && (
                 <View style={styles.category}>
                     <Text style={styles.categoryTitle}>List Name</Text>
                     <View style={styles.row}>
@@ -188,7 +196,7 @@ export default function ListModal({
                     </View>
                 </View>
             )}
-            {type === 'list' && (
+            {type === 'item' && (
                 <View style={styles.category}>
                     <Text style={styles.categoryTitle}>Item Name</Text>
                     <View style={styles.row}>
@@ -196,7 +204,7 @@ export default function ListModal({
                     </View>
                 </View>
             )}
-            {type === 'list' && (
+            {type === 'item' && (
                 <View style={styles.category}>
                     <Text style={styles.categoryTitle}>Amount</Text>
                     <View style={styles.row}>
