@@ -79,7 +79,6 @@ export default function ShoppingList({
   };
 
   const handleNewListItem = (newItem) => {
-    console.log('look at me')
     console.log("new item", newItem);
     const updatedList = [...list, newItem];
     setList(updatedList);
