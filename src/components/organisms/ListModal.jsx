@@ -16,35 +16,21 @@ import { getIngredients, getMeasurements } from '../../constants/FoodData';
 
 export default function ListModal({
     showListModal,
-    type = 'item',
+    type = 'item',  // type is either 'item' or 'list' or 'edit'
     onToggleListModal,
     data = {},
-    onSave,
+    onSaveList = () => {console.log('onSaveList default')},
+    onSaveItem = () => {console.log('onSaveItem default')},
 }) {
-    // type is either 'item' or 'list' or 'edit'
-
-    // data will be one of these two objects:
-
-    // data = {
-    //     ingredient: {
-    //         itemName: 'Milk',
-    //         amount: 1,
-    //         unit: 'Cup',
-    //     }
-    // }
-
-    // data = {
-    //     listName: 'Walmart'
-    // }
 
     const ingredientList = getIngredients();
     const measurementList = getMeasurements();
-    const groceryObject = data || {};
-
-    const [selectedItem, setSelectedItem] = useState(groceryObject?.ingredient?.itemName || null);
-    const [selectedMeasurement, setSelectedMeasurement] = useState(groceryObject?.ingredient?.unit || null);
-    const [selectedQuantity, setSelectedQuantity] = useState(groceryObject?.ingredient?.amount || null);
-    const [listName, setListName] = useState(groceryObject?.listName || '');
+    const shoppingListObject = data || {};
+    
+    const [selectedItem, setSelectedItem] = useState(null);
+    const [selectedMeasurement, setSelectedMeasurement] = useState(null);
+    const [selectedQuantity, setSelectedQuantity] = useState(null);
+    const [listName, setListName] = useState(shoppingListObject?.listName || '');
     const [disabled, setDisabled] = useState(true);
 
     useEffect(() => {
@@ -64,14 +50,18 @@ export default function ListModal({
 
     const handleSaveOptionPress = () => {
         console.log("Save option pressed");
+        let newItem = {};
         if (type === 'item') {
-            onSave({
-                itemName: selectedItem,
-                unit: selectedMeasurement,
+            newItem = {
+                id: Date.now(),
+                itemName: selectedItem?.name,
+                unit: selectedMeasurement?.name,
                 amount: selectedQuantity,
-            });
+            }
+            console.log('onSaveItem', newItem)
+            onSaveItem(newItem);
         } else {
-            onSave(listName);
+            onSaveList(listName);
         }
         onToggleListModal();
     };
@@ -86,27 +76,9 @@ export default function ListModal({
         setSelectedMeasurement(measurement);
     };
 
-    // flag
-    const handleQuantitySelect = (quantity) => {
-        console.log("Quantity selected");
-        setSelectedQuantity(quantity);
-    };
-
     const handleQuantityChange = (quantity) => {
         console.log("Quantity changed");
         setSelectedQuantity(quantity);
-    };
-
-    // flag
-    const handleItemChange = (item) => {
-        console.log("Item changed");
-        setSelectedItem(item);
-    };
-
-    // flag
-    const handleMeasurementChange = (measurement) => {
-        console.log("Measurement changed");
-        setSelectedMeasurement(measurement);
     };
 
     const handleListNameChange = (name) => {
@@ -192,7 +164,7 @@ export default function ListModal({
                 <View style={styles.category}>
                     <Text style={styles.categoryTitle}>List Name</Text>
                     <View style={styles.row}>
-                        <ModalInput placeholder={'Name your list'} type='text' value={listName} onChange={handleListNameChange} />
+                        <ModalInput placeholder={type === 'edit' ? listName : 'Name your list'} type='text' value={listName} onChange={handleListNameChange} />
                     </View>
                 </View>
             )}
@@ -200,7 +172,7 @@ export default function ListModal({
                 <View style={styles.category}>
                     <Text style={styles.categoryTitle}>Item Name</Text>
                     <View style={styles.row}>
-                        <ModalSearch placeholder='Find the ingredient' data={ingredientList} onSelect={handleItemSelect} />
+                        <ModalSearch placeholder='Find the ingredient' data={ingredientList} onChange={handleItemSelect} />
                     </View>
                 </View>
             )}
@@ -209,7 +181,7 @@ export default function ListModal({
                     <Text style={styles.categoryTitle}>Amount</Text>
                     <View style={styles.row}>
                         <ModalInput placeholder='0' type='number' value={selectedQuantity} onChange={handleQuantityChange} />
-                        <ModalDropdown placeholder={'Select a measurement'} data={measurementList} onSelect={handleMeasurementSelect} />
+                        <ModalDropdown placeholder={'Select a measurement'} data={measurementList} onChange={handleMeasurementSelect} />
                     </View>
                 </View>
             )}
@@ -219,6 +191,3 @@ export default function ListModal({
         </Modal>
     );
 };
-
-
-

@@ -18,6 +18,7 @@ import LabelledIcon from "./LabelledIcon";
 export default function ShoppingList({
   data = {},
   onUpdateList,
+  onRemoveList,
 }) {
 
   // data is an object with the following structure:
@@ -25,9 +26,9 @@ export default function ShoppingList({
   //   listId: "1234",
   //   listName: "Walmart",
   //   list: [
-  //       { itemName: "Milk", amount: "24", unit: "Ounces" },
-  //       { itemName: "Eggs", amount: "12", unit: "Unit" },
-  //       { itemName: "Bread", amount: "1", unit: "Unit" },
+  //       { id: 1, itemName: "Milk", amount: "24", unit: "Ounces" },
+  //       { id: 2, itemName: "Eggs", amount: "12", unit: "Unit" },
+  //       { id: 3, itemName: "Bread", amount: "1", unit: "Unit" },
   //   ],
   // }
 
@@ -55,7 +56,8 @@ export default function ShoppingList({
     setShowListModal(!showListModal);
   };
 
-  const handleRemove = (itemId) => {
+  const handleRemoveItem = (itemId) => {
+    console.log("Remove item", itemId);
     const updatedList = list.filter((item) => item.id !== itemId);
     setList(updatedList);
     setListCount(updatedList.length);
@@ -74,6 +76,24 @@ export default function ShoppingList({
       listName: newListName
     };
     onUpdateList(updatedData);
+  };
+
+  const handleNewListItem = (newItem) => {
+    console.log('look at me')
+    console.log("new item", newItem);
+    const updatedList = [...list, newItem];
+    setList(updatedList);
+    setListCount(updatedList.length);
+    const updatedData = {
+      ...data,
+      list: updatedList
+    };
+    onUpdateList(updatedData);
+  };
+
+  const handleRemoveList = () => {
+    console.log("Remove list");
+    onRemoveList();
   };
 
 
@@ -126,7 +146,7 @@ export default function ShoppingList({
     },
     dropdownFont: {
       fontSize: 16,
-      color: Colors['fontBlack'],
+      color: Colors['primaryGray'],
     },
     dropdownRow: {
       width: '100%',
@@ -157,12 +177,19 @@ export default function ShoppingList({
         {list.map((item) => {
           return (
             <View key={item.id} style={styles.dropdownRow}>
-              <ShoppingListItem item={item} onRemove={handleRemove} />
+              <ShoppingListItem item={item} onRemove={handleRemoveItem} />
             </View>
           );
         })}
         <View style={[styles.dropdownRow, styles.dropdownFooter]}>
-          <LabelledIcon icon="plus" label=" New Item" variant="newListItem" color={Colors['primaryGray']} fontColor={Colors['primaryGray']} />
+          <LabelledIcon 
+            icon="plus" 
+            label=" New Item" 
+            variant="newListItem" 
+            color={Colors['fontBlack']} 
+            fontColor={Colors['fontBlack']}
+            onNewItem={handleNewListItem}
+          />
         </View>
       </View>
     );
@@ -195,14 +222,15 @@ export default function ShoppingList({
         onToggleListModal={handleToggleListModal}
         showOptions={showOptionsModal}
         optionsType="list"
-        title={listName}
+        data={data}
+        onRemove={handleRemoveList}
       />
       <ListModal
         onToggleListModal={handleToggleListModal}
         showListModal={showListModal}
         type="edit"
-        data={{ listName }}
-        onSave={handleListModalEdit}
+        data={data}
+        onSaveList={handleListModalEdit}
       />
     </View>
   );

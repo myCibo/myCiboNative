@@ -7,7 +7,7 @@ import Colors from '../../constants/styles';
 export default function ModalDropdown({
     placeholder = 'Item',
     data = [],
-    onSelect,
+    onChange,
 }) {
 
     const [open, setOpen] = useState(false);
@@ -15,7 +15,7 @@ export default function ModalDropdown({
 
     const handleSelect = (item) => {
         setSelectedItem(item);
-        // onSelect(item);
+        onChange(item)
         setOpen(false);
     };
 

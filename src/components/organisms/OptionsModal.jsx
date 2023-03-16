@@ -16,9 +16,38 @@ export default function OptionsModal({
   onToggleModal = {},
   onToggleItemModal = {},
   onToggleListModal = {},
-  title,
-  color,
+  data,
+  onRemove,
 }) {
+
+  const handleEditOptionPress = () => {
+    console.log("Edit option pressed");
+    onToggleModal();
+    onToggleItemModal();
+  };
+
+  const handleListEditOptionPress = () => {
+    console.log("List edit option pressed");
+    onToggleModal();
+    onToggleListModal();
+  };
+
+  const handleUploadOptionPress = () => {
+    console.log("Upload option pressed");
+    onToggleModal();
+  };
+
+  const handleDeleteOptionPress = () => {
+    console.log("Delete option pressed");
+    onRemove(data.id);
+    onToggleModal();
+  };
+
+  const handleCancelOptionPress = () => {
+    console.log("Cancel option pressed");
+    onToggleModal();
+  };
+
   const styles = StyleSheet.create({
     modal: {
       position: "absolute",
@@ -66,34 +95,6 @@ export default function OptionsModal({
     },
   });
 
-
-  const handleEditOptionPress = () => {
-    console.log("Edit option pressed");
-    onToggleModal();
-    onToggleItemModal();
-  };
-
-  const handleListEditOptionPress = () => {
-    console.log("List edit option pressed");
-    onToggleModal();
-    onToggleListModal();
-  };
-
-  const handleUploadOptionPress = () => {
-    console.log("Upload option pressed");
-    onToggleModal();
-  };
-
-  const handleDeleteOptionPress = () => {
-    console.log("Delete option pressed");
-    onToggleModal();
-  };
-
-  const handleCancelOptionPress = () => {
-    console.log("Cancel option pressed");
-    onToggleModal();
-  };
-
   return (
     <Modal
       isVisible={showOptions}
@@ -105,7 +106,7 @@ export default function OptionsModal({
       <View>
         <TouchableWithoutFeedback onPress={handleCancelOptionPress}>
           <View style={styles.optionRow}>
-            <Text style={styles.title}>{title}</Text>
+            <Text style={styles.title}>{data.listName}</Text>
             <TouchableWithoutFeedback onPress={handleCancelOptionPress}>
               <Icon name="close" size={32} color={Colors['primaryBlack']} />
             </TouchableWithoutFeedback>

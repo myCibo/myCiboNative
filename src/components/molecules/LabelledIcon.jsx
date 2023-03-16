@@ -14,7 +14,8 @@ export default function LabelledIcon({
     variant = 'item',
     color = Colors['fontBlack'],
     fontColor = Colors['fontBlack'],
-    onNewList,
+    onNewList = () => {console.log('default onNewList')},
+    onNewItem = () => {console.log('default onNewItem')},
 }) {
 
     // variants are 'item' and 'list' and 'edit'
@@ -34,6 +35,11 @@ export default function LabelledIcon({
     const handleNewList = (listName) => {
         console.log('newListName', listName);
         onNewList(listName);
+    };
+
+    const handleNewItem = (item) => {
+        console.log('newItem', item);
+        onNewItem(item);
     };
 
     const styles = {
@@ -61,7 +67,8 @@ export default function LabelledIcon({
                     onToggleListModal={handleToggleListModal}
                     showListModal={showListModal}
                     type={variant === 'newListItem' ? 'item' : variant === 'add' ? 'add' : 'edit'}
-                    onSave={handleNewList}
+                    onSaveList={handleNewList}
+                    onSaveItem={handleNewItem}
                 />
             </View>
         </TouchableWithoutFeedback>

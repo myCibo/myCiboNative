@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useState } from "react";
 import {
   View,
   Text,
@@ -12,7 +12,7 @@ import LabelledIcon from "../components/molecules/LabelledIcon";
 import Colors from "../constants/styles";
 
 const Shopping = () => {
-  const [shoppingLists, setShoppingLists] = React.useState([
+  const [shoppingLists, setShoppingLists] = useState([
     {
       id: 42,
       listName: "Walmart",
@@ -65,20 +65,28 @@ const Shopping = () => {
   });
 
   const handleNewListEntry = (data) => {
-    const { listName } = data;
+    console.log("New list entry: ", data)
     const newList = {
       id: Date.now(),
-      listName,
+      listName: data,
       list: [],
     };
     setShoppingLists((prevShoppingLists) => [...prevShoppingLists, newList]);
   };
 
   const handleUpdateListEntry = (id, list) => {
+    console.log("Updated list entry: ", id, list)
     setShoppingLists((prevShoppingLists) =>
       prevShoppingLists.map((shoppingList) =>
         shoppingList.id === id ? { ...shoppingList, list } : shoppingList
       )
+    );
+  };
+
+  const handleRemoveListEntry = (id) => {
+    console.log("Removed list entry: ", id)
+    setShoppingLists((prevShoppingLists) =>
+      prevShoppingLists.filter((shoppingList) => shoppingList.id !== id)
     );
   };
 
@@ -89,6 +97,7 @@ const Shopping = () => {
           key={shoppingList.id}
           data={shoppingList}
           onUpdateList={(list) => handleUpdateListEntry(shoppingList.id, list)}
+          onRemoveList={() => handleRemoveListEntry(shoppingList.id)}
         />
       );
     });
