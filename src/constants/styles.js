@@ -1,4 +1,4 @@
-const colors = {
+export default colors = {
     
     // Primary colors
     "white": "#FFFFFF",
@@ -22,5 +22,3 @@ const colors = {
     "friendlyBrown": "#A18146",
     "friendlyBeige": "#F4E1B2",
 };
-
-export default colors;

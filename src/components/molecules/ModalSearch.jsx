@@ -7,6 +7,7 @@ import Colors from "../../constants/styles";
 export default function ModalInput({
   placeholder = 'Search',
   data = [],
+  onChange,
 }) {
 
   const [searchQuery, setSearchQuery] = useState('');
@@ -23,6 +24,7 @@ export default function ModalInput({
     });
     setCurrentData(newData);
     setSearchQuery(text);
+    
     setDropdownVisible(true);
     if (text === '' || newData.length === 0) {
       setDropdownVisible(false);
@@ -32,6 +34,7 @@ export default function ModalInput({
   const handleSelectItem = (item) => {
     setSelectedItem(item);
     setSearchQuery(item.name);
+    onChange(item);
     setDropdownVisible(false);
   };
 

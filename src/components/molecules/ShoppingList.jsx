@@ -15,40 +15,37 @@ import Colors from "../../constants/styles";
 import LabelledIcon from "./LabelledIcon";
 
 
-export default function ShoppingListCategory({
-  listCategoryName = "Walmart",
-  listCount = 3,
+export default function ShoppingList({
   data = {},
-  onRemove,
+  onUpdateList,
+  onRemoveList,
 }) {
 
   // data is an object with the following structure:
   // {
-  //   name: "Walmart",
+  //   listId: "1234",
+  //   listName: "Walmart",
   //   list: [
-  //     { name: "Milk", amount: 24, unit: "Grams" },
-  //     { name: "Eggs", amount: 24, unit: "Grams" },
+  //       { id: 1, itemName: "Milk", amount: "24", unit: "Ounces" },
+  //       { id: 2, itemName: "Eggs", amount: "12", unit: "Unit" },
+  //       { id: 3, itemName: "Bread", amount: "1", unit: "Unit" },
   //   ],
   // }
+
+  const shoppingListObject = data || {};
+
+  const [listName, setListName] = useState(shoppingListObject?.listName || null);
+  const [listCount, setListCount] = useState(shoppingListObject?.list?.length || 0);
+  const [list, setList] = useState(shoppingListObject?.list || []);
 
 
   const [showOptionsModal, setShowOptionsModal] = useState(false);
   const [showListModal, setShowListModal] = useState(false);
 
   const [open, setOpen] = useState(false);
-  const [checked, setChecked] = useState(false);
 
   const handleOpen = () => {
     setOpen(!open);
-  };
-
-  const handleChecked = () => {
-    setChecked(!checked);
-  };
-
-  // the handle remove function needs to remove the item from the list object being fed into this component
-  const handleRemove = (item) => {
-    onRemove(item);
   };
 
   const handleToggleOptionsModal = () => {
@@ -59,12 +56,46 @@ export default function ShoppingListCategory({
     setShowListModal(!showListModal);
   };
 
-  // Define some example items for the shopping list
-  const shoppingListItems = [
-    { itemName: "Milk", amount: "24", unit: "Ounces" },
-    { itemName: "Eggs", amount: "12", unit: "Unit" },
-    { itemName: "Bread", amount: "1", unit: "Unit" },
-  ];
+  const handleRemoveItem = (itemId) => {
+    console.log("Remove item", itemId);
+    const updatedList = list.filter((item) => item.id !== itemId);
+    setList(updatedList);
+    setListCount(updatedList.length);
+    const updatedData = {
+      ...data,
+      list: updatedList
+    };
+    onUpdateList(updatedData);
+  };
+
+  const handleListModalEdit = (newListName) => {
+    console.log("listModalObject", newListName);
+    setListName(newListName);
+    const updatedData = {
+      ...data,
+      listName: newListName
+    };
+    onUpdateList(updatedData);
+  };
+
+  const handleNewListItem = (newItem) => {
+    console.log('look at me')
+    console.log("new item", newItem);
+    const updatedList = [...list, newItem];
+    setList(updatedList);
+    setListCount(updatedList.length);
+    const updatedData = {
+      ...data,
+      list: updatedList
+    };
+    onUpdateList(updatedData);
+  };
+
+  const handleRemoveList = () => {
+    console.log("Remove list");
+    onRemoveList();
+  };
+
 
   const styles = {
     container: {
@@ -115,7 +146,7 @@ export default function ShoppingListCategory({
     },
     dropdownFont: {
       fontSize: 16,
-      color: Colors['fontBlack'],
+      color: Colors['primaryGray'],
     },
     dropdownRow: {
       width: '100%',
@@ -143,15 +174,22 @@ export default function ShoppingListCategory({
           <Text style={styles.dropdownFont}>Name</Text>
           <Text style={styles.dropdownFont}>Amount</Text>
         </View>
-        {shoppingListItems.map((item, index) => {
+        {list.map((item) => {
           return (
-            <View key={index} style={styles.dropdownRow}>
-              <ShoppingListItem item={item} onRemove={handleRemove} />
+            <View key={item.id} style={styles.dropdownRow}>
+              <ShoppingListItem item={item} onRemove={handleRemoveItem} />
             </View>
           );
         })}
         <View style={[styles.dropdownRow, styles.dropdownFooter]}>
-          <LabelledIcon icon="plus" label=" New Item" variant="list" color={Colors['primaryGray']} fontColor={Colors['primaryGray']} />
+          <LabelledIcon 
+            icon="plus" 
+            label=" New Item" 
+            variant="newListItem" 
+            color={Colors['fontBlack']} 
+            fontColor={Colors['fontBlack']}
+            onNewItem={handleNewListItem}
+          />
         </View>
       </View>
     );
@@ -167,7 +205,7 @@ export default function ShoppingListCategory({
               <Icon name={'arrow-down'} color={open ? Colors['white'] : Colors['primaryBlack']} size={15} />
             </View>
             <View style={styles.cardContainerText}>
-              <Text style={styles.text}>{listCategoryName}</Text>
+              <Text style={styles.text}>{listName}</Text>
               <Text style={[styles.text, { color: open ? Colors['white'] : Colors['fontGray'] }]}>{listCount}</Text>
             </View>
           </View>
@@ -184,15 +222,15 @@ export default function ShoppingListCategory({
         onToggleListModal={handleToggleListModal}
         showOptions={showOptionsModal}
         optionsType="list"
-        title={listCategoryName}
+        data={data}
+        onRemove={handleRemoveList}
       />
       <ListModal
         onToggleListModal={handleToggleListModal}
         showListModal={showListModal}
         type="edit"
-        title={listCategoryName}
-        data={{ listCategoryName, listCount }}
-        placeholder={listCategoryName}
+        data={data}
+        onSaveList={handleListModalEdit}
       />
     </View>
   );

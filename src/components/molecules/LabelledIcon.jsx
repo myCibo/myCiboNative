@@ -14,19 +14,32 @@ export default function LabelledIcon({
     variant = 'item',
     color = Colors['fontBlack'],
     fontColor = Colors['fontBlack'],
+    onNewList = () => {console.log('default onNewList')},
+    onNewItem = () => {console.log('default onNewItem')},
 }) {
+
+    // variants are 'item' and 'list' and 'edit'
 
     const [showItemModal, setShowItemModal] = useState(false);
     const [showListModal, setShowListModal] = useState(false);
-
 
     const handleToggleItemModal = () => {
         setShowItemModal(!showItemModal);
     };
 
-
     const handleToggleListModal = () => {
         setShowListModal(!showListModal);
+    };
+
+    // handle new list should pass the name back to the parent component
+    const handleNewList = (listName) => {
+        console.log('newListName', listName);
+        onNewList(listName);
+    };
+
+    const handleNewItem = (item) => {
+        console.log('newItem', item);
+        onNewItem(item);
     };
 
     const styles = {
@@ -53,8 +66,9 @@ export default function LabelledIcon({
                 <ListModal
                     onToggleListModal={handleToggleListModal}
                     showListModal={showListModal}
-                    type={variant === 'grocery' ? "add" : "list"}
-                    data={{ category: data.category ? data.category : 'Dairy' }}
+                    type={variant === 'newListItem' ? 'item' : variant === 'add' ? 'add' : 'edit'}
+                    onSaveList={handleNewList}
+                    onSaveItem={handleNewItem}
                 />
             </View>
         </TouchableWithoutFeedback>
