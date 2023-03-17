@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, TouchableHighlight } from 'react-native';
+import { View, Text, StyleSheet, TouchableWithoutFeedback, TouchableHighlight } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import Icon from '../atoms/Icon';
 import Colors from '../../constants/styles';
@@ -126,7 +126,7 @@ export default function ModalDropdown({
 
     return (
         <View style={styles.container}>
-            <TouchableOpacity onPress={handleOpen}>
+            <TouchableWithoutFeedback onPress={handleOpen}>
                 <View style={styles.itemContainer}>
                     <View style={styles.item}>
                         <Text>{selectedItem ? selectedItem.name : placeholder}</Text>
@@ -135,7 +135,7 @@ export default function ModalDropdown({
                         <Icon name="arrow-down" size={24} color={Colors['fontGray']} />
                     </View>
                 </View>
-            </TouchableOpacity>
+            </TouchableWithoutFeedback>
             {open && renderDropdown()}
         </View>
 
