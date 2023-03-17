@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { View, TextInput, StyleSheet, TouchableWithoutFeedback, TouchableHighlight, Text } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import Icon from "../atoms/Icon";
@@ -8,13 +8,13 @@ export default function ModalSearch({
   placeholder = 'Search',
   data = [],
   onChange,
+  selected,
 }) {
 
   const [searchQuery, setSearchQuery] = useState('');
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [currentData, setCurrentData] = useState(data);
   const [isFocused, setIsFocused] = useState(false);
-
 
   const handleSearch = (text) => {
     const newData = data.filter((item) => {
@@ -32,6 +32,7 @@ export default function ModalSearch({
   };
 
   const handleSelectItem = (item) => {
+    console.log('handleSelectedItem', item);
     setSearchQuery(item.name);
     onChange(item);
     setDropdownVisible(false);
@@ -45,6 +46,12 @@ export default function ModalSearch({
   const handleFocus = () => {
     setIsFocused(true);
   };
+
+  useEffect(() => {
+    if (selected) {
+      setSearchQuery(selected.name);
+    }
+  }, [selected]);
 
   const styles = StyleSheet.create({
     container: {
@@ -145,7 +152,7 @@ export default function ModalSearch({
           data={currentData}
           renderItem={({ item, index }) => (
             <TouchableHighlight
-              onPress={() => handleSelectItem(item.name)}
+              onPress={() => handleSelectItem(item)}
               activeOpacity={0.9}
               underlayColor={Colors['lightGreen']}
             >

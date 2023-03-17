@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { View, TextInput, StyleSheet, TouchableOpacity, TouchableHighlight, Text } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import Icon from "../atoms/Icon";
@@ -8,6 +8,7 @@ export default function ModalInput({
   placeholder = 'Search',
   type = 'search',
   onChange,
+  selected,
 }) {
 
   const [amountValue, setAmountValue] = useState('');
@@ -25,6 +26,13 @@ export default function ModalInput({
     setTextValue(text);
     onChange(text);
   };
+
+  useEffect(() => {
+    if (selected) {
+      setAmountValue(`${selected}`);
+      setTextValue(`${selected}`);
+    }
+  }, [selected]);
 
   const styles = StyleSheet.create({
     container: {

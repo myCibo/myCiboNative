@@ -43,10 +43,11 @@ export default function ListModal({
     }, [selectedItem, selectedMeasurement, selectedQuantity, type, listName]);
 
     const resetState = () => {
-        setSelectedItem(null);
-        setSelectedMeasurement(null);
-        setSelectedQuantity(null);
-        setListName('');
+        console.log("Resetting state")
+        // setSelectedItem(null);
+        // setSelectedMeasurement(null);
+        // setSelectedQuantity(null);
+        // setListName('');
     };
 
     const handleCloseModal = (event) => {
@@ -70,7 +71,7 @@ export default function ListModal({
         if (type === 'item') {
             newItem = {
                 id: Date.now(),
-                itemName: selectedItem,
+                itemName: selectedItem.name,
                 unit: selectedMeasurement,
                 amount: selectedQuantity,
             }
@@ -85,22 +86,23 @@ export default function ListModal({
     };
 
     const handleItemSelect = (item) => {
-        console.log("Item selected");
+        console.log("Item selected", item);
         setSelectedItem(item);
+        setSelectedMeasurement(item.measurement);
     };
 
     const handleMeasurementSelect = (measurement) => {
-        console.log("Measurement selected");
+        console.log("Measurement selected", measurement);
         setSelectedMeasurement(measurement);
     };
 
     const handleQuantityChange = (quantity) => {
-        console.log("Quantity changed");
+        console.log("Quantity changed", quantity);
         setSelectedQuantity(quantity);
     };
 
     const handleListNameChange = (name) => {
-        console.log("List name changed");
+        console.log("List name changed", name);
         setListName(name);
     };
 
@@ -191,7 +193,12 @@ export default function ListModal({
                     <View style={styles.category}>
                         <Text style={styles.categoryTitle}>List Name</Text>
                         <View style={styles.row}>
-                            <ModalInput placeholder={type === 'edit' ? listName : 'Name your list'} type='text' value={listName} onChange={handleListNameChange} />
+                            <ModalInput
+                                placeholder={'Name your list'}
+                                type='text'
+                                selected={listName}
+                                onChange={handleListNameChange}
+                            />
                         </View>
                     </View>
                 )}
@@ -199,7 +206,11 @@ export default function ListModal({
                     <View style={styles.category}>
                         <Text style={styles.categoryTitle}>Item Name</Text>
                         <View style={styles.row}>
-                            <ModalSearch placeholder='Find the ingredient' data={ingredientList} onChange={handleItemSelect} />
+                            <ModalSearch
+                                placeholder='Find the ingredient'
+                                data={ingredientList}
+                                onChange={handleItemSelect}
+                            />
                         </View>
                     </View>
                 )}
@@ -207,8 +218,17 @@ export default function ListModal({
                     <View style={styles.category}>
                         <Text style={styles.categoryTitle}>Amount</Text>
                         <View style={styles.row}>
-                            <ModalInput placeholder='0' type='number' value={selectedQuantity} onChange={handleQuantityChange} />
-                            <ModalDropdown placeholder={'Select a measurement'} data={measurementList} onChange={handleMeasurementSelect} />
+                            <ModalInput
+                                placeholder='0'
+                                type='number'
+                                onChange={handleQuantityChange}
+                            />
+                            <ModalDropdown
+                                placeholder={'Select a measurement'}
+                                data={measurementList}
+                                onChange={handleMeasurementSelect}
+                                selected={selectedMeasurement}
+                            />
                         </View>
                     </View>
                 )}
@@ -217,8 +237,8 @@ export default function ListModal({
                         text={type === 'edit' ? 'Confirm Changes' : type === 'add' ? 'Add New List' : 'Add New Item'}
                         backgroundColor={Colors.primaryGreen}
                         disabled={disabled}
-                        onPress={handleSaveOptionPress} 
-                        />
+                        onPress={handleSaveOptionPress}
+                    />
                 </View>
             </View>
         </Modal>

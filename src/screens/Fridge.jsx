@@ -5,12 +5,8 @@ import IngredientItem from '../components/molecules/IngredientItem';
 import LabelledIcon from '../components/molecules/LabelledIcon';
 import Icon from '../components/atoms/Icon';
 import Colors from '../constants/styles';
+import { calculateExpirationTime } from '../utils/expirationCalculator';
 
-const calculateExpiration = (purchaseDateStr, expirationDateStr) => {
-  const purchaseDate = new Date(purchaseDateStr);
-  const expirationDate = new Date(expirationDateStr);
-  return Math.floor((expirationDate - purchaseDate) / (1000 * 60 * 60 * 24));
-};
 
 const ingredientsDataInitial = [
   {
@@ -75,7 +71,7 @@ const ingredientsDataInitial = [
   },
 ].map((ingredient) => ({
   ...ingredient,
-  expiration: calculateExpiration(ingredient.purchaseDate, ingredient.expirationDate),
+  expiration: calculateExpirationTime(ingredient.purchaseDate, ingredient.expirationDate),
 }));
 
 const FridgeScreen = () => {

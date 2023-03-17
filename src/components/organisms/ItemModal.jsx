@@ -14,6 +14,7 @@ import ModalInput from "../molecules/ModalInput";
 import ModalDropdown from "../molecules/ModalDropdown";
 import ModalDatePicker from "../molecules/ModalDatePicker";
 import { getIngredients, getMeasurements, getCategories } from '../../constants/FoodData';
+import { calculateExpirationDate, calculateExpirationTime } from "../../utils/expirationCalculator";
 
 export default function ItemModal({
   showItemModal,
@@ -29,9 +30,9 @@ export default function ItemModal({
   const categoryList = getCategories();
   const ingredientObject = data || {};
 
-  const [selectedItem, setSelectedItem] = useState(ingredientObject?.name || null);
+  const [selectedItem, setSelectedItem] = useState(ingredientObject || null);
   const [selectedMeasurement, setSelectedMeasurement] = useState(ingredientObject?.measurement || null);
-  const [selectedQuantity, setSelectedQuantity] = useState(ingredientObject?.amount || null);
+  const [selectedQuantity, setSelectedQuantity] = useState(ingredientObject?.amount || '');
   const [selectedCategory, setSelectedCategory] = useState(ingredientObject?.category || null);
   const [selectedPurchaseDate, setSelectedPurchaseDate] = useState(ingredientObject?.purchaseDate || null);
   const [selectedExpirationDate, setSelectedExpirationDate] = useState(ingredientObject?.expirationDate || null);
@@ -50,12 +51,13 @@ export default function ItemModal({
   }, [selectedItem, selectedMeasurement, selectedQuantity, selectedCategory, selectedPurchaseDate, selectedExpirationDate]);
 
   const resetState = () => {
-    setSelectedItem(null);
-    setSelectedMeasurement(null);
-    setSelectedQuantity(null);
-    setSelectedCategory(null);
-    setSelectedPurchaseDate(null);
-    setSelectedExpirationDate(null);
+    console.log("Resetting state")
+    // setSelectedItem(null);
+    // setSelectedMeasurement(null);
+    // setSelectedQuantity('');
+    // setSelectedCategory(null);
+    // setSelectedPurchaseDate(null);
+    // setSelectedExpirationDate(null);
   };
 
   const handleToggleExpanded = () => {
@@ -90,6 +92,12 @@ export default function ItemModal({
   const handleItemSelect = (item) => {
     console.log("Item selected", item);
     setSelectedItem(item);
+    setSelectedMeasurement(item.measurement);
+    setSelectedCategory(item.category);
+
+    const purchaseDate = selectedPurchaseDate || new Date();
+    setSelectedPurchaseDate(purchaseDate);
+    setSelectedExpirationDate(calculateExpirationDate(purchaseDate, item.expirationTime));
   };
 
   const handleMeasurementSelect = (measurement) => {
@@ -109,181 +117,198 @@ export default function ItemModal({
 
   const handleSaveItem = () => {
     console.log("Save item pressed");
-    const ingredient = {
-      id: Date.now(),
-      name: selectedItem,
-      measurement: selectedMeasurement,
-      amount: selectedQuantity,
-      category: selectedCategory,
-      purchaseDate: selectedPurchaseDate,
-      expirationDate: selectedExpirationDate,
+    let ingredient = {};
+    if (expanded === true) {
+      ingredient = {
+        id: ingredientObject.id || Date.now(),
+        name: selectedItem.name,
+        measurement: selectedMeasurement,
+        amount: selectedQuantity,
+        category: selectedCategory,
+        purchaseDate: selectedPurchaseDate,
+        expirationDate: selectedExpirationDate,
+        expiration: calculateExpirationTime(selectedPurchaseDate, selectedExpirationDate),
+      };
+    } else {
+      ingredient = {
+        id: ingredientObject.id || Date.now(),
+        name: selectedItem.name,
+        measurement: selectedMeasurement,
+        amount: selectedQuantity,
+        category: selectedItem.category,
+        purchaseDate: new Date(),
+        expirationDate: calculateExpirationDate(new Date(), selectedItem.expirationTime),
+        expiration: calculateExpirationTime(selectedPurchaseDate, selectedExpirationDate),
+      };
+    }
+      onSave(ingredient);
+      resetState();
+      onToggleItemModal();
     };
-    onSave(ingredient);
-    resetState();
-    onToggleItemModal();
-  };
 
-  const styles = StyleSheet.create({
-    modal: {
-      position: "absolute",
-      backgroundColor: Colors['creamyWhite'],
-      borderTopLeftRadius: 10,
-      borderTopRightRadius: 10,
-      marginHorizontal: 0,
-      marginVertical: 0,
-      paddingHorizontal: 16,
-      paddingVertical: 16,
-      bottom: 0,
-      width: "100%",
-    },
-    viewModal: {
-      flex: 1,
-      width: "100%",
-      gap: showExpanded ? 16 : 32,
-      flexDirection: "column",
-      alignItems: "center",
-      justifyContent: "center",
-    },
-    optionRow: {
-      alignItems: "center",
-      justifyContent: "space-between",
-      width: "100%",
-      flexDirection: "row",
-    },
-    title: {
-      fontSize: 22,
-      fontWeight: "bold",
-    },
-    optionIcon: {
-      width: 24,
-      height: 24,
-    },
-    category: {
-      flexDirection: "column",
-      alignItems: "flex-start",
-      justifyContent: "center",
-      width: "100%",
-      gap: 16,
-    },
-    categoryTitle: {
-      fontSize: 18,
-      fontWeight: "bold",
-      color: Colors['fontGray'],
-    },
-    row: {
-      flexDirection: "row",
-      justifyContent: "flex-start",
-      alignItems: "flex-start",
-      width: "100%",
-      gap: 32,
-    },
-    bottom: {
-      flex: 1,
-      padding: showExpanded ? 16 : 32,
-      gap: 32,
-    },
-  });
+    const styles = StyleSheet.create({
+      modal: {
+        position: "absolute",
+        backgroundColor: Colors['creamyWhite'],
+        borderTopLeftRadius: 10,
+        borderTopRightRadius: 10,
+        marginHorizontal: 0,
+        marginVertical: 0,
+        paddingHorizontal: 16,
+        paddingVertical: 16,
+        bottom: 0,
+        width: "100%",
+      },
+      viewModal: {
+        flex: 1,
+        width: "100%",
+        gap: showExpanded ? 16 : 32,
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+      },
+      optionRow: {
+        alignItems: "center",
+        justifyContent: "space-between",
+        width: "100%",
+        flexDirection: "row",
+      },
+      title: {
+        fontSize: 22,
+        fontWeight: "bold",
+      },
+      optionIcon: {
+        width: 24,
+        height: 24,
+      },
+      category: {
+        flexDirection: "column",
+        alignItems: "flex-start",
+        justifyContent: "center",
+        width: "100%",
+        gap: 16,
+      },
+      categoryTitle: {
+        fontSize: 18,
+        fontWeight: "bold",
+        color: Colors['fontGray'],
+      },
+      row: {
+        flexDirection: "row",
+        justifyContent: "flex-start",
+        alignItems: "flex-start",
+        width: "100%",
+        gap: 32,
+      },
+      bottom: {
+        flex: 1,
+        padding: showExpanded ? 16 : 32,
+        gap: 32,
+      },
+    });
 
 
-  return (
-    <Modal
-      isVisible={showItemModal}
-      onBackdropPress={handleCloseModal}
-      onBackButtonPress={handleCloseModal}
-      backdropOpacity={0.8}
-      backdropTransitionOutTiming={0}
-      style={styles.modal}
-    >
-      <View
-        onStartShouldSetResponder={() => true}
-        style={styles.viewModal}
+    return (
+      <Modal
+        isVisible={showItemModal}
+        onBackdropPress={handleCloseModal}
+        onBackButtonPress={handleCloseModal}
+        backdropOpacity={0.8}
+        backdropTransitionOutTiming={0}
+        style={styles.modal}
       >
-        <View style={styles.optionRow}>
-          <Text style={styles.title}>{type === 'edit' ? `Edit ${ingredientObject?.name}` : 'Add New Item'}</Text>
-          <TouchableOpacity onPress={handleCancelOptionPress}>
-            <View>
-              <Icon name="close" size={32} color={Colors['primaryBlack']} />
-            </View>
-          </TouchableOpacity>
-        </View>
+        <View
+          onStartShouldSetResponder={() => true}
+          style={styles.viewModal}
+        >
+          <View style={styles.optionRow}>
+            <Text style={styles.title}>{type === 'edit' ? `Edit ${ingredientObject?.name}` : 'Add New Item'}</Text>
+            <TouchableOpacity onPress={handleCancelOptionPress}>
+              <View>
+                <Icon name="close" size={32} color={Colors['primaryBlack']} />
+              </View>
+            </TouchableOpacity>
+          </View>
 
-        <View style={styles.category}>
-          <Text style={styles.categoryTitle}>Item Name</Text>
-          <View style={styles.row}>
-            <ModalSearch
-              placeholder={'Find Ingredient'}
-              data={ingredientList}
-              onChange={handleItemSelect}
-            />
-          </View>
-        </View>
-        <View style={styles.category}>
-          <Text style={styles.categoryTitle}>Amount</Text>
-          <View style={styles.row}>
-            <ModalInput
-              placeholder={'0'}
-              type='number'
-              onChange={handleQuantityChange}
-            />
-            <ModalDropdown
-              placeholder={'Select Measurement'}
-              data={measurementList}
-              onChange={handleMeasurementSelect}
-              selected={selectedMeasurement}
-            />
-          </View>
-        </View>
-        {showExpanded === true && (
           <View style={styles.category}>
-            <Text style={styles.categoryTitle}>Food Type</Text>
+            <Text style={styles.categoryTitle}>Item Name</Text>
             <View style={styles.row}>
+              <ModalSearch
+                placeholder={'Find Ingredient'}
+                data={ingredientList}
+                onChange={handleItemSelect}
+                selected={selectedItem}
+              />
+            </View>
+          </View>
+          <View style={styles.category}>
+            <Text style={styles.categoryTitle}>Amount</Text>
+            <View style={styles.row}>
+              <ModalInput
+                placeholder={'0'}
+                type='number'
+                onChange={handleQuantityChange}
+                selected={selectedQuantity}
+              />
               <ModalDropdown
-                placeholder={'Select Category'}
-                data={categoryList}
-                onChange={handleCategorySelect}
-                selected={selectedCategory}
+                placeholder={'Select Measurement'}
+                data={measurementList}
+                onChange={handleMeasurementSelect}
+                selected={selectedMeasurement}
               />
             </View>
           </View>
-        )}
-        {showExpanded === true && (
-          <View style={styles.category}>
-            <Text style={styles.categoryTitle}>Purchase Date</Text>
-            <View style={styles.row}>
-              <ModalDatePicker
-                onDateChange={handlePurchaseDate}
-                selected={selectedPurchaseDate}
-              />
+          {showExpanded === true && (
+            <View style={styles.category}>
+              <Text style={styles.categoryTitle}>Food Type</Text>
+              <View style={styles.row}>
+                <ModalDropdown
+                  placeholder={'Select Category'}
+                  data={categoryList}
+                  onChange={handleCategorySelect}
+                  selected={selectedCategory}
+                />
+              </View>
             </View>
-          </View>
-        )}
-        {showExpanded === true && (
-          <View style={styles.category}>
-            <Text style={styles.categoryTitle}>Expiration Date</Text>
-            <View style={styles.row}>
-              <ModalDatePicker
-                onDateChange={handleExpirationDate}
-                selected={selectedExpirationDate}
-              />
-            </View>
-          </View>
-        )}
-        <View style={styles.bottom}>
-          {showExpanded === false && (
-            <CustomButton
-              text='More Options'
-              backgroundColor={Colors.primaryYellow}
-              onPress={handleToggleExpanded}
-            />
           )}
-          <CustomButton
-            text={type === 'add' ? 'Add New Item' : 'Confirm Changes'}
-            backgroundColor={Colors.primaryGreen}
-            disabled={disabled}
-            onPress={handleSaveItem}
-          />
+          {showExpanded === true && (
+            <View style={styles.category}>
+              <Text style={styles.categoryTitle}>Purchase Date</Text>
+              <View style={styles.row}>
+                <ModalDatePicker
+                  onDateChange={handlePurchaseDate}
+                  selected={selectedPurchaseDate}
+                />
+              </View>
+            </View>
+          )}
+          {showExpanded === true && (
+            <View style={styles.category}>
+              <Text style={styles.categoryTitle}>Expiration Date</Text>
+              <View style={styles.row}>
+                <ModalDatePicker
+                  onDateChange={handleExpirationDate}
+                  selected={selectedExpirationDate}
+                />
+              </View>
+            </View>
+          )}
+          <View style={styles.bottom}>
+            {showExpanded === false && (
+              <CustomButton
+                text='More Options'
+                backgroundColor={Colors.primaryYellow}
+                onPress={handleToggleExpanded}
+              />
+            )}
+            <CustomButton
+              text={type === 'add' ? 'Add New Item' : 'Confirm Changes'}
+              backgroundColor={Colors.primaryGreen}
+              disabled={disabled}
+              onPress={handleSaveItem}
+            />
+          </View>
         </View>
-      </View>
-    </Modal>
-  );
-}
+      </Modal>
+    );
+  }
