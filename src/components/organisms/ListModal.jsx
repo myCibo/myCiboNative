@@ -44,10 +44,10 @@ export default function ListModal({
 
     const resetState = () => {
         console.log("Resetting state")
-        // setSelectedItem(null);
-        // setSelectedMeasurement(null);
-        // setSelectedQuantity(null);
-        // setListName('');
+        setSelectedItem(null);
+        setSelectedMeasurement(null);
+        setSelectedQuantity(null);
+        setListName('');
     };
 
     const handleCloseModal = (event) => {

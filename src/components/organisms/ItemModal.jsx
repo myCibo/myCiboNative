@@ -52,12 +52,12 @@ export default function ItemModal({
 
   const resetState = () => {
     console.log("Resetting state")
-    // setSelectedItem(null);
-    // setSelectedMeasurement(null);
-    // setSelectedQuantity('');
-    // setSelectedCategory(null);
-    // setSelectedPurchaseDate(null);
-    // setSelectedExpirationDate(null);
+    setSelectedItem(null);
+    setSelectedMeasurement(null);
+    setSelectedQuantity('');
+    setSelectedCategory(null);
+    setSelectedPurchaseDate(null);
+    setSelectedExpirationDate(null);
   };
 
   const handleToggleExpanded = () => {
@@ -143,6 +143,7 @@ export default function ItemModal({
     }
       onSave(ingredient);
       resetState();
+      setDisabled(true);
       onToggleItemModal();
     };
 
