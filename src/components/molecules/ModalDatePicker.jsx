@@ -6,7 +6,8 @@ import Icon from '../atoms/Icon';
 
 export default function DatePicker({
   data = {},
-  onDateChange
+  onDateChange,
+  placholder = 'Select Date',
 }) {
 
   const [date, setDate] = useState(new Date());

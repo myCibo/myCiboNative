@@ -19,8 +19,7 @@ export default function ListModal({
     type = 'item',  // type is either 'item' or 'list' or 'edit'
     onToggleListModal,
     data = {},
-    onSaveList = () => { console.log('onSaveList default') },
-    onSaveItem = () => { console.log('onSaveItem default') },
+    onSave = () => { console.log('onSaveList default') },
 }) {
 
     const ingredientList = getIngredients();
@@ -53,12 +52,14 @@ export default function ListModal({
     const handleCloseModal = (event) => {
         if (!event || (event.target === event.currentTarget)) {
             console.log("Modal closed");
+            resetState();
             onToggleListModal();
         }
     };
 
-    const handleCancelOptionPress = (event) => {
+    const handleCancelOptionPress = () => {
         console.log("Cancel option pressed");
+        resetState();
         onToggleListModal();
 
     };
@@ -69,16 +70,17 @@ export default function ListModal({
         if (type === 'item') {
             newItem = {
                 id: Date.now(),
-                itemName: selectedItem?.name,
-                unit: selectedMeasurement?.name,
+                itemName: selectedItem,
+                unit: selectedMeasurement,
                 amount: selectedQuantity,
             }
             console.log('onSaveItem', newItem)
-            onSaveItem(newItem);
+            onSave(newItem);
         } else {
-            onSaveList(listName);
+            onSave(listName);
         }
         resetState();
+        setDisabled(true);
         onToggleListModal();
     };
 
@@ -211,7 +213,12 @@ export default function ListModal({
                     </View>
                 )}
                 <View style={styles.bottom}>
-                    <CustomButton text={type === 'edit' ? 'Confirm Changes' : type === 'add' ? 'Add New List' : 'Add New Item'} backgroundColor={Colors.primaryGreen} disabled={disabled} onPress={handleSaveOptionPress} />
+                    <CustomButton
+                        text={type === 'edit' ? 'Confirm Changes' : type === 'add' ? 'Add New List' : 'Add New Item'}
+                        backgroundColor={Colors.primaryGreen}
+                        disabled={disabled}
+                        onPress={handleSaveOptionPress} 
+                        />
                 </View>
             </View>
         </Modal>

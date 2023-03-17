@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { View, TextInput, StyleSheet, TouchableOpacity, TouchableHighlight, Text } from 'react-native';
+import { View, TextInput, StyleSheet, TouchableWithoutFeedback, TouchableHighlight, Text } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import Icon from "../atoms/Icon";
 import Colors from "../../constants/styles";
@@ -129,11 +129,11 @@ export default function ModalSearch({
   const renderCloseIcon = () => {
     if (searchQuery !== '' && isFocused) {
       return (
-        <TouchableOpacity onPress={() => { setSearchQuery(''), setDropdownVisible(false) }}>
+        <TouchableWithoutFeedback onPress={() => { setSearchQuery(''), setDropdownVisible(false) }}>
           <View style={styles.icon}>
             <Icon name="close" size={32} color={Colors['fontGray']} />
           </View>
-        </TouchableOpacity>
+        </TouchableWithoutFeedback>
       )
     }
   }
@@ -145,7 +145,7 @@ export default function ModalSearch({
           data={currentData}
           renderItem={({ item, index }) => (
             <TouchableHighlight
-              onPress={() => handleSelectItem(item)}
+              onPress={() => handleSelectItem(item.name)}
               activeOpacity={0.9}
               underlayColor={Colors['lightGreen']}
             >

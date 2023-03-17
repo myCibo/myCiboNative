@@ -12,7 +12,7 @@ import Colors from "../../constants/styles";
 
 export default function OptionsModal({
   showOptions,
-  optionsType,
+  optionsType, // optionsType is either 'ingredient' or 'list'
   onToggleModal = {},
   onToggleItemModal = {},
   onToggleListModal = {},
@@ -108,7 +108,7 @@ export default function OptionsModal({
       <View>
         <TouchableOpacity onPress={handleCancelOptionPress}>
           <View style={styles.optionRow}>
-            <Text style={styles.title}>{data.listName}</Text>
+            <Text style={styles.title}>{data.listName || data.name}</Text>
             <TouchableOpacity onPress={handleCancelOptionPress}>
               <View>
                 <Icon name="close" size={32} color={Colors['primaryBlack']} />

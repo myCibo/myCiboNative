@@ -14,8 +14,7 @@ export default function LabelledIcon({
     variant = 'item',
     color = Colors['fontBlack'],
     fontColor = Colors['fontBlack'],
-    onNewList = () => {console.log('default onNewList')},
-    onNewItem = () => {console.log('default onNewItem')},
+    onNew = () => {console.log('default')},
 }) {
 
     // variants are 'item' and 'list' and 'edit'
@@ -31,15 +30,9 @@ export default function LabelledIcon({
         setShowListModal(!showListModal);
     };
 
-    // handle new list should pass the name back to the parent component
-    const handleNewList = (listName) => {
-        console.log('newListName', listName);
-        onNewList(listName);
-    };
-
-    const handleNewItem = (item) => {
-        console.log('newItem', item);
-        onNewItem(item);
+    const handleNew = (data) => {
+        console.log('newObject', data);
+        onNew(data);
     };
 
     const styles = {
@@ -61,14 +54,14 @@ export default function LabelledIcon({
                     showItemModal={showItemModal}
                     type="add"
                     expanded={false}
-                    data={{ category: data.category ? data.category : 'Dairy' }}
+                    data={{ category: data.category ? data.category : null }}
+                    onSave={handleNew}
                 />
                 <ListModal
                     onToggleListModal={handleToggleListModal}
                     showListModal={showListModal}
                     type={variant === 'newListItem' ? 'item' : variant === 'add' ? 'add' : 'edit'}
-                    onSaveList={handleNewList}
-                    onSaveItem={handleNewItem}
+                    onSave={handleNew}
                 />
             </View>
         </TouchableOpacity>

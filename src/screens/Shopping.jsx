@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -42,28 +42,6 @@ const Shopping = () => {
     },
   ]);
 
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      alignItems: "center",
-      justifyContent: "center",
-      width: "100%",
-      backgroundColor: Colors["creamyWhite"],
-    },
-    header: {
-      flexDirection: "row",
-      justifyContent: "flex-end",
-      width: "100%",
-      paddingVertical: 10,
-      paddingHorizontal: 20,
-    },
-    contentContainer: {
-      width: "100%",
-      paddingHorizontal: 20,
-      gap: 20,
-    },
-  });
-
   const handleNewListEntry = (data) => {
     console.log("New list entry: ", data)
     const newList = {
@@ -90,6 +68,28 @@ const Shopping = () => {
     );
   };
 
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      alignItems: "center",
+      justifyContent: "center",
+      width: "100%",
+      backgroundColor: Colors["creamyWhite"],
+    },
+    header: {
+      flexDirection: "row",
+      justifyContent: "flex-end",
+      width: "100%",
+      paddingVertical: 10,
+      paddingHorizontal: 20,
+    },
+    contentContainer: {
+      width: "100%",
+      paddingHorizontal: 20,
+      gap: 20,
+    },
+  });
+
   const renderingCategories = () => {
     return shoppingLists.map((shoppingList) => {
       return (
@@ -111,7 +111,7 @@ const Shopping = () => {
           iconPos={0}
           iconName="add"
           variant="add"
-          onNewList={handleNewListEntry}
+          onNew={handleNewListEntry}
         />
       </View>
       <ScrollView

@@ -4,210 +4,210 @@ const ingredientData =
             id: 1,
             name: 'Apples',
             expirationTime: 14, // Apples typically last 2-4 weeks
-            category: 'Fruit',
+            category: 'Fruits',
             measurement: 'Bunch',
         },
         {
             id: 2,
             name: 'Bananas',
             expirationTime: 5, // Bananas typically last 2-7 days
-            category: 'Fruit',
+            category: 'Fruits',
             measurement: 'Bunch',
         },
         {
             id: 3,
             name: 'Oranges',
             expirationTime: 14, // Oranges typically last 2-4 weeks
-            category: 'Fruit',
+            category: 'Fruits',
             measurement: 'Piece',
         },
         {
             id: 4,
             name: 'Grapes',
             expirationTime: 5, // Grapes typically last 5-7 days
-            category: 'Fruit',
+            category: 'Fruits',
             measurement: 'Bunch',
         },
         {
             id: 5,
             name: 'Strawberries',
             expirationTime: 3, // Strawberries typically last 2-5 days
-            category: 'Fruit',
+            category: 'Fruits',
             measurement: 'Punnet',
         },
         {
             id: 6,
             name: 'Blueberries',
             expirationTime: 5, // Blueberries typically last 3-7 days
-            category: 'Fruit',
+            category: 'Fruits',
             measurement: 'Punnet',
         },
         {
             id: 7,
             name: 'Raspberries',
             expirationTime: 3, // Raspberries typically last 2-5 days
-            category: 'Fruit',
+            category: 'Fruits',
             measurement: 'Punnet',
         },
         {
             id: 8,
             name: 'Pineapple',
             expirationTime: 5, // Pineapple typically lasts 3-5 days
-            category: 'Fruit',
+            category: 'Fruits',
             measurement: 'Piece',
         },
         {
             id: 9,
             name: 'Mangoes',
             expirationTime: 5, // Mangoes typically last 2-7 days
-            category: 'Fruit',
+            category: 'Fruits',
             measurement: 'Piece',
         },
         {
             id: 10,
             name: 'Pears',
             expirationTime: 10, // Pears typically last 1-2 weeks
-            category: 'Fruit',
+            category: 'Fruits',
             measurement: 'Bunch',
         },
         {
             id: 11,
             name: 'Peaches',
             expirationTime: 5, // Peaches typically last 2-5 days
-            category: 'Fruit',
+            category: 'Fruits',
             measurement: 'Bunch',
         },
         {
             id: 12,
             name: 'Plums',
             expirationTime: 7, // Plums typically last 3-7 days
-            category: 'Fruit',
+            category: 'Fruits',
             measurement: 'Bunch',
         },
         {
             id: 13,
             name: 'Cherries',
             expirationTime: 3, // Cherries typically last 2-5 days
-            category: 'Fruit',
+            category: 'Fruits',
             measurement: 'Punnet',
         },
         {
             id: 14,
             name: 'Kiwi',
             expirationTime: 7, // Kiwi typically last 3-7 days
-            category: 'Fruit',
+            category: 'Fruits',
             measurement: 'Piece',
         },
         {
             id: 15,
             name: 'Cantaloupe',
             expirationTime: 5, // Cantaloupe typically lasts 3-5 days
-            category: 'Fruit',
+            category: 'Fruits',
             measurement: 'Piece',
         },
         {
             id: 16,
             name: 'Watermelon',
             expirationTime: 7, // Watermelon typically lasts 5-7 days
-            category: 'Fruit',
+            category: 'Fruits',
             measurement: 'Piece',
         },
         {
             id: 17,
             name: 'Grapefruit',
             expirationTime: 14, // Grapefruit typically lasts 2-4 weeks
-            category: 'Fruit',
+            category: 'Fruits',
             measurement: 'Piece',
         },
         {
             id: 18,
             name: 'Lemon',
             expirationTime: 7, // Lemon typically lasts 1-2 weeks
-            category: 'Fruit',
+            category: 'Fruits',
             measurement: 'Piece',
         },
         {
             id: 19,
             name: 'Lime',
             expirationTime: 7, // Lime typically lasts 1-2 weeks
-            category: 'Fruit',
+            category: 'Fruits',
             measurement: 'Piece',
         },
         {
             id: 20,
             name: 'Tangerines',
             expirationTime: 10, // Tangerines typically last 1-2 weeks
-            category: 'Fruit',
+            category: 'Fruits',
             measurement: 'Bunch',
         },
         {
             id: 21,
             name: 'Clementines',
             expirationTime: 7, // Clementines typically last 1-2 weeks
-            category: 'Fruit',
+            category: 'Fruits',
             measurement: 'Bunch',
         },
         {
             id: 22,
             name: 'Apricots',
             expirationTime: 5, // Apricots typically last 2-5 days
-            category: 'Fruit',
+            category: 'Fruits',
             measurement: 'Bunch',
         },
         {
             id: 23,
             name: 'Blackberries',
             expirationTime: 3, // Blackberries typically last 2-5 days
-            category: 'Fruit',
+            category: 'Fruits',
             measurement: 'Punnet',
         },
         {
             id: 24,
             name: 'Cranberries',
             expirationTime: 7, // Cranberries typically last 1-2 weeks
-            category: 'Fruit',
+            category: 'Fruits',
             measurement: 'Punnet',
         },
         {
             id: 25,
             name: 'Dates',
             expirationTime: 30, // Dates typically last 2-4 weeks
-            category: 'Fruit',
+            category: 'Fruits',
             measurement: 'Bunch',
         },
         {
             id: 26,
             name: 'Figs',
             expirationTime: 5, // Figs typically last 2-5 days
-            category: 'Fruit',
+            category: 'Fruits',
             measurement: 'Bunch',
         },
         {
             id: 27,
             name: 'Guava',
             expirationTime: 5, // Guava typically last 3-5 days
-            category: 'Fruit',
+            category: 'Fruits',
             measurement: 'Piece',
         },
         {
             id: 28,
             name: 'Honeydew',
             expirationTime: 5, // Honeydew typically lasts 3-5 days
-            category: 'Fruit',
+            category: 'Fruits',
             measurement: 'Piece',
         },
         {
             id: 29,
             name: 'Lychee',
             expirationTime: 5, // Lychee typically last 3-5 days
-            category: 'Fruit',
+            category: 'Fruits',
             measurement: 'Bunch',
         },
         {
             id: 30,
             name: 'Mandarin',
             expirationTime: 7, // Mandarin typically last 1-2 weeks
-            category: 'Fruit',
+            category: 'Fruits',
             measurement: 'Bunch',
         },
         {
@@ -1868,6 +1868,59 @@ const measurementData =
             name: 'Item',
         },
     ]
+
+const categoryData =
+    [
+        {
+            id: 1,
+            name: 'Baking',
+        },
+        {
+            id: 2,
+            name: 'Beverages',
+        },
+        {
+            id: 3,
+            name: 'Canned Goods',
+        },
+        {
+            id: 4,
+            name: 'Condiments',
+        },
+        {
+            id: 5,
+            name: 'Dairy',
+        },
+        {
+            id: 6,
+            name: 'Fruits',
+        },
+        {
+            id: 7,
+            name: 'Frozen',
+        },
+        {
+            id: 8,
+            name: 'Meat',
+        },
+        {
+            id: 9,
+            name: 'Vegetables',
+        },
+        {
+            id: 10,
+            name: 'Spices',
+        },
+        {
+            id: 11,
+            name: 'Other',
+        },
+    ]
+
+
+export const getCategories = () => {
+    return categoryData.slice()
+}
 
 export const getIngredients = () => {
     return ingredientData.slice()
