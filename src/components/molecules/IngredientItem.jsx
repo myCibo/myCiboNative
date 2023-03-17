@@ -3,7 +3,7 @@ import {
   StyleSheet,
   Text,
   View,
-  TouchableWithoutFeedback,
+  TouchableOpacity,
   Image,
 } from "react-native";
 import OptionsModal from "../organisms/OptionsModal";
@@ -61,7 +61,7 @@ export default function IngredientItem({
   };
 
   return (
-    <TouchableWithoutFeedback onPress={handleToggleModal}>
+    <TouchableOpacity onPress={handleToggleModal}>
       <View style={styles.container}>
         <View style={styles.textContainer}>
           <Text style={styles.text}>{ingredientName}</Text>
@@ -88,6 +88,6 @@ export default function IngredientItem({
           title={ingredientName}
         />
       </View>
-    </TouchableWithoutFeedback>
+    </TouchableOpacity>
   );
 }

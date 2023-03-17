@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { View, TextInput, StyleSheet, TouchableWithoutFeedback, TouchableHighlight, Text } from 'react-native';
+import { View, TextInput, StyleSheet, TouchableOpacity, TouchableHighlight, Text } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import Icon from "../atoms/Icon";
 import Colors from "../../constants/styles";
 
-export default function ModalInput({
+export default function ModalSearch({
   placeholder = 'Search',
   data = [],
   onChange,
@@ -12,8 +12,8 @@ export default function ModalInput({
 
   const [searchQuery, setSearchQuery] = useState('');
   const [dropdownVisible, setDropdownVisible] = useState(false);
-  const [selectedItem, setSelectedItem] = useState({});
   const [currentData, setCurrentData] = useState(data);
+  const [isFocused, setIsFocused] = useState(false);
 
 
   const handleSearch = (text) => {
@@ -24,7 +24,7 @@ export default function ModalInput({
     });
     setCurrentData(newData);
     setSearchQuery(text);
-    
+
     setDropdownVisible(true);
     if (text === '' || newData.length === 0) {
       setDropdownVisible(false);
@@ -32,10 +32,18 @@ export default function ModalInput({
   };
 
   const handleSelectItem = (item) => {
-    setSelectedItem(item);
     setSearchQuery(item.name);
     onChange(item);
     setDropdownVisible(false);
+  };
+
+  const handleBlur = () => {
+    setIsFocused(false);
+    setDropdownVisible(false);
+  };
+
+  const handleFocus = () => {
+    setIsFocused(true);
   };
 
   const styles = StyleSheet.create({
@@ -119,13 +127,13 @@ export default function ModalInput({
   });
 
   const renderCloseIcon = () => {
-    if (searchQuery !== '') {
+    if (searchQuery !== '' && isFocused) {
       return (
-        <TouchableWithoutFeedback onPress={() => { setSearchQuery(''), setDropdownVisible(false) }}>
+        <TouchableOpacity onPress={() => { setSearchQuery(''), setDropdownVisible(false) }}>
           <View style={styles.icon}>
             <Icon name="close" size={32} color={Colors['fontGray']} />
           </View>
-        </TouchableWithoutFeedback>
+        </TouchableOpacity>
       )
     }
   }
@@ -149,7 +157,6 @@ export default function ModalInput({
           keyExtractor={(item) => item.id}
         />
       </View>
-
     )
   }
 
@@ -164,6 +171,8 @@ export default function ModalInput({
             placeholder={placeholder}
             value={searchQuery}
             onChangeText={handleSearch}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
             style={styles.input}
           />
         </View>

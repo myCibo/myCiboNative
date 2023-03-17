@@ -2,7 +2,7 @@ import {
   StyleSheet,
   Text,
   View,
-  TouchableWithoutFeedback,
+  TouchableOpacity,
   Image,
 } from "react-native";
 import { useState } from "react";
@@ -152,14 +152,16 @@ export default function ItemModal({
       backdropTransitionOutTiming={0}
       style={styles.modal}
     >
-      <TouchableWithoutFeedback onPress={handleCancelOptionPress}>
-        <View style={styles.optionRow}>
-          <Text style={styles.title}>{type === 'edit' ? `Edit ${title}` : 'Add New Item'}</Text>
-          <TouchableWithoutFeedback onPress={handleCancelOptionPress}>
+
+      <View style={styles.optionRow}>
+        <Text style={styles.title}>{type === 'edit' ? `Edit ${title}` : 'Add New Item'}</Text>
+        <TouchableOpacity onPress={handleCancelOptionPress}>
+          <View>
             <Icon name="close" size={32} color={Colors['primaryBlack']} />
-          </TouchableWithoutFeedback>
-        </View>
-      </TouchableWithoutFeedback>
+          </View>
+        </TouchableOpacity>
+      </View>
+
       <View style={styles.category}>
         <Text style={styles.categoryTitle}>Item Name</Text>
         <View style={styles.row}>

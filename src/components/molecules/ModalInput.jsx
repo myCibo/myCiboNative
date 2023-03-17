@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { View, TextInput, StyleSheet, TouchableWithoutFeedback, TouchableHighlight, Text } from 'react-native';
+import { View, TextInput, StyleSheet, TouchableOpacity, TouchableHighlight, Text } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import Icon from "../atoms/Icon";
 import Colors from "../../constants/styles";
@@ -53,11 +53,11 @@ export default function ModalInput({
   const renderCloseIcon = () => {
     if (textValue !== '') {
       return (
-        <TouchableWithoutFeedback onPress={() => { setTextValue('') }}>
+        <TouchableOpacity onPress={() => { setTextValue('') }}>
           <View style={styles.icon}>
             <Icon name="close" size={32} color={Colors['fontGray']} />
           </View>
-        </TouchableWithoutFeedback>
+        </TouchableOpacity>
       )
     }
   }

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TouchableWithoutFeedback, Text, Image, View } from 'react-native';
+import { TouchableOpacity, Text, Image, View } from 'react-native';
 import Icon from '../atoms/Icon';
 import Colors from '../../constants/styles';
 import ItemModal from '../organisms/ItemModal';
@@ -52,7 +52,7 @@ export default function LabelledIcon({
 
 
     return (
-        <TouchableWithoutFeedback onPress={variant === 'item' ? handleToggleItemModal : handleToggleListModal}>
+        <TouchableOpacity onPress={variant === 'item' ? handleToggleItemModal : handleToggleListModal}>
             <View style={styles.container}>
                 <Icon name={iconName} size={16} color={color} />
                 <Text style={{ color: fontColor }}>{label}</Text>
@@ -71,7 +71,7 @@ export default function LabelledIcon({
                     onSaveItem={handleNewItem}
                 />
             </View>
-        </TouchableWithoutFeedback>
+        </TouchableOpacity>
 
     );
 }
