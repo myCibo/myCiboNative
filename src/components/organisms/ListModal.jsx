@@ -2,7 +2,7 @@ import {
     StyleSheet,
     Text,
     View,
-    TouchableWithoutFeedback,
+    TouchableOpacity,
 } from "react-native";
 import { useState, useEffect } from "react";
 import Modal from "react-native-modal";
@@ -19,14 +19,13 @@ export default function ListModal({
     type = 'item',  // type is either 'item' or 'list' or 'edit'
     onToggleListModal,
     data = {},
-    onSaveList = () => {console.log('onSaveList default')},
-    onSaveItem = () => {console.log('onSaveItem default')},
+    onSave = () => { console.log('onSaveList default') },
 }) {
 
     const ingredientList = getIngredients();
     const measurementList = getMeasurements();
     const shoppingListObject = data || {};
-    
+
     const [selectedItem, setSelectedItem] = useState(null);
     const [selectedMeasurement, setSelectedMeasurement] = useState(null);
     const [selectedQuantity, setSelectedQuantity] = useState(null);
@@ -43,9 +42,27 @@ export default function ListModal({
         }
     }, [selectedItem, selectedMeasurement, selectedQuantity, type, listName]);
 
+    const resetState = () => {
+        console.log("Resetting state")
+        // setSelectedItem(null);
+        // setSelectedMeasurement(null);
+        // setSelectedQuantity(null);
+        // setListName('');
+    };
+
+    const handleCloseModal = (event) => {
+        if (!event || (event.target === event.currentTarget)) {
+            console.log("Modal closed");
+            resetState();
+            onToggleListModal();
+        }
+    };
+
     const handleCancelOptionPress = () => {
         console.log("Cancel option pressed");
+        resetState();
         onToggleListModal();
+
     };
 
     const handleSaveOptionPress = () => {
@@ -54,35 +71,38 @@ export default function ListModal({
         if (type === 'item') {
             newItem = {
                 id: Date.now(),
-                itemName: selectedItem?.name,
-                unit: selectedMeasurement?.name,
+                itemName: selectedItem.name,
+                unit: selectedMeasurement,
                 amount: selectedQuantity,
             }
             console.log('onSaveItem', newItem)
-            onSaveItem(newItem);
+            onSave(newItem);
         } else {
-            onSaveList(listName);
+            onSave(listName);
         }
+        resetState();
+        setDisabled(true);
         onToggleListModal();
     };
 
     const handleItemSelect = (item) => {
-        console.log("Item selected");
+        console.log("Item selected", item);
         setSelectedItem(item);
+        setSelectedMeasurement(item.measurement);
     };
 
     const handleMeasurementSelect = (measurement) => {
-        console.log("Measurement selected");
+        console.log("Measurement selected", measurement);
         setSelectedMeasurement(measurement);
     };
 
     const handleQuantityChange = (quantity) => {
-        console.log("Quantity changed");
+        console.log("Quantity changed", quantity);
         setSelectedQuantity(quantity);
     };
 
     const handleListNameChange = (name) => {
-        console.log("List name changed");
+        console.log("List name changed", name);
         setListName(name);
     };
 
@@ -94,9 +114,13 @@ export default function ListModal({
             borderTopRightRadius: 10,
             marginHorizontal: 0,
             marginVertical: 0,
+            bottom: 0,
             paddingHorizontal: 16,
             paddingVertical: 16,
-            bottom: 0,
+            width: "100%",
+        },
+        viewModal: {
+            flex: 1,
             width: "100%",
             gap: 32,
             flexDirection: "column",
@@ -147,46 +171,75 @@ export default function ListModal({
     return (
         <Modal
             isVisible={showListModal}
-            onBackdropPress={onToggleListModal}
+            onBackdropPress={handleCloseModal}
+            onBackButtonPress={handleCloseModal}
             backdropOpacity={0.8}
             backdropTransitionOutTiming={0}
             style={styles.modal}
         >
-            <TouchableWithoutFeedback onPress={handleCancelOptionPress}>
+            <View
+                onStartShouldSetResponder={() => true}
+                style={styles.viewModal}
+            >
                 <View style={styles.optionRow}>
                     <Text style={styles.title}>{type === 'edit' ? `Rename ${selectedItem} List` : type === 'add' ? 'Add New Grocery List' : 'Add New Grocery Item'}</Text>
-                    <TouchableWithoutFeedback onPress={handleCancelOptionPress}>
-                        <Icon name="close" size={32} color={Colors['primaryBlack']} />
-                    </TouchableWithoutFeedback>
+                    <TouchableOpacity onPress={handleCancelOptionPress}>
+                        <View>
+                            <Icon name="close" size={32} color={Colors['primaryBlack']} />
+                        </View>
+                    </TouchableOpacity >
                 </View>
-            </TouchableWithoutFeedback>
-            {type !== 'item' && (
-                <View style={styles.category}>
-                    <Text style={styles.categoryTitle}>List Name</Text>
-                    <View style={styles.row}>
-                        <ModalInput placeholder={type === 'edit' ? listName : 'Name your list'} type='text' value={listName} onChange={handleListNameChange} />
+                {type !== 'item' && (
+                    <View style={styles.category}>
+                        <Text style={styles.categoryTitle}>List Name</Text>
+                        <View style={styles.row}>
+                            <ModalInput
+                                placeholder={'Name your list'}
+                                type='text'
+                                selected={listName}
+                                onChange={handleListNameChange}
+                            />
+                        </View>
                     </View>
-                </View>
-            )}
-            {type === 'item' && (
-                <View style={styles.category}>
-                    <Text style={styles.categoryTitle}>Item Name</Text>
-                    <View style={styles.row}>
-                        <ModalSearch placeholder='Find the ingredient' data={ingredientList} onChange={handleItemSelect} />
+                )}
+                {type === 'item' && (
+                    <View style={styles.category}>
+                        <Text style={styles.categoryTitle}>Item Name</Text>
+                        <View style={styles.row}>
+                            <ModalSearch
+                                placeholder='Find the ingredient'
+                                data={ingredientList}
+                                onChange={handleItemSelect}
+                            />
+                        </View>
                     </View>
-                </View>
-            )}
-            {type === 'item' && (
-                <View style={styles.category}>
-                    <Text style={styles.categoryTitle}>Amount</Text>
-                    <View style={styles.row}>
-                        <ModalInput placeholder='0' type='number' value={selectedQuantity} onChange={handleQuantityChange} />
-                        <ModalDropdown placeholder={'Select a measurement'} data={measurementList} onChange={handleMeasurementSelect} />
+                )}
+                {type === 'item' && (
+                    <View style={styles.category}>
+                        <Text style={styles.categoryTitle}>Amount</Text>
+                        <View style={styles.row}>
+                            <ModalInput
+                                placeholder='0'
+                                type='number'
+                                onChange={handleQuantityChange}
+                            />
+                            <ModalDropdown
+                                placeholder={'Select a measurement'}
+                                data={measurementList}
+                                onChange={handleMeasurementSelect}
+                                selected={selectedMeasurement}
+                            />
+                        </View>
                     </View>
+                )}
+                <View style={styles.bottom}>
+                    <CustomButton
+                        text={type === 'edit' ? 'Confirm Changes' : type === 'add' ? 'Add New List' : 'Add New Item'}
+                        backgroundColor={Colors.primaryGreen}
+                        disabled={disabled}
+                        onPress={handleSaveOptionPress}
+                    />
                 </View>
-            )}
-            <View style={styles.bottom}>
-                <CustomButton text={type === 'edit' ? 'Confirm Changes' : type === 'add' ? 'Add New List' : 'Add New Item'} backgroundColor={Colors.primaryGreen} disabled={disabled} onPress={handleSaveOptionPress} />
             </View>
         </Modal>
     );

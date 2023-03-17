@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { View, TextInput, StyleSheet, TouchableWithoutFeedback, TouchableHighlight, Text } from 'react-native';
+import { useState, useEffect } from "react";
+import { View, TextInput, StyleSheet, TouchableOpacity, TouchableHighlight, Text } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import Icon from "../atoms/Icon";
 import Colors from "../../constants/styles";
@@ -8,6 +8,7 @@ export default function ModalInput({
   placeholder = 'Search',
   type = 'search',
   onChange,
+  selected,
 }) {
 
   const [amountValue, setAmountValue] = useState('');
@@ -25,6 +26,13 @@ export default function ModalInput({
     setTextValue(text);
     onChange(text);
   };
+
+  useEffect(() => {
+    if (selected) {
+      setAmountValue(`${selected}`);
+      setTextValue(`${selected}`);
+    }
+  }, [selected]);
 
   const styles = StyleSheet.create({
     container: {
@@ -53,11 +61,11 @@ export default function ModalInput({
   const renderCloseIcon = () => {
     if (textValue !== '') {
       return (
-        <TouchableWithoutFeedback onPress={() => { setTextValue('') }}>
+        <TouchableOpacity onPress={() => { setTextValue('') }}>
           <View style={styles.icon}>
             <Icon name="close" size={32} color={Colors['fontGray']} />
           </View>
-        </TouchableWithoutFeedback>
+        </TouchableOpacity>
       )
     }
   }

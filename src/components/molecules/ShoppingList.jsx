@@ -187,7 +187,7 @@ export default function ShoppingList({
             variant="newListItem" 
             color={Colors['fontBlack']} 
             fontColor={Colors['fontBlack']}
-            onNewItem={handleNewListItem}
+            onNew={handleNewListItem}
           />
         </View>
       </View>
@@ -229,7 +229,7 @@ export default function ShoppingList({
         showListModal={showListModal}
         type="edit"
         data={data}
-        onSaveList={handleListModalEdit}
+        onSave={handleListModalEdit}
       />
     </View>
   );

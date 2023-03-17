@@ -2,7 +2,7 @@ import {
   StyleSheet,
   Text,
   View,
-  TouchableWithoutFeedback,
+  TouchableOpacity,
   Image,
 } from "react-native";
 import { useState } from "react";
@@ -12,7 +12,7 @@ import Colors from "../../constants/styles";
 
 export default function OptionsModal({
   showOptions,
-  optionsType,
+  optionsType, // optionsType is either 'ingredient' or 'list'
   onToggleModal = {},
   onToggleItemModal = {},
   onToggleListModal = {},
@@ -99,61 +99,65 @@ export default function OptionsModal({
     <Modal
       isVisible={showOptions}
       onBackdropPress={onToggleModal}
+      onBackButtonPress={onToggleModal}
+      onBackdropPressToClose={true}
       backdropOpacity={0.8}
       backdropTransitionOutTiming={0}
       style={styles.modal}
     >
       <View>
-        <TouchableWithoutFeedback onPress={handleCancelOptionPress}>
+        <TouchableOpacity onPress={handleCancelOptionPress}>
           <View style={styles.optionRow}>
-            <Text style={styles.title}>{data.listName}</Text>
-            <TouchableWithoutFeedback onPress={handleCancelOptionPress}>
-              <Icon name="close" size={32} color={Colors['primaryBlack']} />
-            </TouchableWithoutFeedback>
+            <Text style={styles.title}>{data.listName || data.name}</Text>
+            <TouchableOpacity onPress={handleCancelOptionPress}>
+              <View>
+                <Icon name="close" size={32} color={Colors['primaryBlack']} />
+              </View>
+            </TouchableOpacity>
           </View>
-        </TouchableWithoutFeedback>
+        </TouchableOpacity>
 
         {optionsType === "ingredient" && (
-          <TouchableWithoutFeedback onPress={handleEditOptionPress}>
+          <TouchableOpacity onPress={handleEditOptionPress}>
             <View style={styles.optionRow}>
               <Text style={styles.optionText}>edit</Text>
-              <TouchableWithoutFeedback onPress={handleEditOptionPress}>
+              <TouchableOpacity onPress={handleEditOptionPress}>
                 <Icon name="edit" size={24} color={Colors['primaryBlack']} />
-              </TouchableWithoutFeedback>
+              </TouchableOpacity>
             </View>
-          </TouchableWithoutFeedback>
+          </TouchableOpacity>
         )}
 
         {optionsType === "list" && (
-          <TouchableWithoutFeedback onPress={handleListEditOptionPress}>
+          <TouchableOpacity onPress={handleListEditOptionPress}>
             <View style={styles.optionRow}>
               <Text style={styles.optionText}>rename list</Text>
-              <TouchableWithoutFeedback onPress={handleListEditOptionPress}>
+              <TouchableOpacity onPress={handleListEditOptionPress}>
                 <Icon name="edit" size={24} color={Colors['primaryBlack']} />
-              </TouchableWithoutFeedback>
+              </TouchableOpacity>
             </View>
-          </TouchableWithoutFeedback>
+          </TouchableOpacity>
         )}
 
         {optionsType === "list" && (
-          <TouchableWithoutFeedback onPress={handleUploadOptionPress}>
+          <TouchableOpacity onPress={handleUploadOptionPress}>
             <View style={styles.optionRow}>
               <Text style={styles.optionText}>send a copy</Text>
-              <TouchableWithoutFeedback onPress={handleUploadOptionPress}>
+              <TouchableOpacity onPress={handleUploadOptionPress}>
                 <Icon name="upload" size={24} color={Colors['primaryBlack']} />
-              </TouchableWithoutFeedback>
+              </TouchableOpacity>
             </View>
-          </TouchableWithoutFeedback>
+          </TouchableOpacity>
         )}
 
-        <TouchableWithoutFeedback onPress={handleDeleteOptionPress}>
+        <TouchableOpacity onPress={handleDeleteOptionPress}>
           <View style={[styles.optionRow, styles.optionLastRow]}>
             <Text style={[styles.optionText, styles.optionRemoveText]}>remove</Text>
-            <TouchableWithoutFeedback onPress={handleDeleteOptionPress}>
+            <TouchableOpacity onPress={handleDeleteOptionPress}>
               <Icon name="trash-x" size={32} color={Colors['primaryRed']} />
-            </TouchableWithoutFeedback>
+            </TouchableOpacity>
           </View>
-        </TouchableWithoutFeedback>
+        </TouchableOpacity>
       </View>
     </Modal>
   );

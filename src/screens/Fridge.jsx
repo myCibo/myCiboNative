@@ -1,31 +1,84 @@
-import * as React from 'react';
+import { useState, useEffect } from 'react';
 import { View, Text, Image, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import SearchBar from '../components/molecules/SearchBar';
 import IngredientItem from '../components/molecules/IngredientItem';
 import LabelledIcon from '../components/molecules/LabelledIcon';
 import Icon from '../components/atoms/Icon';
 import Colors from '../constants/styles';
+import { calculateExpirationTime } from '../utils/expirationCalculator';
+
+
+const ingredientsDataInitial = [
+  {
+    id: 1,
+    name: 'Milk',
+    category: 'Dairy',
+    measurement: 'Litre',
+    amount: 1,
+    purchaseDate: '2023-03-17',
+    expirationDate: '2023-03-20',
+    expiration: null,
+  },
+  {
+    id: 2,
+    name: 'Eggs',
+    category: 'Dairy',
+    measurement: 'Item',
+    amount: 1,
+    purchaseDate: '2023-03-12',
+    expirationDate: '2023-03-12',
+    expiration: null,
+  },
+  {
+    id: 3,
+    name: 'Potatoes',
+    category: 'Vegetables',
+    measurement: 'Item',
+    amount: 1,
+    purchaseDate: '2023-03-14',
+    expirationDate: '2023-03-28',
+    expiration: null,
+  },
+  {
+    id: 4,
+    name: 'Rice',
+    category: 'Grains',
+    measurement: 'Grams',
+    amount: 1,
+    purchaseDate: '2023-03-17',
+    expirationDate: '2023-03-28',
+    expiration: null,
+  },
+  {
+    id: 5,
+    name: 'Beef',
+    category: 'Meat',
+    measurement: 'Grams',
+    amount: 1,
+    purchaseDate: '2023-03-17',
+    expirationDate: '2023-03-18',
+    expiration: null,
+  },
+  {
+    id: 6,
+    name: 'Chicken',
+    category: 'Meat',
+    measurement: 'Grams',
+    amount: 1,
+    purchaseDate: '2023-03-17',
+    expirationDate: '2023-03-18',
+    expiration: null,
+  },
+].map((ingredient) => ({
+  ...ingredient,
+  expiration: calculateExpirationTime(ingredient.purchaseDate, ingredient.expirationDate),
+}));
 
 const FridgeScreen = () => {
-  // define the ingredients data
-  const ingredientsData = [
-    { name: 'Milk', category: 'Dairy', expiration: 1 },
-    { name: 'Eggs', category: 'Dairy', expiration: 2 },
-    { name: 'Carrots', category: 'Produce', expiration: 3 },
-    { name: 'Potatoes', category: 'Produce', expiration: 4 },
-    { name: 'Pasta', category: 'Dry', expiration: 5 },
-    { name: 'Rice', category: 'Dry', expiration: 6 },
-    { name: 'Beef', category: 'Meat', expiration: 0 },
-    { name: 'Chicken', category: 'Meat', expiration: 10 },
-    { name: 'Salt', category: 'Spices', expiration: 2 },
-    { name: 'Pepper', category: 'Spices', expiration: 4 },
-    { name: 'Soup', category: 'Canned', expiration: 3 },
-    { name: 'Beans', category: 'Canned', expiration: 10 },
-    { name: 'Ice Cream', category: 'Frozen', expiration: 5 },
-    { name: 'Fish', category: 'Frozen', expiration: 0 },
-  ];
 
-  // group the ingredients by category
+  const [ingredientsData, setIngredientsData] = useState(ingredientsDataInitial);
+
+  // group ingredients by category. There 
   const ingredientsByCategory = ingredientsData.reduce((acc, ingredient) => {
     if (!acc[ingredient.category]) {
       acc[ingredient.category] = [];
@@ -34,6 +87,26 @@ const FridgeScreen = () => {
     return acc;
   }, {});
 
+  const handleAddIngredient = (ingredient) => {
+    const updatedIngredientsData = [...ingredientsData, ingredient];
+    setIngredientsData(updatedIngredientsData);
+  };
+
+
+  const handleUpdateIngredient = (ingredient) => {
+    const updatedIngredientsData = ingredientsData.map((item) => {
+      if (item.id === ingredient.id) {
+        return ingredient;
+      }
+      return item;
+    });
+    setIngredientsData(updatedIngredientsData);
+  };
+
+  const handleDeleteIngredient = (ingredientId) => {
+    const updatedIngredientsData = ingredientsData.filter((item) => item.id !== ingredientId);
+    setIngredientsData(updatedIngredientsData);
+  };
 
   const styles = StyleSheet.create({
     container: {
@@ -75,13 +148,21 @@ const FridgeScreen = () => {
       <View key={category}>
         <View style={styles.categoryHeader}>
           <Text style={styles.categoryTitle}>{category}</Text>
-          <LabelledIcon label="Add Item" iconPos={1} iconName='add' />
+          <LabelledIcon
+            label="Add Item"
+            iconPos={1}
+            iconName='add'
+            variant='item'
+            onNew={handleAddIngredient}
+            data={{ category }}
+          />
         </View>
         {ingredientsByCategory[category].map((ingredient) => (
           <IngredientItem
-            key={ingredient.name}
-            ingredientName={ingredient.name}
-            ingredientExpiration={ingredient.expiration}
+            key={ingredient.id}
+            data={ingredient}
+            onUpdate={handleUpdateIngredient}
+            onDelete={handleDeleteIngredient}
           />
         ))}
       </View>
