@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableWithoutFeedback, TouchableHighlight } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import Icon from '../atoms/Icon';
@@ -7,21 +7,28 @@ import Colors from '../../constants/styles';
 export default function ModalDropdown({
     placeholder = 'Item',
     data = [],
-    onSelect,
+    onChange,
+    selected,
 }) {
 
     const [open, setOpen] = useState(false);
-    const [selectedItem, setSelectedItem] = useState(null);
+    const [selectedItem, setSelectedItem] = useState(selected || null);
 
     const handleSelect = (item) => {
         setSelectedItem(item);
-        // onSelect(item);
+        onChange(item)
         setOpen(false);
     };
 
     const handleOpen = () => {
         setOpen(!open);
     };
+
+    useEffect(() => {
+        if (selected) {
+            setSelectedItem(selected);
+        }
+    }, [selected]);
 
     const styles = StyleSheet.create({
         container: {
@@ -109,7 +116,7 @@ export default function ModalDropdown({
                     data={data}
                     renderItem={({ item, index }) => (
                         <TouchableHighlight
-                            onPress={() => handleSelect(item)}
+                            onPress={() => handleSelect(item.name)}
                             activeOpacity={0.9}
                             underlayColor={Colors['lightGreen']}
                         >
@@ -122,14 +129,14 @@ export default function ModalDropdown({
                 />
             </View>
         );
-    }
+    };
 
     return (
         <View style={styles.container}>
             <TouchableWithoutFeedback onPress={handleOpen}>
                 <View style={styles.itemContainer}>
                     <View style={styles.item}>
-                        <Text>{selectedItem ? selectedItem.name : placeholder}</Text>
+                        <Text>{selectedItem ? selectedItem : placeholder}</Text>
                     </View>
                     <View style={[styles.icon, styles.iconOpen]}>
                         <Icon name="arrow-down" size={24} color={Colors['fontGray']} />

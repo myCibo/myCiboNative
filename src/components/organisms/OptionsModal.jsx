@@ -2,7 +2,7 @@ import {
   StyleSheet,
   Text,
   View,
-  TouchableWithoutFeedback,
+  TouchableOpacity,
   Image,
 } from "react-native";
 import { useState } from "react";
@@ -12,15 +12,42 @@ import Colors from "../../constants/styles";
 
 export default function OptionsModal({
   showOptions,
-  optionsType,
-  onToggleModal,
-  onToggleItemModal,
-  title,
-  // options = [
-  //   { text: "option text", icon: "../../assets/images/list-icon.png" },
-  // ],
-  color,
+  optionsType, // optionsType is either 'ingredient' or 'list'
+  onToggleModal = {},
+  onToggleItemModal = {},
+  onToggleListModal = {},
+  data,
+  onRemove,
 }) {
+
+  const handleEditOptionPress = () => {
+    console.log("Edit option pressed");
+    onToggleModal();
+    onToggleItemModal();
+  };
+
+  const handleListEditOptionPress = () => {
+    console.log("List edit option pressed");
+    onToggleModal();
+    onToggleListModal();
+  };
+
+  const handleUploadOptionPress = () => {
+    console.log("Upload option pressed");
+    onToggleModal();
+  };
+
+  const handleDeleteOptionPress = () => {
+    console.log("Delete option pressed");
+    onRemove(data.id);
+    onToggleModal();
+  };
+
+  const handleCancelOptionPress = () => {
+    console.log("Cancel option pressed");
+    onToggleModal();
+  };
+
   const styles = StyleSheet.create({
     modal: {
       position: "absolute",
@@ -68,80 +95,69 @@ export default function OptionsModal({
     },
   });
 
-  // const [showItemModal, setShowItemModal] = useState(false);
-  // const handleItemModal = () => {
-  //   setItemModal(!itemModal);
-  // };
-
-  const handleEditOptionPress = () => {
-    console.log("Edit option pressed");
-    onToggleModal();
-    onToggleItemModal();
-  };
-
-  const handleUploadOptionPress = () => {
-    console.log("Upload option pressed");
-    onToggleModal();
-  };
-
-  const handleDeleteOptionPress = () => {
-    console.log("Delete option pressed");
-    onToggleModal();
-  };
-
-  const handleCancelOptionPress = () => {
-    console.log("Cancel option pressed");
-    onToggleModal();
-  };
-
   return (
     <Modal
       isVisible={showOptions}
       onBackdropPress={onToggleModal}
+      onBackButtonPress={onToggleModal}
+      onBackdropPressToClose={true}
       backdropOpacity={0.8}
       backdropTransitionOutTiming={0}
       style={styles.modal}
     >
       <View>
-        <TouchableWithoutFeedback onPress={handleCancelOptionPress}>
+        <TouchableOpacity onPress={handleCancelOptionPress}>
           <View style={styles.optionRow}>
-            <Text style={styles.title}>{title}</Text>
-            <TouchableWithoutFeedback onPress={handleCancelOptionPress}>
-              <Icon name="close" size={32} color={Colors['primaryBlack']} />
-            </TouchableWithoutFeedback>
+            <Text style={styles.title}>{data.listName || data.name}</Text>
+            <TouchableOpacity onPress={handleCancelOptionPress}>
+              <View>
+                <Icon name="close" size={32} color={Colors['primaryBlack']} />
+              </View>
+            </TouchableOpacity>
           </View>
-        </TouchableWithoutFeedback>
+        </TouchableOpacity>
 
         {optionsType === "ingredient" && (
-          <TouchableWithoutFeedback onPress={handleEditOptionPress}>
+          <TouchableOpacity onPress={handleEditOptionPress}>
             <View style={styles.optionRow}>
               <Text style={styles.optionText}>edit</Text>
-              <TouchableWithoutFeedback onPress={handleEditOptionPress}>
+              <TouchableOpacity onPress={handleEditOptionPress}>
                 <Icon name="edit" size={24} color={Colors['primaryBlack']} />
-              </TouchableWithoutFeedback>
+              </TouchableOpacity>
             </View>
-          </TouchableWithoutFeedback>
+          </TouchableOpacity>
         )}
 
         {optionsType === "list" && (
-          <TouchableWithoutFeedback onPress={handleUploadOptionPress}>
+          <TouchableOpacity onPress={handleListEditOptionPress}>
             <View style={styles.optionRow}>
-              <Text style={styles.optionText}>send a copy</Text>
-              <TouchableWithoutFeedback onPress={handleUploadOptionPress}>
-                <Icon name="upload" size={24} color={Colors['primaryBlack']} />
-              </TouchableWithoutFeedback>
+              <Text style={styles.optionText}>rename list</Text>
+              <TouchableOpacity onPress={handleListEditOptionPress}>
+                <Icon name="edit" size={24} color={Colors['primaryBlack']} />
+              </TouchableOpacity>
             </View>
-          </TouchableWithoutFeedback>
+          </TouchableOpacity>
         )}
 
-        <TouchableWithoutFeedback onPress={handleDeleteOptionPress}>
+        {optionsType === "list" && (
+          <TouchableOpacity onPress={handleUploadOptionPress}>
+            <View style={styles.optionRow}>
+              <Text style={styles.optionText}>send a copy</Text>
+              <TouchableOpacity onPress={handleUploadOptionPress}>
+                <Icon name="upload" size={24} color={Colors['primaryBlack']} />
+              </TouchableOpacity>
+            </View>
+          </TouchableOpacity>
+        )}
+
+        <TouchableOpacity onPress={handleDeleteOptionPress}>
           <View style={[styles.optionRow, styles.optionLastRow]}>
             <Text style={[styles.optionText, styles.optionRemoveText]}>remove</Text>
-            <TouchableWithoutFeedback onPress={handleDeleteOptionPress}>
+            <TouchableOpacity onPress={handleDeleteOptionPress}>
               <Icon name="trash-x" size={32} color={Colors['primaryRed']} />
-            </TouchableWithoutFeedback>
+            </TouchableOpacity>
           </View>
-        </TouchableWithoutFeedback>
+        </TouchableOpacity>
       </View>
     </Modal>
   );

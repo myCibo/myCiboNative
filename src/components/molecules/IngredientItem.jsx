@@ -3,7 +3,7 @@ import {
   StyleSheet,
   Text,
   View,
-  TouchableWithoutFeedback,
+  TouchableOpacity,
   Image,
 } from "react-native";
 import OptionsModal from "../organisms/OptionsModal";
@@ -11,11 +11,28 @@ import ItemModal from "../organisms/ItemModal";
 import Colors from "../../constants/styles";
 import Icon from "../atoms/Icon";
 
-// Need to add a prop for the ingredient object, so we can pass it to the modal
+const getExpirationColor = (expiration) => {
+  if (expiration < 1) {
+    return Colors['primaryBlack'];
+  } else if (expiration < 2) {
+    return Colors['primaryRed'];
+  } else if (expiration < 5) {
+    return Colors['primaryYellow'];
+  } else {
+    return Colors['primaryGreen'];
+  }
+};
+
 export default function IngredientItem({
-  ingredientName = "Milk",
-  ingredientExpiration = 3,
+  data = {},
+  onUpdate,
+  onDelete,
 }) {
+
+  const ingredientData = data || {};
+
+  const color = getExpirationColor(ingredientData.expiration);
+
   const [showOptions, setShowOptions] = useState(false);
   const [showItemModal, setShowItemModal] = useState(false);
   const handleToggleModal = () => {
@@ -25,14 +42,14 @@ export default function IngredientItem({
     setShowItemModal(!showItemModal);
   };
 
-  const color =
-    ingredientExpiration < 1
-      ? Colors['primaryBlack']
-      : ingredientExpiration < 2
-        ? Colors['primaryRed']
-        : ingredientExpiration < 5
-          ? Colors['primaryYellow']
-          : Colors['primaryGreen'];
+  const handleUpdate = (data) => {
+    onUpdate(data);
+  };
+
+  const handleDelete = (ingredientId) => {
+    onDelete(ingredientId);
+  };
+
   const styles = {
     container: {
       padding: 10,
@@ -61,12 +78,12 @@ export default function IngredientItem({
   };
 
   return (
-    <TouchableWithoutFeedback onPress={handleToggleModal}>
+    <TouchableOpacity onPress={handleToggleModal}>
       <View style={styles.container}>
         <View style={styles.textContainer}>
-          <Text style={styles.text}>{ingredientName}</Text>
+          <Text style={styles.text}>{ingredientData.name}</Text>
           <Text style={[styles.text, styles.expirationText]}>
-            Expires in {ingredientExpiration} Days
+            Expires in {ingredientData.expiration} Days
           </Text>
         </View>
         <View>
@@ -77,17 +94,18 @@ export default function IngredientItem({
           onToggleItemModal={handleToggleItemModal}
           showOptions={showOptions}
           optionsType="ingredient"
-          title={ingredientName}
+          data={ingredientData}
+          onRemove={handleDelete}
         />
         <ItemModal
           onToggleItemModal={handleToggleItemModal}
           showItemModal={showItemModal}
           type="edit"
           expanded={true}
-          data={{ name: ingredientName, expiration: ingredientExpiration}}
-          title={ingredientName}
+          data={ingredientData}
+          onSave={handleUpdate}
         />
       </View>
-    </TouchableWithoutFeedback>
+    </TouchableOpacity>
   );
 }

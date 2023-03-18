@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, Platform, TouchableWithoutFeedback } from 'react-native';
+import { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, Platform, TouchableOpacity } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Colors from '../../constants/styles';
 import Icon from '../atoms/Icon';
 
 export default function DatePicker({
   data = {},
-  onDateChange
+  onDateChange,
+  placholder = 'Select Date',
+  selected,
 }) {
 
   const [date, setDate] = useState(new Date());
@@ -29,6 +31,13 @@ export default function DatePicker({
     onDateChange(newDate);
     hidePicker();
   };
+
+  useEffect(() => {
+    if (selected) {
+      const selectedDate = new Date(selected);
+      setDate(selectedDate);
+    }
+  }, [selected]);
 
   const styles = StyleSheet.create({
     container: {
@@ -68,16 +77,16 @@ export default function DatePicker({
 
   return (
     <View style={styles.container}>
-      <TouchableWithoutFeedback onPress={showPicker}>
+      <TouchableOpacity onPress={showPicker}>
         <View style={styles.itemContainer}>
           <View style={styles.item}>
-            <Text>{data.date ? data.date : date.toLocaleDateString()}</Text>
+            <Text>{date.toLocaleDateString()}</Text>
           </View>
           <View style={styles.icon}>
             <Icon name="calendar" size={24} color={Colors['fontGray']} />
           </View>
         </View>
-      </TouchableWithoutFeedback>
+      </TouchableOpacity>
       {showDatePicker && renderDatePicker()}
     </View>
   );
