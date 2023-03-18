@@ -1,5 +1,6 @@
 import { View, StyleSheet, Dimensions, TouchableOpacity, Text, FlatList } from 'react-native';
 import React, { useState, useEffect } from 'react';
+// import Colors from '../../constants/styles';
 
 import SingleRecipeCarousel from '../molecules/SingleRecipeCarousel';
 
@@ -25,6 +26,7 @@ const Carousel = ({ data, title = null,  CardComponent, horizontal = true, Heade
                 renderItem={renderItem}
                 keyExtractor={(item) => item.id}
                 showsHorizontalScrollIndicator={false}
+                style = {styles.flatList}
             />
         </View>
     );
@@ -34,10 +36,14 @@ const Carousel = ({ data, title = null,  CardComponent, horizontal = true, Heade
 const styles = StyleSheet.create({
     container:{
         marginVertical:5,
-        width: '95%',
+        width: '90%',
         alignSelf:'center',
         // backgroundColor:'red',
     },
+    flatList:{
+        // backgroundColor: Colors['creamyWhite'],
+
+    }
 });
 
 export default Carousel;
