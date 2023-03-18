@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, ScrollView, Text, StyleSheet, Image } from 'react-native';
+import { View, ScrollView,Dimensions,  Text, StyleSheet, Image, ActivityIndicator } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import { useRoute } from "@react-navigation/native";
@@ -12,6 +12,44 @@ import RecipeDetails from '../components/molecules/RecipeDetails';
 
 function DynamicRecipe() {
     const route = useRoute();
+    const windowHeight = Dimensions.get('window').height;
+
+    const styles = StyleSheet.create({
+        headerContainer: {
+            width: "100%",
+            height: 330,
+        },
+        image: {
+            width: "100%",
+            height: "100%",
+        },
+        overlay: {
+            position: 'absolute',
+            bottom: 0,
+            left: 0,
+            right: 0,
+            height: 60,
+    
+            alignItems: "flex-start",
+            justifyContent: 'flex-end',
+            padding: 10,
+        },
+        title: {
+            color: "#000",
+            fontSize: 25,
+            textAlign: "left",
+            textTransform: "capitalize",
+            paddingHorizontal: 10,
+        },
+        loader: {
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+            // height:windowHeight,
+           
+        },
+    });
+
 
 
     // const { id, image, title } = route.params;
@@ -25,14 +63,17 @@ function DynamicRecipe() {
     const [ingData, setIngData] = useState([]);
     const [insData, setInsData] = useState([]);
     const [detailData, setDetailData] = useState({});
+    const [isLoading, setIsLoading] = useState(true); // add isLoading state
 
 
 
 
     useEffect(() => {
-
+        setIsLoading(false);
+        //Change  this if tou want to work on the loader 
 
         // FAKE DATA--------------
+
         setInsData(
             [
                 {
@@ -560,29 +601,30 @@ function DynamicRecipe() {
         //---------------------------
 
 
-        //     axios.get(`https://api.spoonacular.com/recipes/${id}/ingredientWidget.json?apiKey=${process.env.API_KEY}`)
-        //         .then(response => {
-        //             setIngData(response.data.ingredients);
-        //         })
-        //         .catch(error => {
-        //             console.log(error);
-        //         });
+        // axios.get(`https://api.spoonacular.com/recipes/${id}/ingredientWidget.json?apiKey=${process.env.API_KEY}`)
+        //     .then(response => {
+        //         setIngData(response.data.ingredients);
+        //     })
+        //     .catch(error => {
+        //         console.log(error);
+        //     });
 
 
 
-        //     axios.get(`https://api.spoonacular.com/recipes/${id}/analyzedInstructions?apiKey=${process.env.API_KEY}`)
-        //         .then(response => {
-        //             setInsData(response.data);
-        //         })
-        //         .catch(error => {
-        //             console.log(error);
-        //         });
+        // axios.get(`https://api.spoonacular.com/recipes/${id}/analyzedInstructions?apiKey=${process.env.API_KEY}`)
+        //     .then(response => {
+        //         setInsData(response.data);
+        //     })
+        //     .catch(error => {
+        //         console.log(error);
+        //     });
 
 
         // axios.get(`https://api.spoonacular.com/recipes/${id}/information?includeNutrition=false&apiKey=${process.env.API_KEY}`)
         //     .then(response => {
         //         setDetailData(response.data);
-        //         console.log()
+        //         setIsLoading(false); // set isLoading to false when all data is loaded
+
         //     })
         //     .catch(error => {
         //         console.log(error);
@@ -591,65 +633,50 @@ function DynamicRecipe() {
 
     }, [id]);
 
+
+    if (isLoading) {
+        return (
+          <View style={styles.loader}>
+             {/* <Text>Anything inside this view will show up while loading thre page </Text>*/}
+          <ActivityIndicator size="large" color="#b82d1b" />
+        </View>
+        );
+      }
+    
+
     return (
         <ScrollView>
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                <View style={styles.headerContainer}>
-                    {/* <Text>{image}</Text> */}
-                    <Image
-                        source={{ uri: image }}
-                        style={styles.image}
-                    />
+                        <View style={styles.headerContainer}>
+                            {/* <Text>{image}</Text> */}
+                            <Image
+                                source={{ uri: image }}
+                                style={styles.image}
+                            />
 
-                    <LinearGradient
-                        colors={['rgba(246, 245, 240, 0.7)', '#F6F5F0']}
-                        style={styles.overlay}
-                    >
-                        <Text style={styles.title}>{title}</Text>
-                    </LinearGradient>
-                </View>
-
-
-                <RecipeDetails
-                    timeInMinutes={detailData.readyInMinutes}
-                    serving={detailData.servings}
-                    healthScore={detailData.healthScore} />
+                            <LinearGradient
+                                colors={['rgba(246, 245, 240, 0.7)', '#F6F5F0']}
+                                style={styles.overlay}
+                            >
+                                <Text style={styles.title}>{title}</Text>
+                            </LinearGradient>
+                        </View>
 
 
-                {ingData.length > 0 && <RecipeIngredients data={ingData} />}
-                {insData.length > 0 && <RecipeInstruction data={insData} />}
+                        <RecipeDetails
+                            timeInMinutes={detailData.readyInMinutes}
+                            serving={detailData.servings}
+                            healthScore={detailData.healthScore} />
+
+
+                        {ingData.length > 0 && <RecipeIngredients data={ingData} />}
+                        {insData.length > 0 && <RecipeInstruction data={insData} />}
+                    
             </View>
         </ScrollView>
     );
 }
 
-const styles = StyleSheet.create({
-    headerContainer: {
-        width: "100%",
-        height: 330,
-    },
-    image: {
-        width: "100%",
-        height: "100%",
-    },
-    overlay: {
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
-        right: 0,
-        height: 60,
 
-        alignItems: "flex-start",
-        justifyContent: 'flex-end',
-        padding: 10,
-    },
-    title: {
-        color: "#000",
-        fontSize: 25,
-        textAlign: "left",
-        textTransform: "capitalize",
-        paddingHorizontal: 10,
-    },
-});
 
 export default DynamicRecipe;

@@ -53,7 +53,7 @@ const SingleRecipeCarousel = ({ image, id, title }) => {
 
 
       </View>
-      <Text style={styles.title}>{truncateTitle(title)}</Text>
+      <Text style={styles.title}>{truncateTitle(title)}</Text> 
     </TouchableOpacity>
 
 
@@ -83,15 +83,14 @@ const styles = StyleSheet.create({
     shadowColor: '#000000',
     shadowOpacity: 0.1,
     shadowRadius: 20,
-    // borderRadius:4,
+    // borderRadius:4,Fstretc
 
   },
   image: {
     width: '100%',
     height:150,
-    // height: '100%',
-    resizeMode: 'cover',
-    // marginRight: 16,
+    resizeMode: 'stretch',
+    // resizeMode: 'cover', //IDONOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
     borderRadius: 6,
 
   },
