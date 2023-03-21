@@ -182,7 +182,7 @@ export default function ListModal({
                 style={styles.viewModal}
             >
                 <View style={styles.optionRow}>
-                    <Text style={styles.title}>{type === 'edit' ? `Rename ${selectedItem} List` : type === 'add' ? 'Add New Grocery List' : 'Add New Grocery Item'}</Text>
+                    <Text style={styles.title}>{type === 'edit' ? `Rename ${listName} List` : type === 'add' ? 'Add New Grocery List' : 'Add New Grocery Item'}</Text>
                     <TouchableOpacity onPress={handleCancelOptionPress}>
                         <View>
                             <Icon name="close" size={32} color={Colors['primaryBlack']} />

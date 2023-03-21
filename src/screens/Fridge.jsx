@@ -10,7 +10,7 @@ import { calculateExpirationTime } from '../utils/expirationCalculator';
 
 const ingredientsDataInitial = [
   {
-    id: 1,
+    id: '1',
     name: 'Milk',
     category: 'Dairy',
     measurement: 'Litre',
@@ -20,7 +20,7 @@ const ingredientsDataInitial = [
     expiration: null,
   },
   {
-    id: 2,
+    id: '2',
     name: 'Eggs',
     category: 'Dairy',
     measurement: 'Item',
@@ -30,7 +30,7 @@ const ingredientsDataInitial = [
     expiration: null,
   },
   {
-    id: 3,
+    id: '3',
     name: 'Potatoes',
     category: 'Vegetables',
     measurement: 'Item',
@@ -40,7 +40,7 @@ const ingredientsDataInitial = [
     expiration: null,
   },
   {
-    id: 4,
+    id: '4',
     name: 'Rice',
     category: 'Grains',
     measurement: 'Grams',
@@ -50,7 +50,7 @@ const ingredientsDataInitial = [
     expiration: null,
   },
   {
-    id: 5,
+    id: '5',
     name: 'Beef',
     category: 'Meat',
     measurement: 'Grams',
@@ -60,7 +60,7 @@ const ingredientsDataInitial = [
     expiration: null,
   },
   {
-    id: 6,
+    id: '6',
     name: 'Chicken',
     category: 'Meat',
     measurement: 'Grams',

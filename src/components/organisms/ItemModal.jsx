@@ -25,12 +25,15 @@ export default function ItemModal({
   onSave = () => { console.log('onSaveItem default') },
 }) { 
 
+  const [modalData, setModalData] = useState(data);
+  
   const ingredientList = getIngredients();
   const measurementList = getMeasurements();
   const categoryList = getCategories();
-  const ingredientObject = data || {};
+  const ingredientObject = modalData;
 
   const [selectedItem, setSelectedItem] = useState(ingredientObject || null);
+  const [selectedName, setSelectedName] = useState(ingredientObject?.name || null);
   const [selectedMeasurement, setSelectedMeasurement] = useState(ingredientObject?.measurement || null);
   const [selectedQuantity, setSelectedQuantity] = useState(ingredientObject?.amount || '');
   const [selectedCategory, setSelectedCategory] = useState(ingredientObject?.category || null);
@@ -49,6 +52,21 @@ export default function ItemModal({
       setDisabled(true);
     }
   }, [selectedItem, selectedMeasurement, selectedQuantity, selectedCategory, selectedPurchaseDate, selectedExpirationDate]);
+
+  useEffect(() => {
+    function updateStateFromData() {
+      setModalData(data);
+      setSelectedItem(data || null);
+      setSelectedName(data?.name || null);
+      setSelectedMeasurement(data?.measurement || null);
+      setSelectedQuantity(data?.amount || '');
+      setSelectedCategory(data?.category || null);
+      setSelectedPurchaseDate(data?.purchaseDate || null);
+      setSelectedExpirationDate(data?.expirationDate || null);
+    }
+  
+    updateStateFromData();
+  }, [data]);
 
   const resetState = () => {
     console.log("Resetting state")
@@ -69,6 +87,7 @@ export default function ItemModal({
     if (!event || (event.target === event.currentTarget)) {
       console.log("Modal closed");
       resetState();
+      setShowExpanded(false);
       onToggleItemModal();
     }
   };
@@ -76,6 +95,7 @@ export default function ItemModal({
   const handleCancelOptionPress = () => {
     console.log("Cancel option pressed");
     resetState();
+    setShowExpanded(false);
     onToggleItemModal();
   };
 
@@ -223,7 +243,7 @@ export default function ItemModal({
           style={styles.viewModal}
         >
           <View style={styles.optionRow}>
-            <Text style={styles.title}>{type === 'edit' ? `Edit ${ingredientObject?.name}` : 'Add New Item'}</Text>
+            <Text style={styles.title}>{type === 'edit' ? `Edit ${selectedName}` : 'Add New Item'}</Text>
             <TouchableOpacity onPress={handleCancelOptionPress}>
               <View>
                 <Icon name="close" size={32} color={Colors['primaryBlack']} />
