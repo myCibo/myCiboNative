@@ -23,7 +23,7 @@ export default function ItemModal({
   expanded = false,
   data = {},
   onSave = () => { console.log('onSaveItem default') },
-}) {
+}) { 
 
   const ingredientList = getIngredients();
   const measurementList = getMeasurements();
