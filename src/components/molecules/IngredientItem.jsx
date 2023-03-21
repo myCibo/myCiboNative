@@ -35,11 +35,14 @@ export default function IngredientItem({
 
   const [showOptions, setShowOptions] = useState(false);
   const [showItemModal, setShowItemModal] = useState(false);
+  const [modalKey, setModalKey] = useState(Date.now());
+
   const handleToggleModal = () => {
     setShowOptions(!showOptions);
   };
   const handleToggleItemModal = () => {
     setShowItemModal(!showItemModal);
+    setModalKey(Date.now());
   };
 
   const handleUpdate = (data) => {
@@ -98,6 +101,7 @@ export default function IngredientItem({
           onRemove={handleDelete}
         />
         <ItemModal
+          key={modalKey}
           onToggleItemModal={handleToggleItemModal}
           showItemModal={showItemModal}
           type="edit"

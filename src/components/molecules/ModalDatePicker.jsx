@@ -36,6 +36,8 @@ export default function DatePicker({
     if (selected) {
       const selectedDate = new Date(selected);
       setDate(selectedDate);
+    } else {
+      setDate(new Date());
     }
   }, [selected]);
 
