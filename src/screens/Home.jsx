@@ -1,34 +1,89 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import Carousel from '../components/organisms/Carousel';
-import SingleRecipeCarousel from '../components/molecules/SingleRecipeCarousel';
+import CategorySquare from '../components/molecules/CategorySquare';
+import Icon from '../components/atoms/Icon';
+import Colors from '../constants/styles';
+import { useNavigation } from '@react-navigation/native';
 
 function HomeScreen() {
-  // const caroulselDummy = [{
-  //   id: 1,
-  //   title: 'Yuckery',
-  //   image: 'https://spoonacular.com/recipeImages/716429-312x231.jpg'
-  // }, {
-  //   id: 2,
-  //   title: 'Fafafafa',
-  //   image: 'https://spoonacular.com/recipeImages/716429-312x231.jpg'
-  // }, {
-  //   id: 3,
-  //   title: 'Yayaya',
-  //   image: 'https://spoonacular.com/recipeImages/716429-312x231.jpg'
-  // },{
-  //   id: 4,
-  //   title: 'Yoyoyo',
-  //   image: 'https://spoonacular.com/recipeImages/716429-312x231.jpg'
-  // }]
 
-  const FridgeHeader = () => <View><Text>Fridge</Text></View>
-  const RecipeHeader = () => <View><Text>Recipe</Text></View>
+  const fridgeCategories = [
+    {
+      id: '1',
+      category: 'Dairy',
+      amount: 2,
+    },
+    {
+      id: '3',
+      category: 'Vegetables',
+      amount: 1,
+    },
+    {
+      id: '4',
+      category: 'Grains',
+      amount: 1,
+    },
+    {
+      id: '5',
+      category: 'Meat',
+      amount: 2,
+    },
+  ];
+
+  const navigation = useNavigation();
+
+  const handleLinkPress = (destination) => {
+    navigation.navigate(destination);
+  };
+
+  const styles = {
+    contentContainer: {
+      flex: 1,
+      backgroundColor: Colors.creamyWhite,
+    },
+    container: {
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    header: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      width: '100%',
+      padding: 20,
+    },
+    headerText: {
+      fontSize: 24,
+      color: Colors.primaryBlack,
+    },
+    headerButton: {
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    headerButtonText: {
+      fontSize: 20,
+      color: Colors.primaryBlack,
+    },
+  };
+
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      {/* <Carousel title="Fridge" data={caroulselDummy} CardComponent={SingleRecipeCarousel}/> */}
-      {/* <Carousel title="Recipes" data={caroulselDummy} CardComponent={SingleRecipeCarousel}/> */}
-    </View>
+    <ScrollView style={styles.contentContainer}>
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <Text style={styles.headerText}>Fridge</Text>
+          <TouchableOpacity style={styles.headerButton} onPress={() => handleLinkPress('Fridge')}>
+            <Icon name='list' size={24} color={Colors.primaryBlack} />
+            <Text style={styles.headerButtonText}> View All</Text>
+          </TouchableOpacity>
+        </View>
+        <Carousel
+          data={fridgeCategories}
+          CardComponent={CategorySquare}
+        />
+      </View>
+    </ScrollView>
+
   );
 }
 

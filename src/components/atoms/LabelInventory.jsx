@@ -1,7 +1,10 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
 
-const LabelInventory = ({ totalItems}) => {
+const LabelInventory = ({ 
+  totalItems
+}) => {
+  
   let backgroundColor; // default background color
 
   if (totalItems === 0) {

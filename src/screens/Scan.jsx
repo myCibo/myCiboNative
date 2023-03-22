@@ -46,6 +46,7 @@ function ScanScreen() {
       flex: 1,
       alignItems: 'center',
       justifyContent: 'center',
+      backgroundColor: Colors['creamyWhite'],
     },
     scroll: {
       width: '100%',

@@ -89,7 +89,7 @@ function RecipeScreen() {
   }
 
   return (
-    <ScrollView  Style={styles.contentContainer}>
+    <ScrollView style={styles.contentContainer}>
       <View style={styles.container}>
       <View style={styles.header}>
         <SearchBar />

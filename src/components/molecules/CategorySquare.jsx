@@ -1,89 +1,58 @@
-import React from "react";
+import { useState } from "react";
 import { View, Text, Image, StyleSheet } from "react-native";
+import findCategory from "../../utils/findCategory";
+import CategoryImage from "../atoms/CategoryImage";
+import Colors from "../../constants/styles";
 
 const CategorySquare = ({
-  backgroundColor,
-  totalItems,
-  imageSrc,
-  title,
-  size,
+  category,
+  amount,
 }) => {
-  let cardHeight, cardWidth, imageHeight, imageWidth, totalItemsFontSize, titleFontSize;
-  switch(size) {
-    case "small":
-      cardHeight = 80;
-      cardWidth = 80;
-      imageHeight = 50;
-      imageWidth = 50;
-      totalItemsFontSize = 10;
-      titleFontSize = 14;
-      break;
-    case "medium":
-      cardHeight = 150;
-      cardWidth = 150;
-      imageHeight = 100;
-      imageWidth = 100;
-      totalItemsFontSize = 14;
-      titleFontSize = 20;
-      break;
-    case "large":
-      cardHeight = 220;
-      cardWidth = 130;
-      imageHeight = 150;
-      imageWidth = 126;
-      totalItemsFontSize = 20;
-      titleFontSize = 30;
-      break;
-    default:
-      cardHeight = 150;
-      cardWidth = 150;
-      totalItemsFontSize = 14;
-      titleFontSize = 20;
-  }
+
+  const [categoryData, setCategoryData] = useState(findCategory(category));
+
+  const styles = StyleSheet.create({
+    container: {
+      height: 220,
+      width: 130,
+      borderRadius: 8,
+      justifyContent: "space-between",
+      padding: 10,
+      backgroundColor: categoryData.color,
+      ...Platform.select({
+        ios: {
+          shadowColor: 'black',
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 0.2,
+          shadowRadius: 4,
+        },
+        android: {
+          elevation: 5,
+        },
+      }),
+    },
+    amount: {
+      color: Colors.white,
+      textAlign: "right",
+    },
+    image: {
+      alignSelf: "center",
+    },
+    title: {
+      color: Colors.white,
+      fontSize: 16,
+    },
+  });
+
   return (
-    <View
-      style={[
-        styles.container,
-        { backgroundColor },
-        styles.size,
-        { width: cardWidth, height: cardHeight },
-      ]}
-    >
-      <Text style={[styles.totalItems,{fontSize:totalItemsFontSize}]}>{totalItems}</Text>
-      <Image
-        style={[styles.image, { width: imageWidth, height: imageHeight }]}
-        source={imageSrc}
-      />
-      <Text style={[styles.title, {fontSize:titleFontSize}]}>{title}</Text>
+    <View style={styles.container}>
+      <Text style={styles.amount}>{amount}</Text>
+      <View style={styles.image}>
+        <CategoryImage name={category} size={100} />
+      </View>
+      <Text style={styles.title}>{category}</Text>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    borderRadius: 8,
-    justifyContent: "space-between",
-    padding: 8,
-    margin: 5,
-    shadowColor: "#000",
-    shadowOffset: { width: 2, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-  totalItems: {
-    color: "white",
-    textAlign: "right",
-  },
-  image: {
-    alignSelf: "center",
-    marginTop: -20,
-  },
-  title: {
-    color: "white",
-    textAlign: "left",
-    marginTop: -10,
-  },
-});
 
 export default CategorySquare;

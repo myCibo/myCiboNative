@@ -12,6 +12,19 @@ export default colors = {
     "primaryYellow": "#F0A047",
     "creamyWhite": "#F6F3F0",
 
+    // Category colors
+    "baking": "#B3A96C",
+    "breverage": "#F4E1B2",
+    "canned": "#A5B7C9",
+    "condiment": "#F3C238",
+    "dairy": "#F0A047",
+    "frozen": "#8F9FC8",
+    "fruit": "#CD592E",
+    "grain": "#CFBF88",
+    "meat": "#D35247",
+    "spice": "#DDAE55",
+    "vegetable": "#6B987A",
+
     // Friendly colors
     "friendlyGreen": "#74855D",
     "friendlyRed": "#D35247",
