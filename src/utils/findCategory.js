@@ -1,7 +1,7 @@
 import Colors from '../constants/styles';
 
+// I think I can return the link with category information here as well
 export default function findCategory(category) {
-  // takes in a category and returns a category object that has a background color and a component
 
   const categories = [
     {
