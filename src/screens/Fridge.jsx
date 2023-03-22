@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, Image, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 import SearchBar from '../components/molecules/SearchBar';
 import IngredientItem from '../components/molecules/IngredientItem';
 import LabelledIcon from '../components/molecules/LabelledIcon';
@@ -74,9 +75,12 @@ const ingredientsDataInitial = [
   expiration: calculateExpirationTime(ingredient.purchaseDate, ingredient.expirationDate),
 }));
 
-const FridgeScreen = () => {
+const FridgeScreen = ({ route }) => {
 
   const [ingredientsData, setIngredientsData] = useState(ingredientsDataInitial);
+  const scrollViewRef = useRef();
+
+  console.log('route', route)
 
   // group ingredients by category. There 
   const ingredientsByCategory = ingredientsData.reduce((acc, ingredient) => {
@@ -86,6 +90,13 @@ const FridgeScreen = () => {
     acc[ingredient.category].push(ingredient);
     return acc;
   }, {});
+
+  const categoryRefs = useRef(
+    Object.keys(ingredientsByCategory).reduce((acc, category) => {
+      acc[category] = React.createRef();
+      return acc;
+    }, {})
+  );
 
   const handleAddIngredient = (ingredient) => {
     const updatedIngredientsData = [...ingredientsData, ingredient];
@@ -107,6 +118,29 @@ const FridgeScreen = () => {
     const updatedIngredientsData = ingredientsData.filter((item) => item.id !== ingredientId);
     setIngredientsData(updatedIngredientsData);
   };
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const selectedCategory = route.params?.category;
+      if (selectedCategory && categoryRefs.current[selectedCategory]) {
+        const ingredientHeight = 60;
+        const categoryHeaderHeight = 100;
+  
+        // Calculate yOffset by summing heights of all categories above the selected category
+        const yOffset = Object.keys(ingredientsByCategory)
+          .slice(0, Object.keys(ingredientsByCategory).indexOf(selectedCategory))
+          .reduce((totalHeight, category) => {
+            return totalHeight + categoryHeaderHeight + ingredientsByCategory[category].length * ingredientHeight;
+          }, 0);
+  
+        scrollViewRef.current.scrollTo({ x: 0, y: yOffset, animated: true });
+  
+        if (route.params?.category) {
+          route.params.category = null;
+        }
+      }
+    }, [route.params])
+  );  
 
   const styles = StyleSheet.create({
     container: {
@@ -145,7 +179,7 @@ const FridgeScreen = () => {
   // render the ingredients under each category
   const renderIngredientsByCategory = () => {
     return Object.keys(ingredientsByCategory).map((category) => (
-      <View key={category}>
+      <View key={category} ref={categoryRefs.current[category]}>
         <View style={styles.categoryHeader}>
           <Text style={styles.categoryTitle}>{category}</Text>
           <LabelledIcon
@@ -185,6 +219,7 @@ const FridgeScreen = () => {
         </TouchableOpacity>
       </View>
       <ScrollView
+        ref={scrollViewRef}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.contentContainer}
       >

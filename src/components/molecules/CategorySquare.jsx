@@ -1,8 +1,9 @@
-import { useState } from "react";
-import { View, Text, Image, StyleSheet } from "react-native";
+import React, { useState } from "react";
+import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import findCategory from "../../utils/findCategory";
 import CategoryImage from "../atoms/CategoryImage";
 import Colors from "../../constants/styles";
+import { useNavigation } from "@react-navigation/native";
 
 const CategorySquare = ({
   category,
@@ -10,6 +11,11 @@ const CategorySquare = ({
 }) => {
 
   const [categoryData, setCategoryData] = useState(findCategory(category));
+  const navigation = useNavigation();
+
+  const handleNavigation = () => {
+    navigation.navigate("Fridge", {category});
+  };
 
   const styles = StyleSheet.create({
     container: {
@@ -45,13 +51,13 @@ const CategorySquare = ({
   });
 
   return (
-    <View style={styles.container}>
+    <TouchableOpacity onPress={handleNavigation} style={styles.container}>
       <Text style={styles.amount}>{amount}</Text>
       <View style={styles.image}>
         <CategoryImage name={category} size={100} />
       </View>
       <Text style={styles.title}>{category}</Text>
-    </View>
+    </TouchableOpacity>
   );
 };
 
