@@ -13,8 +13,8 @@ import ModalSearch from "../molecules/ModalSearch";
 import ModalInput from "../molecules/ModalInput";
 import ModalDropdown from "../molecules/ModalDropdown";
 import ModalDatePicker from "../molecules/ModalDatePicker";
-import { getIngredients, getMeasurements, getCategories } from '../../constants/FoodData';
-import { calculateExpirationDate, calculateExpirationTime } from "../../utils/expirationCalculator";
+import { getIngredients, getUnits, getCategories } from '../../constants/FoodData';
+import { calculateExpirationDate, calculateExpiresInDays } from "../../utils/expirationCalculator";
 
 export default function ItemModal({
   showItemModal,
@@ -28,13 +28,13 @@ export default function ItemModal({
   const [modalData, setModalData] = useState(data);
   
   const ingredientList = getIngredients();
-  const measurementList = getMeasurements();
+  const unitList = getUnits();
   const categoryList = getCategories();
   const ingredientObject = modalData;
 
   const [selectedItem, setSelectedItem] = useState(ingredientObject || null);
   const [selectedName, setSelectedName] = useState(ingredientObject?.name || null);
-  const [selectedMeasurement, setSelectedMeasurement] = useState(ingredientObject?.measurement || null);
+  const [selectedUnit, setSelectedUnit] = useState(ingredientObject?.unit || null);
   const [selectedQuantity, setSelectedQuantity] = useState(ingredientObject?.amount || '');
   const [selectedCategory, setSelectedCategory] = useState(ingredientObject?.category || null);
   const [selectedPurchaseDate, setSelectedPurchaseDate] = useState(ingredientObject?.purchaseDate || null);
@@ -44,21 +44,21 @@ export default function ItemModal({
   const [showExpanded, setShowExpanded] = useState(expanded);
 
   useEffect(() => {
-    if (showExpanded && selectedItem && selectedMeasurement && selectedQuantity && selectedCategory && selectedPurchaseDate && selectedExpirationDate) {
+    if (showExpanded && selectedItem && selectedUnit && selectedQuantity && selectedCategory && selectedPurchaseDate && selectedExpirationDate) {
       setDisabled(false);
-    } else if (!showExpanded && selectedItem && selectedMeasurement && selectedQuantity) {
+    } else if (!showExpanded && selectedItem && selectedUnit && selectedQuantity) {
       setDisabled(false);
     } else {
       setDisabled(true);
     }
-  }, [selectedItem, selectedMeasurement, selectedQuantity, selectedCategory, selectedPurchaseDate, selectedExpirationDate]);
+  }, [selectedItem, selectedUnit, selectedQuantity, selectedCategory, selectedPurchaseDate, selectedExpirationDate]);
 
   useEffect(() => {
     function updateStateFromData() {
       setModalData(data);
       setSelectedItem(data || null);
       setSelectedName(data?.name || null);
-      setSelectedMeasurement(data?.measurement || null);
+      setSelectedUnit(data?.unit || null);
       setSelectedQuantity(data?.amount || '');
       setSelectedCategory(data?.category || null);
       setSelectedPurchaseDate(data?.purchaseDate || null);
@@ -71,7 +71,7 @@ export default function ItemModal({
   const resetState = () => {
     console.log("Resetting state")
     setSelectedItem(null);
-    setSelectedMeasurement(null);
+    setSelectedUnit(null);
     setSelectedQuantity('');
     setSelectedCategory(null);
     setSelectedPurchaseDate(null);
@@ -112,7 +112,7 @@ export default function ItemModal({
   const handleItemSelect = (item) => {
     console.log("Item selected", item);
     setSelectedItem(item);
-    setSelectedMeasurement(item.measurement);
+    setSelectedUnit(item.unit);
     setSelectedCategory(item.category);
 
     const purchaseDate = selectedPurchaseDate || new Date();
@@ -120,9 +120,9 @@ export default function ItemModal({
     setSelectedExpirationDate(calculateExpirationDate(purchaseDate, item.expirationTime));
   };
 
-  const handleMeasurementSelect = (measurement) => {
-    console.log("Measurement selected", measurement);
-    setSelectedMeasurement(measurement);
+  const handleUnitSelect = (unit) => {
+    console.log("Unit selected", unit);
+    setSelectedUnit(unit);
   };
 
   const handleQuantityChange = (quantity) => {
@@ -142,23 +142,25 @@ export default function ItemModal({
       ingredient = {
         id: ingredientObject.id || Date.now(),
         name: selectedItem.name,
-        measurement: selectedMeasurement,
+        unit: selectedUnit,
         amount: selectedQuantity,
         category: selectedCategory,
         purchaseDate: selectedPurchaseDate,
         expirationDate: selectedExpirationDate,
-        expiration: calculateExpirationTime(selectedPurchaseDate, selectedExpirationDate),
+        expirationTime: selectedItem.expirationTime,
+        expiresInDays: calculateExpiresInDays(selectedExpirationDate),
       };
     } else {
       ingredient = {
         id: ingredientObject.id || Date.now(),
         name: selectedItem.name,
-        measurement: selectedMeasurement,
+        unit: selectedUnit,
         amount: selectedQuantity,
         category: selectedItem.category,
         purchaseDate: new Date(),
         expirationDate: calculateExpirationDate(new Date(), selectedItem.expirationTime),
-        expiration: calculateExpirationTime(selectedPurchaseDate, selectedExpirationDate),
+        expirationTime: selectedItem.expirationTime,
+        expiresInDays: calculateExpiresInDays(this.expirationDate),
       };
     }
       onSave(ingredient);
@@ -272,10 +274,10 @@ export default function ItemModal({
                 selected={selectedQuantity}
               />
               <ModalDropdown
-                placeholder={'Select Measurement'}
-                data={measurementList}
-                onChange={handleMeasurementSelect}
-                selected={selectedMeasurement}
+                placeholder={'Select Unit'}
+                data={unitList}
+                onChange={handleUnitSelect}
+                selected={selectedUnit}
               />
             </View>
           </View>
