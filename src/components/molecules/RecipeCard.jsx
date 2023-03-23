@@ -82,7 +82,7 @@ const RecipeCard = ({
           {/* <ShortSummary text={summary} maxLength={100} /> */}
           {/* <Text style={styles.description}>{desc}</Text> */}
           <View style={styles.inventory}>
-            <LabelInventory totalItems={missingIngredients} />
+            <LabelInventory totalItems={totalMissingIngredients} />
           </View>
         </View>
       </View>

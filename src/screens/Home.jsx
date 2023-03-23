@@ -121,11 +121,12 @@ function HomeScreen() {
     const priorityIngredients = prioritizeIngredients(ingredientsDataInitial);
     axios
       .get(
-        `https://api.spoonacular.com/recipes/findByIngredients?apiKey=${process.env.API_KEY}&ingredients=${priorityIngredients}&number=1&ranking=1`
+        `https://api.spoonacular.com/recipes/findByIngredients?apiKey=${process.env.API_KEY}&ingredients=${priorityIngredients}&number=2&ranking=1`
       )
       .then((response) => {
-        const recipes = response.data.recipes;
-        console.log('Recipe Object Keys', Object.keys(recipes[0]));
+        // console.log(response.data)
+        const recipes = response.data;
+        // console.log('Recipe Object Keys', Object.keys(recipes[0]));
         recipes.forEach((recipe) => {
           recipe.totalMissingIngredients = countMissingIngredients(recipe.missedIngredients, ingredientsDataInitial);
         });
