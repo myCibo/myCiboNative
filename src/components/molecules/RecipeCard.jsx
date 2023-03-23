@@ -3,7 +3,8 @@ import { View, Text, Image, StyleSheet, TouchableOpacity, Linking } from 'react-
 import LabelInventory from "../atoms/LabelInventory";
 import { useNavigation } from '@react-navigation/native';
 import ShortSummary from '../atoms/ShortSummary';
-
+import Colors from '../../constants/styles';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const RecipeCard = ({
   // summary,
@@ -22,11 +23,11 @@ const RecipeCard = ({
 
   const styles = StyleSheet.create({
     card: {
-      width: 340,
-      height: 125,
-      flexDirection: 'row',
+      width: 200,
+      height: 150,
+      flexDirection: 'column',
       backgroundColor: '#FFFFFF',
-      borderRadius: 4,
+      borderRadius: 8,
       // padding: 16,
 
       ...Platform.select({
@@ -42,33 +43,54 @@ const RecipeCard = ({
       }),
     },
     image: {
-      width: 139,
-      height: 125,
+      width: '100%',
+      height: '100%',
       resizeMode: 'cover',
-      marginRight: 16,
-
-      borderTopLeftRadius: 4,
-      borderBottomLeftRadius: 4,
+      borderRadius: 8,
     },
-    textContainer: {
-      flex: 1,
-      justifyContent: 'flex-start',
+    contentContainer: {
+      position: 'absolute',
+      justifyContent: 'space-between',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      // bottom: 0,
+      // width: '100%',
+      // height: 80,
+      // display: 'flex',
+      // justifyContent: 'space-evenly',
+      // i need this to be opacity 0.5
+      // backgroundColor: 'rgba(0,0,0,0.5)',
+      padding: 10,
+      // gap: 8,
+      // backgroundColor: Colors.fontBlack,
+      borderBottomRightRadius: 8,
+      borderBottomLeftRadius: 8,
     },
     title: {
-      fontSize: 23,
-      color: '#0D302F',
-      fontWeight: 'bold',
-      marginTop: 18,
+      alignSelf: 'flex-start',
+      fontSize: 22,
+      color: Colors.white,
     },
-    description: {
-      color: '#7B817F',
-      fontSize: 16,
-      // marginBottom: ,
-    },
-    inventory: {
-      // display:'none',
+    gradient: {
       position: 'absolute',
-      bottom: 10,
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      borderRadius: 8,
+
+    },
+    // description: {
+    //   color: Colors.fontBlack,
+    //   fontSize: 16,
+    //   // marginBottom: ,
+    // },
+    inventory: {
+      alignSelf: 'flex-end',
+      // display:'none',
+      // position: 'absolute',
     }
 
   });
@@ -77,13 +99,22 @@ const RecipeCard = ({
     <TouchableOpacity onPress={() => handleCardPress(id)}>
       <View style={styles.card}>
         <Image style={styles.image} source={{ uri: image }} />
-        <View style={styles.textContainer}>
-          <Text style={styles.title}>{title}</Text>
-          {/* <ShortSummary text={summary} maxLength={100} /> */}
-          {/* <Text style={styles.description}>{desc}</Text> */}
+        <LinearGradient
+          colors={['transparent', 'rgba(0,0,0,0.6)']}
+          style={styles.gradient}
+        />
+        <View style={styles.contentContainer}>
+          {/* <Text style={styles.title}>{title}</Text> */}
           <View style={styles.inventory}>
             <LabelInventory totalItems={totalMissingIngredients} />
           </View>
+          
+            <ShortSummary style={styles.title} text={title} maxLength={25} />
+        
+          {/* <Text style={styles.description}>{desc}</Text> */}
+
+          
+
         </View>
       </View>
     </TouchableOpacity>

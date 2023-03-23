@@ -153,7 +153,9 @@ function HomeScreen() {
       justifyContent: 'space-between',
       alignItems: 'center',
       width: '100%',
-      padding: 20,
+      paddingHorizontal: 20,
+      paddingTop: 16,
+      paddingBottom: 8,
     },
     headerText: {
       fontSize: 24,

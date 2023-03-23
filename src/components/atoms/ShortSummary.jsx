@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text } from 'react-native';
 
-const ShortSummary = ({ text, maxLength }) => {
+const ShortSummary = ({ text, maxLength, style }) => {
   const removeHtmlTags = (str) => {
     return str.replace(/(<([^>]+)>)/gi, '');
   };
@@ -17,7 +17,7 @@ const ShortSummary = ({ text, maxLength }) => {
   const cleanedText = removeHtmlTags(text);
   const shortenedText = shortenText(cleanedText, maxLength);
 
-  return <Text>{shortenedText}</Text>;
+  return <Text style={style}>{shortenedText}</Text>;
 };
 
 export default ShortSummary;
