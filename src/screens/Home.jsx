@@ -115,7 +115,7 @@ function HomeScreen() {
     const priorityIngredients = prioritizeIngredients(ingredientsDataInitial);
     axios
       .get(
-        `https://api.spoonacular.com/recipes/findByIngredients?ingredients=${priorityIngredients}&number=1&ranking=1&apiKey=${process.env.API_KEY}`
+        `https://api.spoonacular.com/recipes/findByIngredients?apiKey=${process.env.API_KEY}&ingredients=${priorityIngredients}&number=1&ranking=1`
       )
       .then((response) => {
         const recipes = response.data.recipes;
