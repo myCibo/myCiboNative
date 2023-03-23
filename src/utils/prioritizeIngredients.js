@@ -1,10 +1,10 @@
 export default function prioritizeIngredients(ingredients) {
   const filteredIngredients = ingredients.filter(
-    (ingredient) => ingredient.expiration > 0
+    (ingredient) => ingredient.expiresInDays > 0
   );
 
   const sortedIngredients = filteredIngredients.sort(
-    (a, b) => a.expiration - b.expiration
+    (a, b) => a.expiresInDays - b.expiresInDays
   );
 
   const topIngredients = sortedIngredients.slice(0, 3);

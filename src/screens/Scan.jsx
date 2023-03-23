@@ -9,9 +9,9 @@ import LabelledIcon from '../components/molecules/LabelledIcon';
 
 //FakeData-------------
 const dataArray = [
-  { id: "1", name: "Apples", amount: 2, unit: "Pcs", category: "Produce", purchaseDate: "2023-03-17", expiration: 14, expirationDate: "2023-03-25" },
-  { id: "2", name: "Bananas", amount: 3, unit: "Pcs", category: "Produce", purchaseDate: "2023-03-17", expiration: 5, expirationDate: "2023-03-25" },
-  { id: "3", name: "Oranges", amount: 1, unit: "Pcs", category: "Produce", purchaseDate: "2023-03-17", expiration: 14, expirationDate: "2023-03-25" },
+  { id: "1", name: "Apples", amount: 2, unit: "Pcs", category: "Produce", purchaseDate: "2023-03-17", expiresInDays: null, expirationDate: "2023-03-25" },
+  { id: "2", name: "Bananas", amount: 3, unit: "Pcs", category: "Produce", purchaseDate: "2023-03-17", expiresInDays: null, expirationDate: "2023-03-25" },
+  { id: "3", name: "Oranges", amount: 1, unit: "Pcs", category: "Produce", purchaseDate: "2023-03-17", expiresInDays: null, expirationDate: "2023-03-25" },
 ];
 //--------------
 

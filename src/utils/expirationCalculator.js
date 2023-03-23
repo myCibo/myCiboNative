@@ -22,10 +22,10 @@ export function formatDate(dateInput) {
   return `${monthNames[monthIndex]} ${day}${ordinal}, ${year}`;
 }
 
-export function calculateExpirationTime(purchaseDateStr, expirationDateStr) {
-  const purchaseDate = new Date(purchaseDateStr);
+export function calculateExpiresInDays(expirationDateStr) {
+  const today = new Date();
   const expirationDate = new Date(expirationDateStr);
-  return Math.floor((expirationDate - purchaseDate) / (1000 * 60 * 60 * 24));
+  return Math.floor((expirationDate - today) / (1000 * 60 * 60 * 24));
 };
 
 export function calculateExpirationDate(purchaseDateStr, expirationTime) {

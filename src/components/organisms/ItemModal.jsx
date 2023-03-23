@@ -14,7 +14,7 @@ import ModalInput from "../molecules/ModalInput";
 import ModalDropdown from "../molecules/ModalDropdown";
 import ModalDatePicker from "../molecules/ModalDatePicker";
 import { getIngredients, getUnits, getCategories } from '../../constants/FoodData';
-import { calculateExpirationDate, calculateExpirationTime } from "../../utils/expirationCalculator";
+import { calculateExpirationDate, calculateExpiresInDays } from "../../utils/expirationCalculator";
 
 export default function ItemModal({
   showItemModal,
@@ -147,7 +147,8 @@ export default function ItemModal({
         category: selectedCategory,
         purchaseDate: selectedPurchaseDate,
         expirationDate: selectedExpirationDate,
-        expiration: calculateExpirationTime(selectedPurchaseDate, selectedExpirationDate),
+        expirationTime: selectedItem.expirationTime,
+        expiresInDays: calculateExpiresInDays(selectedExpirationDate),
       };
     } else {
       ingredient = {
@@ -158,7 +159,8 @@ export default function ItemModal({
         category: selectedItem.category,
         purchaseDate: new Date(),
         expirationDate: calculateExpirationDate(new Date(), selectedItem.expirationTime),
-        expiration: calculateExpirationTime(selectedPurchaseDate, selectedExpirationDate),
+        expirationTime: selectedItem.expirationTime,
+        expiresInDays: calculateExpiresInDays(this.expirationDate),
       };
     }
       onSave(ingredient);

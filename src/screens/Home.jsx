@@ -8,7 +8,7 @@ import Colors from '../constants/styles';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 import countMissingIngredients from '../utils/countMissingIngredients';
-import { calculateExpirationTime } from '../utils/expirationCalculator';
+import { calculateExpiresInDays } from '../utils/expirationCalculator';
 import prioritizeIngredients from '../utils/prioritizeIngredients';
 
 function HomeScreen() {
@@ -44,8 +44,9 @@ function HomeScreen() {
       unit: 'Litre',
       amount: 1,
       purchaseDate: '2023-03-17',
-      expirationDate: '2023-03-20',
-      expiration: null,
+      expirationDate: '2023-03-24',
+      expirationTime: 7,
+      expiresInDays: null,
     },
     {
       id: '2',
@@ -53,9 +54,10 @@ function HomeScreen() {
       category: 'Dairy',
       unit: 'Item',
       amount: 1,
-      purchaseDate: '2023-03-12',
-      expirationDate: '2023-03-12',
-      expiration: null,
+      purchaseDate: '2023-03-17',
+      expirationDate: '2023-04-14',
+      expirationTime: 28,
+      expiresInDays: null,
     },
     {
       id: '3',
@@ -64,28 +66,31 @@ function HomeScreen() {
       unit: 'Item',
       amount: 1,
       purchaseDate: '2023-03-14',
-      expirationDate: '2023-03-28',
-      expiration: null,
+      expirationDate: '2023-04-14',
+      expirationTime: 30,
+      expiresInDays: null,
     },
     {
       id: '4',
-      name: 'Rice',
+      name: 'Brown rice',
       category: 'Grains',
       unit: 'Grams',
       amount: 1,
       purchaseDate: '2023-03-17',
-      expirationDate: '2023-03-28',
-      expiration: null,
+      expirationDate: '2024-03-17',
+      expirationTime: 365,
+      expiresInDays: null,
     },
     {
       id: '5',
-      name: 'Beef',
+      name: 'Ground beef',
       category: 'Meat',
       unit: 'Grams',
       amount: 1,
       purchaseDate: '2023-03-17',
-      expirationDate: '2023-03-18',
-      expiration: null,
+      expirationDate: '2023-03-20',
+      expirationTime: 3,
+      expiresInDays: null,
     },
     {
       id: '6',
@@ -94,12 +99,13 @@ function HomeScreen() {
       unit: 'Grams',
       amount: 1,
       purchaseDate: '2023-03-17',
-      expirationDate: '2023-03-18',
-      expiration: null,
-    }
+      expirationDate: '2023-03-19',
+      expirationTime: 2,
+      expiresInDays: null,
+    },
   ].map((ingredient) => ({
     ...ingredient,
-    expiration: calculateExpirationTime(ingredient.purchaseDate, ingredient.expirationDate),
+    expiresInDays: calculateExpiresInDays(ingredient.expirationDate),
   }));
 
   const navigation = useNavigation();

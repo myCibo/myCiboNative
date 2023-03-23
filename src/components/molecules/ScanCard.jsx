@@ -24,7 +24,8 @@ export default function ScanCard({
     //     category: "Produce",
     //     purchaseDate: "2023-03-17",
     //     expirationDate: "2023-03-17",
-    //     expiration: 14,
+    //     expirationTime: 14,
+    //     expiresInDays: 14,
     // }
 
     const [ingredientData, setIngredientData] = useState(data);
