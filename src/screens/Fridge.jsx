@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { View, Text, Image, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
-import { useFocusEffect } from '@react-navigation/native';
 import SearchBar from '../components/molecules/SearchBar';
 import IngredientItem from '../components/molecules/IngredientItem';
 import LabelledIcon from '../components/molecules/LabelledIcon';
@@ -14,7 +13,7 @@ const ingredientsDataInitial = [
     id: '1',
     name: 'Milk',
     category: 'Dairy',
-    measurement: 'Litre',
+    unit: 'Litre',
     amount: 1,
     purchaseDate: '2023-03-17',
     expirationDate: '2023-03-20',
@@ -24,7 +23,7 @@ const ingredientsDataInitial = [
     id: '2',
     name: 'Eggs',
     category: 'Dairy',
-    measurement: 'Item',
+    unit: 'Item',
     amount: 1,
     purchaseDate: '2023-03-12',
     expirationDate: '2023-03-12',
@@ -34,7 +33,7 @@ const ingredientsDataInitial = [
     id: '3',
     name: 'Potatoes',
     category: 'Vegetables',
-    measurement: 'Item',
+    unit: 'Item',
     amount: 1,
     purchaseDate: '2023-03-14',
     expirationDate: '2023-03-28',
@@ -44,7 +43,7 @@ const ingredientsDataInitial = [
     id: '4',
     name: 'Rice',
     category: 'Grains',
-    measurement: 'Grams',
+    unit: 'Grams',
     amount: 1,
     purchaseDate: '2023-03-17',
     expirationDate: '2023-03-28',
@@ -54,7 +53,7 @@ const ingredientsDataInitial = [
     id: '5',
     name: 'Beef',
     category: 'Meat',
-    measurement: 'Grams',
+    unit: 'Grams',
     amount: 1,
     purchaseDate: '2023-03-17',
     expirationDate: '2023-03-18',
@@ -64,7 +63,7 @@ const ingredientsDataInitial = [
     id: '6',
     name: 'Chicken',
     category: 'Meat',
-    measurement: 'Grams',
+    unit: 'Grams',
     amount: 1,
     purchaseDate: '2023-03-17',
     expirationDate: '2023-03-18',
@@ -75,14 +74,11 @@ const ingredientsDataInitial = [
   expiration: calculateExpirationTime(ingredient.purchaseDate, ingredient.expirationDate),
 }));
 
-const FridgeScreen = ({ route }) => {
+const FridgeScreen = () => {
 
   const [ingredientsData, setIngredientsData] = useState(ingredientsDataInitial);
-  const scrollViewRef = useRef();
 
-  console.log('route', route)
-
-  // group ingredients by category. There 
+  // group ingredients by category. 
   const ingredientsByCategory = ingredientsData.reduce((acc, ingredient) => {
     if (!acc[ingredient.category]) {
       acc[ingredient.category] = [];
@@ -90,13 +86,6 @@ const FridgeScreen = ({ route }) => {
     acc[ingredient.category].push(ingredient);
     return acc;
   }, {});
-
-  const categoryRefs = useRef(
-    Object.keys(ingredientsByCategory).reduce((acc, category) => {
-      acc[category] = React.createRef();
-      return acc;
-    }, {})
-  );
 
   const handleAddIngredient = (ingredient) => {
     const updatedIngredientsData = [...ingredientsData, ingredient];
@@ -118,29 +107,6 @@ const FridgeScreen = ({ route }) => {
     const updatedIngredientsData = ingredientsData.filter((item) => item.id !== ingredientId);
     setIngredientsData(updatedIngredientsData);
   };
-
-  useFocusEffect(
-    React.useCallback(() => {
-      const selectedCategory = route.params?.category;
-      if (selectedCategory && categoryRefs.current[selectedCategory]) {
-        const ingredientHeight = 60;
-        const categoryHeaderHeight = 100;
-  
-        // Calculate yOffset by summing heights of all categories above the selected category
-        const yOffset = Object.keys(ingredientsByCategory)
-          .slice(0, Object.keys(ingredientsByCategory).indexOf(selectedCategory))
-          .reduce((totalHeight, category) => {
-            return totalHeight + categoryHeaderHeight + ingredientsByCategory[category].length * ingredientHeight;
-          }, 0);
-  
-        scrollViewRef.current.scrollTo({ x: 0, y: yOffset, animated: true });
-  
-        if (route.params?.category) {
-          route.params.category = null;
-        }
-      }
-    }, [route.params])
-  );  
 
   const styles = StyleSheet.create({
     container: {
@@ -179,7 +145,7 @@ const FridgeScreen = ({ route }) => {
   // render the ingredients under each category
   const renderIngredientsByCategory = () => {
     return Object.keys(ingredientsByCategory).map((category) => (
-      <View key={category} ref={categoryRefs.current[category]}>
+      <View key={category}>
         <View style={styles.categoryHeader}>
           <Text style={styles.categoryTitle}>{category}</Text>
           <LabelledIcon
@@ -219,7 +185,6 @@ const FridgeScreen = ({ route }) => {
         </TouchableOpacity>
       </View>
       <ScrollView
-        ref={scrollViewRef}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.contentContainer}
       >

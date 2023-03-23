@@ -1,22 +1,23 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity, Linking } from 'react-native';
 import LabelInventory from "../atoms/LabelInventory";
-// import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
+import ShortSummary from '../atoms/ShortSummary';
 
 
 const RecipeCard = ({
-  imageSrc,
-  link,
+  // summary,
+  image,
   title,
-  desc
+  totalMissingIngredients = 5,
+  id,
 }) => {
 
-  // const navigation = useNavigation();
 
-  const handleCardPress = () => {
-    // navigation.navigate({link});
-    Linking.openURL(link);
+  const navigation = useNavigation();
 
+  const handleCardPress = (id) => {
+    navigation.navigate('DynamicRecipe', { id, image, title });
   };
 
   const styles = StyleSheet.create({
@@ -73,14 +74,15 @@ const RecipeCard = ({
   });
 
   return (
-    <TouchableOpacity onPress={handleCardPress}>
+    <TouchableOpacity onPress={() => handleCardPress(id)}>
       <View style={styles.card}>
-        <Image style={styles.image} source={imageSrc} />
+        <Image style={styles.image} source={{ uri: image }} />
         <View style={styles.textContainer}>
           <Text style={styles.title}>{title}</Text>
-          <Text style={styles.description}>{desc}</Text>
+          {/* <ShortSummary text={summary} maxLength={100} /> */}
+          {/* <Text style={styles.description}>{desc}</Text> */}
           <View style={styles.inventory}>
-            <LabelInventory totalItems={10} />
+            <LabelInventory totalItems={missingIngredients} />
           </View>
         </View>
       </View>

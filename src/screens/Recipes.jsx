@@ -37,7 +37,7 @@ function RecipeScreen() {
 
     axios
       .get(
-        `https://api.spoonacular.com/recipes/random?number=20&apiKey=${process.env.API_KEY}`
+        `https://api.spoonacular.com/recipes/random?number=1&apiKey=${process.env.API_KEY}`
       )
       .then((response) => {
         const recipes = response.data.recipes;
@@ -89,7 +89,7 @@ function RecipeScreen() {
   }
 
   return (
-    <ScrollView style={styles.contentContainer}>
+    <ScrollView  Style={styles.contentContainer}>
       <View style={styles.container}>
       <View style={styles.header}>
         <SearchBar />

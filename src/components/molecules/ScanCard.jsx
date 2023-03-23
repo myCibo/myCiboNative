@@ -20,7 +20,7 @@ export default function ScanCard({
     //     id: "12345",
     //     name: "Apple",
     //     amount: 2,
-    //     measurement: "Pcs",
+    //     unit: "Pcs",
     //     category: "Produce",
     //     purchaseDate: "2023-03-17",
     //     expirationDate: "2023-03-17",
@@ -120,7 +120,7 @@ export default function ScanCard({
             <View style={styles.leftContainer}>
                 <View style={styles.heading}>
                     <Text style={styles.title}>{data.name}</Text>
-                    <Text style={styles.quantity}> - {data.amount} {data.measurement}</Text>
+                    <Text style={styles.quantity}> - {data.amount} {data.unit}</Text>
                 </View>
                 <Text style={styles.category}>{data.category}</Text>
                 <Text style={styles.expiry}>Expires: {date}</Text>

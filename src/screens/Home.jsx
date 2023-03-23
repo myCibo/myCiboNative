@@ -1,10 +1,15 @@
-import React from 'react';
-import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native';
 import Carousel from '../components/organisms/Carousel';
 import CategorySquare from '../components/molecules/CategorySquare';
+import RecipeCard from '../components/molecules/RecipeCard';
 import Icon from '../components/atoms/Icon';
 import Colors from '../constants/styles';
 import { useNavigation } from '@react-navigation/native';
+import axios from 'axios';
+import countMissingIngredients from '../utils/countMissingIngredients';
+import { calculateExpirationTime } from '../utils/expirationCalculator';
+import prioritizeIngredients from '../utils/prioritizeIngredients';
 
 function HomeScreen() {
 
@@ -31,11 +36,101 @@ function HomeScreen() {
     },
   ];
 
+  const ingredientsDataInitial = [
+    {
+      id: '1',
+      name: 'Milk',
+      category: 'Dairy',
+      unit: 'Litre',
+      amount: 1,
+      purchaseDate: '2023-03-17',
+      expirationDate: '2023-03-20',
+      expiration: null,
+    },
+    {
+      id: '2',
+      name: 'Eggs',
+      category: 'Dairy',
+      unit: 'Item',
+      amount: 1,
+      purchaseDate: '2023-03-12',
+      expirationDate: '2023-03-12',
+      expiration: null,
+    },
+    {
+      id: '3',
+      name: 'Potatoes',
+      category: 'Vegetables',
+      unit: 'Item',
+      amount: 1,
+      purchaseDate: '2023-03-14',
+      expirationDate: '2023-03-28',
+      expiration: null,
+    },
+    {
+      id: '4',
+      name: 'Rice',
+      category: 'Grains',
+      unit: 'Grams',
+      amount: 1,
+      purchaseDate: '2023-03-17',
+      expirationDate: '2023-03-28',
+      expiration: null,
+    },
+    {
+      id: '5',
+      name: 'Beef',
+      category: 'Meat',
+      unit: 'Grams',
+      amount: 1,
+      purchaseDate: '2023-03-17',
+      expirationDate: '2023-03-18',
+      expiration: null,
+    },
+    {
+      id: '6',
+      name: 'Chicken',
+      category: 'Meat',
+      unit: 'Grams',
+      amount: 1,
+      purchaseDate: '2023-03-17',
+      expirationDate: '2023-03-18',
+      expiration: null,
+    }
+  ].map((ingredient) => ({
+    ...ingredient,
+    expiration: calculateExpirationTime(ingredient.purchaseDate, ingredient.expirationDate),
+  }));
+
   const navigation = useNavigation();
+  const [data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const handleLinkPress = (destination) => {
     navigation.navigate(destination);
   };
+
+  useEffect(() => {
+    setIsLoading(true);
+    const priorityIngredients = prioritizeIngredients(ingredientsDataInitial);
+    axios
+      .get(
+        `https://api.spoonacular.com/recipes/findByIngredients?ingredients=${priorityIngredients}&number=1&ranking=1&apiKey=${process.env.API_KEY}`
+      )
+      .then((response) => {
+        const recipes = response.data.recipes;
+        console.log('Recipe Object Keys', Object.keys(recipes[0]));
+        recipes.forEach((recipe) => {
+          recipe.totalMissingIngredients = countMissingIngredients(recipe.missedIngredients, ingredientsDataInitial);
+        });
+        setData(recipes);
+        setIsLoading(false);
+
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
   const styles = {
     contentContainer: {
@@ -67,6 +162,15 @@ function HomeScreen() {
     },
   };
 
+  if (isLoading) {
+    return (
+      <View style={styles.loader}>
+         {/* <Text>Anything inside this view will show up while loading thre page </Text>*/}
+      <ActivityIndicator size="large" color="#b82d1b" />
+    </View>
+    );
+  }
+
   return (
     <ScrollView style={styles.contentContainer}>
       <View style={styles.container}>
@@ -80,6 +184,17 @@ function HomeScreen() {
         <Carousel
           data={fridgeCategories}
           CardComponent={CategorySquare}
+        />
+        <View style={styles.header}>
+          <Text style={styles.headerText}>Recipes</Text>
+          <TouchableOpacity style={styles.headerButton} onPress={() => handleLinkPress('Recipes')}>
+            <Icon name='list' size={24} color={Colors.primaryBlack} />
+            <Text style={styles.headerButtonText}> View All</Text>
+          </TouchableOpacity>
+        </View>
+        <Carousel
+          data={data}
+          CardComponent={RecipeCard}
         />
       </View>
     </ScrollView>

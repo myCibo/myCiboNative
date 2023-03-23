@@ -11,7 +11,7 @@ const Carousel = ({
     title = null, 
     CardComponent, 
     horizontal = true, 
-    Header 
+    Header, 
 }) => {
     const renderItem = ({ item }) => {
         return <CardComponent {...item} />;

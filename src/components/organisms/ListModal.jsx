@@ -12,7 +12,7 @@ import CustomButton from "../atoms/CustomButton";
 import ModalInput from "../molecules/ModalInput";
 import ModalSearch from "../molecules/ModalSearch";
 import ModalDropdown from "../molecules/ModalDropdown";
-import { getIngredients, getMeasurements } from '../../constants/FoodData';
+import { getIngredients, getUnits } from '../../constants/FoodData';
 
 export default function ListModal({
     showListModal,
@@ -23,29 +23,29 @@ export default function ListModal({
 }) {
 
     const ingredientList = getIngredients();
-    const measurementList = getMeasurements();
+    const unitList = getUnits();
     const shoppingListObject = data || {};
 
     const [selectedItem, setSelectedItem] = useState(null);
-    const [selectedMeasurement, setSelectedMeasurement] = useState(null);
+    const [selectedUnit, setSelectedUnit] = useState(null);
     const [selectedQuantity, setSelectedQuantity] = useState(null);
     const [listName, setListName] = useState(shoppingListObject?.listName || '');
     const [disabled, setDisabled] = useState(true);
 
     useEffect(() => {
-        if (type === 'item' && selectedItem && selectedMeasurement && selectedQuantity) {
+        if (type === 'item' && selectedItem && selectedUnit && selectedQuantity) {
             setDisabled(false);
         } else if (type !== 'item' && listName) {
             setDisabled(false);
         } else {
             setDisabled(true);
         }
-    }, [selectedItem, selectedMeasurement, selectedQuantity, type, listName]);
+    }, [selectedItem, selectedUnit, selectedQuantity, type, listName]);
 
     const resetState = () => {
         console.log("Resetting state")
         setSelectedItem(null);
-        setSelectedMeasurement(null);
+        setSelectedUnit(null);
         setSelectedQuantity(null);
         setListName('');
     };
@@ -72,7 +72,7 @@ export default function ListModal({
             newItem = {
                 id: Date.now(),
                 itemName: selectedItem.name,
-                unit: selectedMeasurement,
+                unit: selectedUnit,
                 amount: selectedQuantity,
             }
             console.log('onSaveItem', newItem)
@@ -88,12 +88,12 @@ export default function ListModal({
     const handleItemSelect = (item) => {
         console.log("Item selected", item);
         setSelectedItem(item);
-        setSelectedMeasurement(item.measurement);
+        setSelectedUnit(item.unit);
     };
 
-    const handleMeasurementSelect = (measurement) => {
-        console.log("Measurement selected", measurement);
-        setSelectedMeasurement(measurement);
+    const handleUnitSelect = (unit) => {
+        console.log("Unit selected", unit);
+        setSelectedUnit(unit);
     };
 
     const handleQuantityChange = (quantity) => {
@@ -224,10 +224,10 @@ export default function ListModal({
                                 onChange={handleQuantityChange}
                             />
                             <ModalDropdown
-                                placeholder={'Select a measurement'}
-                                data={measurementList}
-                                onChange={handleMeasurementSelect}
-                                selected={selectedMeasurement}
+                                placeholder={'Select a unit'}
+                                data={unitList}
+                                onChange={handleUnitSelect}
+                                selected={selectedUnit}
                             />
                         </View>
                     </View>
