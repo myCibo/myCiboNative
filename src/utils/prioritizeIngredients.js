@@ -9,5 +9,7 @@ export default function prioritizeIngredients(ingredients) {
 
   const topIngredients = sortedIngredients.slice(0, 3);
 
-  return topIngredients.map((ingredient) => ingredient.name.toLowerCase()).join(',+');
+  return topIngredients
+    .map((ingredient) => ingredient.name.toLowerCase().replace(/\s+/g, '-'))
+    .join(',+');
 }

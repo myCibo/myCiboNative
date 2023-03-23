@@ -166,14 +166,19 @@ function HomeScreen() {
       fontSize: 20,
       color: Colors.primaryBlack,
     },
+    loader: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
   };
 
   if (isLoading) {
     return (
       <View style={styles.loader}>
-         {/* <Text>Anything inside this view will show up while loading thre page </Text>*/}
-      <ActivityIndicator size="large" color="#b82d1b" />
-    </View>
+        {/* <Text>Anything inside this view will show up while loading thre page </Text>*/}
+        <ActivityIndicator size="large" color="#b82d1b" />
+      </View>
     );
   }
 
