@@ -21,7 +21,7 @@ function truncateTitle(title) {
 
 
 
-const SingleRecipeCarousel = ({ image, id, title }) => {
+const SingleRecipeCarousel = ({ image, id, title,  }) => {
   const navigation = useNavigation();
   // const stack = createStackNavigator();
 

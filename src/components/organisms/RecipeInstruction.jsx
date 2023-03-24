@@ -22,13 +22,7 @@ const RecipeInstruction = ({ data }) => {
             shadowOpacity: 0.1,
             shadowRadius: 20,
         },
-        title:{
-            color:'#0D302F',
-            fontSize:16,
-            textTransform: 'uppercase',
-            marginVertical: 30,
-            fontWeight:'bold',
-          }
+    
     });
 
     const newArray = [];
@@ -51,7 +45,6 @@ const RecipeInstruction = ({ data }) => {
     return (
         <SafeAreaView style={{ flex: 1 }}>
           <View>
-            <Text style={styles.title}>Preparation</Text>
             {newArray.map((step, index) => (
               <View style={styles.card} key={index}>
                 <Text>{step.id}. </Text>
