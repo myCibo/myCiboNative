@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import { View, ScrollView, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
+import { View, ScrollView, Text, StyleSheet, Image, TouchableOpacity, ActivityIndicator} from "react-native";
 import RecipeHero from "../components/organisms/RecipeHero";
 import Carousel from "../components/organisms/Carousel";
 import SearchBar from '../components/molecules/SearchBar';
@@ -29,8 +29,12 @@ function CarouselHeader({ title = "this is title" }) {
 
 function RecipeScreen() {
   const [data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
 
   useEffect(() => {
+    setIsLoading(true);
+
     axios
       .get(
         `https://api.spoonacular.com/recipes/random?number=20&apiKey=${process.env.API_KEY}`
@@ -39,6 +43,8 @@ function RecipeScreen() {
         const recipes = response.data.recipes;
         const categorizedRecipes = categorizeRecipes(recipes);
         setData(categorizedRecipes);
+        setIsLoading(false);
+
       })
       .catch((error) => {
         console.log(error);
@@ -73,11 +79,18 @@ function RecipeScreen() {
     return categorizedRecipes;
   }
 
+  if (isLoading) {
+    return (
+      <View style={styles.loader}>
+         {/* <Text>Anything inside this view will show up while loading thre page </Text>*/}
+      <ActivityIndicator size="large" color="#b82d1b" />
+    </View>
+    );
+  }
+
   return (
-    <ScrollView>
-      <View
-      // style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
-      >
+    <ScrollView  Style={styles.contentContainer}>
+      <View style={styles.container}>
       <View style={styles.header}>
         <SearchBar />
         <TouchableOpacity
@@ -90,33 +103,19 @@ function RecipeScreen() {
         </TouchableOpacity>
       </View>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+      {/* <View style={{ backgroundColor:'green', paddingHorizontal: 20,}}> */}
         {data.hero && data.hero.length > 0 && (
           // <Text>{data.hero[0].title}</Text>
           <View
-            style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
+            style={{ flex: 1, alignItems: "center", justifyContent: "center", 
+            //paddingHorizontal: 12
+          }}
           >
             <RecipeHero
               id={data.hero[0].id}
               image={data.hero[0].image}
               link="#"
-              title={data.hero[0].title}
+              title={data.hero[0].title}  
               label="For You"
             />
           </View>
@@ -194,11 +193,27 @@ function RecipeScreen() {
             Header={CarouselHeader}
           />
         )}
+        {/* </View> */}
       </View>
     </ScrollView>
   );
 }
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    width: "100%",
+    backgroundColor: Colors['creamyWhite'],
+    // backgroundColor: 'red',
+    
+
+  },
+  contentContainer: {
+    // width: "60%",
+    // backgroundColor:
+
+  },
   categoryName: {
     color: "#0D302F",
     fontSize: 16,
@@ -214,6 +229,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     gap: 10,
     marginVertical:10,
+  },
+  loader: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    // backgroundColor: '#f5f5f5'
   },
 });
 

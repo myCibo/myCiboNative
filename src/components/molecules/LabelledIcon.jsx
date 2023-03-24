@@ -30,9 +30,9 @@ export default function LabelledIcon({
         setShowListModal(!showListModal);
     };
 
-    const handleNew = (data) => {
-        console.log('newObject', data);
-        onNew(data);
+    const handleNew = (item) => {
+        console.log('newObject', item);
+        onNew(item);
     };
 
     const styles = {
@@ -54,7 +54,7 @@ export default function LabelledIcon({
                     showItemModal={showItemModal}
                     type="add"
                     expanded={false}
-                    data={{ category: data.category ? data.category : null }}
+                    data={{ category: data?.category ? data?.category : null }}
                     onSave={handleNew}
                 />
                 <ListModal

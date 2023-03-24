@@ -38,7 +38,7 @@ const RecipeHero = ({ id, image, link, title, label }) => {
 
 const styles = StyleSheet.create({
   card: {
-    width: '95%',
+    width: '90%',
     // width: 370, //on web 
     height: 252,
     // height: '95%',
@@ -58,7 +58,9 @@ const styles = StyleSheet.create({
   image: {
     width: '100%',
     height: '100%',
-    resizeMode: 'cover',
+    // resizeMode: 'cover',
+    resizeMode: 'stretch',
+
     borderRadius: 6,
 
 
@@ -70,11 +72,8 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
     height: 200,
-
     borderRadius: 6,
-
   },
-
   textContainer: {
     position: 'absolute',
     top: 0,
@@ -88,12 +87,9 @@ const styles = StyleSheet.create({
     fontSize: 24,
     color: '#EDF3F4',
     fontWeight: 'medium',
-
     marginTop: 5,
     marginBottom: 13,
     marginLeft: 5,
-
-
   },
   description: {
     color: '#7B817F',

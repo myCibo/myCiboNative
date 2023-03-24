@@ -52,11 +52,13 @@ const Shopping = () => {
     setShoppingLists((prevShoppingLists) => [...prevShoppingLists, newList]);
   };
 
-  const handleUpdateListEntry = (id, list) => {
-    console.log("Updated list entry: ", id, list)
+  const handleUpdateListEntry = (id, updatedList) => {
+    console.log("Updated list entry: ", id, updatedList);
     setShoppingLists((prevShoppingLists) =>
       prevShoppingLists.map((shoppingList) =>
-        shoppingList.id === id ? { ...shoppingList, list } : shoppingList
+        shoppingList.id === id
+          ? { ...shoppingList, list: updatedList } // Update the list property
+          : shoppingList
       )
     );
   };
@@ -112,6 +114,7 @@ const Shopping = () => {
           iconName="add"
           variant="add"
           onNew={handleNewListEntry}
+          data={null}
         />
       </View>
       <ScrollView
