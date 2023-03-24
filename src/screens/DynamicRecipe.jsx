@@ -12,7 +12,7 @@ import RecipeDetails from '../components/molecules/RecipeDetails';
 
 function DynamicRecipe() {
     const route = useRoute();
-    const windowHeight = Dimensions.get('window').height;
+
 
     const styles = StyleSheet.create({
         headerContainer: {
@@ -57,7 +57,7 @@ function DynamicRecipe() {
     // FAKE DATA------------------------------
     const id = "665550";
     const image = "https://picsum.photos/400/300";
-    const title = "Lamb Skewers";
+    const title = route.params.title;
     //----------------------------------------------------
 
     const [ingData, setIngData] = useState([]);

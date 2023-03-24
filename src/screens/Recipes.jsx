@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
 
-import { View, ScrollView, Text, StyleSheet, Image, TouchableOpacity, ActivityIndicator} from "react-native";
+import { View, ScrollView, Text, StyleSheet, Image, TouchableOpacity, ActivityIndicator } from "react-native";
 import RecipeHero from "../components/organisms/RecipeHero";
 import Carousel from "../components/organisms/Carousel";
+import RecipeCarouselLib from "../components/organisms/RecipeCarouselLib";
 import SearchBar from '../components/molecules/SearchBar';
+import { useNavigation } from '@react-navigation/native';
+
 import Icon from '../components/atoms/Icon';
 import Colors from '../constants/styles';
 
@@ -23,13 +26,35 @@ const categorizedRecipes = {
   snack: [],
 };
 
-function CarouselHeader({ title = "this is title" }) {
-  return <Text style={styles.categoryName}>{title}</Text>;
-}
 
 function RecipeScreen() {
+
+  const navigation = useNavigation();
+
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [searchResultArray, setSearchResultArray] = useState([]);
+
+
+
+
+  const handleSearch = (value) => {
+    setSearchResultArray([]);
+    fetch(`https://api.spoonacular.com/recipes/complexSearch?query=${value}&number=5&apiKey=${process.env.API_KEY}`)
+
+      .then(response => response.json())
+      .then(data => {
+        setSearchResultArray(data.results);
+      })
+      .catch(error => console.error(error));
+  };
+
+  const handleSearchCardPress = (recipe)=>{
+    const { id, image, title } = recipe;
+    navigation.navigate('DynamicRecipe', { id, image, title });
+
+  }
+
 
 
   useEffect(() => {
@@ -38,6 +63,7 @@ function RecipeScreen() {
     axios
       .get(
         `https://api.spoonacular.com/recipes/random?number=20&apiKey=${process.env.API_KEY}`
+
       )
       .then((response) => {
         const recipes = response.data.recipes;
@@ -79,125 +105,73 @@ function RecipeScreen() {
     return categorizedRecipes;
   }
 
+
+  //Loading 
   if (isLoading) {
     return (
       <View style={styles.loader}>
-         {/* <Text>Anything inside this view will show up while loading thre page </Text>*/}
-      <ActivityIndicator size="large" color="#b82d1b" />
-    </View>
+        {/* <Text>Anything inside this view will show up while loading thre page </Text>*/}
+        <ActivityIndicator size="large" color="#b82d1b" />
+      </View>
     );
   }
 
+
   return (
-    <ScrollView  Style={styles.contentContainer}>
+    <ScrollView Style={styles.contentContainer}>
       <View style={styles.container}>
-      <View style={styles.header}>
-        <SearchBar />
-        <TouchableOpacity
-          onPress={() => {
-            console.log("Filter");
-          }}
 
-        >
-        <Icon name='filter' size={32} color={Colors.primaryBlack}/>
-        </TouchableOpacity>
-      </View>
+        {/* Header */}
+        <View style={styles.header}>
+          <SearchBar placeholder="Search Recipe" onSearch={handleSearch} />
+          <TouchableOpacity onPress={() => { console.log("Filter"); }}>
+            <Icon name='filter' size={32} color={Colors.primaryBlack} />
+          </TouchableOpacity>
+        </View>
 
-      {/* <View style={{ backgroundColor:'green', paddingHorizontal: 20,}}> */}
-        {data.hero && data.hero.length > 0 && (
-          // <Text>{data.hero[0].title}</Text>
-          <View
-            style={{ flex: 1, alignItems: "center", justifyContent: "center", 
-            //paddingHorizontal: 12
-          }}
-          >
-            <RecipeHero
-              id={data.hero[0].id}
-              image={data.hero[0].image}
-              link="#"
-              title={data.hero[0].title}  
-              label="For You"
-            />
-          </View>
-        )}
+        {/* Search Result  */}
+        {/* 
+          search result : 
+          array of objects/revcipes, keys are id,image, title, imagetype
+          add a 'x' to clear the searchResultArray
+          component goes here and data will nbe passed here 
+          overlay on others  */}
+        {searchResultArray.length > 0 ? (
+          <>
+            {searchResultArray.map((recipe, index) => (
+            
+              <TouchableOpacity  onPress={() => handleSearchCardPress(recipe)}>
+                <Text key={index}>{recipe.title}</Text>
+              </TouchableOpacity>
+            ))}
+            </>
 
-        {data.mainCourse && data.mainCourse.length > 2 && (
-          <Carousel
-            data={data.mainCourse}
-            title="Main Course"
-            CardComponent={SingleRecipeCarousel}
-            Header={CarouselHeader}
-          />
-        )}
-        {data.dessert && data.dessert.length > 2 && (
-          <Carousel
-            data={data.dessert}
-            title="Dessert"
-            CardComponent={SingleRecipeCarousel}
-            Header={CarouselHeader}
-          />
-        )}
-        {data.appetizer && data.appetizer.length > 2 && (
-          <Carousel
-            data={data.appetizer}
-            title="Appetizer"
-            CardComponent={SingleRecipeCarousel}
-            Header={CarouselHeader}
-          />
-        )}
-        {data.salad && data.salad.length > 2 && (
-          <Carousel
-            data={data.salad}
-            title="Salad"
-            CardComponent={SingleRecipeCarousel}
-            Header={CarouselHeader}
-          />
-        )}
-        {data.soup && data.soup.length > 2 && (
-          <Carousel
-            data={data.soup}
-            title="Soup"
-            CardComponent={SingleRecipeCarousel}
-            Header={CarouselHeader}
-          />
-        )}
-        {data.sideDish && data.sideDish.length > 2 && (
-          <Carousel
-            data={data.sideDish}
-            title="Side Dish"
-            CardComponent={SingleRecipeCarousel}
-            Header={CarouselHeader}
-          />
-        )}
-        {data.beverage && data.beverage.length > 2 && (
-          <Carousel
-            data={data.beverage}
-            title="Beverage"
-            CardComponent={SingleRecipeCarousel}
-            Header={CarouselHeader}
-          />
-        )}
-        {data.breakfast && data.breakfast.length > 2 && (
-          <Carousel
-            data={data.breakfast}
-            title="Breakfast"
-            CardComponent={SingleRecipeCarousel}
-            Header={CarouselHeader}
-          />
-        )}
-        {data.snack && data.snack.length > 2 && (
-          <Carousel
-            data={data.snack}
-            title="Snack"
-            CardComponent={SingleRecipeCarousel}
-            Header={CarouselHeader}
-          />
-        )}
-        {/* </View> */}
+        ) :
+          <>
+            {/* Hero */}
+            {data.hero && data.hero.length > 0 && (
+              <View style={{ flex: 1, alignItems: "center", justifyContent: "center", }}>
+                <RecipeHero
+                  id={data.hero[0].id}
+                  image={data.hero[0].image}
+                  link="#"
+                  title={data.hero[0].title}
+                  label="For You"
+                />
+              </View>
+            )}
+
+            {/* Carousels */}
+            <RecipeCarouselLib data={data} />
+          </>
+        }
       </View>
     </ScrollView>
   );
 }
+
+
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -205,21 +179,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     width: "100%",
     backgroundColor: Colors['creamyWhite'],
-    // backgroundColor: 'red',
-    
+
 
   },
-  contentContainer: {
-    // width: "60%",
-    // backgroundColor:
 
-  },
-  categoryName: {
-    color: "#0D302F",
-    fontSize: 16,
-    textTransform: "uppercase",
-    marginVertical:10,
-  },
   header: {
     flexDirection: "row",
     alignItems: "center",
@@ -228,13 +191,12 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 20,
     gap: 10,
-    marginVertical:10,
+    marginVertical: 10,
   },
   loader: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    // backgroundColor: '#f5f5f5'
   },
 });
 

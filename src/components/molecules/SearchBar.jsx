@@ -1,11 +1,16 @@
 
-import React from "react";
+import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from "react-native";
 import Icon from "../atoms/Icon";
 import Colors from "../../constants/styles";
 
-export default function SearchBar({}) {
+export default function SearchBar({placeholder, onSearch}) {
 
+  const [searchValue, setSearchValue] = useState('');
+
+  const handleSearch = () => {
+    onSearch(searchValue);
+  };
 
   const styles = StyleSheet.create({
     container: {
@@ -35,6 +40,7 @@ export default function SearchBar({}) {
     },
   });
 
+
   return (
     <View style={styles.container}>
       <Icon name='magnifying-glass' size={24} color={Colors['fontGray']} />
@@ -42,6 +48,12 @@ export default function SearchBar({}) {
         style={styles.input}
         placeholder="Search Recipe"
         placeholderTextColor="#7B817F"
+
+        value={searchValue}
+
+        // onChangeText={handleSearch}
+        onChangeText={setSearchValue}
+        onSubmitEditing={handleSearch}
       />
     </View>
   );

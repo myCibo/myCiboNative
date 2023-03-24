@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
     // height:'auto',
     flexDirection: 'column',
     alignItems: 'flex-start',
-    margin: 5,
+
   },
   card: {
     width: 200,
@@ -75,8 +75,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     borderRadius: 4,
 
-    // position: relative,
-    // padding: 16,
 
     elevation: 5,
     shadowOffset: { width: 0, height: 8 },
