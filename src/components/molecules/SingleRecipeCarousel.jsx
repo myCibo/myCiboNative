@@ -21,7 +21,16 @@ function truncateTitle(title) {
 
 
 
-const SingleRecipeCarousel = ({ image, id, title,  }) => {
+const SingleRecipeCarousel = ({
+  id,
+  image,
+  title,
+  analyzedInstructions,
+  extendedIngredients,
+  servings,
+  readyInMinutes,
+  healthScore
+}) => {
   const navigation = useNavigation();
   // const stack = createStackNavigator();
 
@@ -31,9 +40,16 @@ const SingleRecipeCarousel = ({ image, id, title,  }) => {
   const handlePressRecipe = (id) => {
     console.log(`the post with id:"${id}" is pressed`)
     // <Linking
-    navigation.navigate('DynamicRecipe', { id, image, title });
-    // stack.navigat
-    // Linking.openURL('https://www.example.com')
+    navigation.navigate('DynamicRecipe', {
+      id,
+      image,
+      title,
+      analyzedInstructions,
+      extendedIngredients,
+      servings,
+      readyInMinutes,
+      healthScore
+    });
   };
 
 

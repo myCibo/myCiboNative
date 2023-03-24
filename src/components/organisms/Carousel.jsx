@@ -13,6 +13,7 @@ const Carousel = ({
     horizontal = true,
     Header,
 }) => {
+    // console.log(data)
     const renderItem = ({ item }) => {
         const styles = StyleSheet.create({
             card: {

@@ -12,6 +12,18 @@ import RecipeDetails from '../components/molecules/RecipeDetails';
 
 function DynamicRecipe() {
     const route = useRoute();
+    const { id,
+        image,
+        title,
+        analyzedInstructions,
+        extendedIngredients,
+        servings,
+        readyInMinutes,
+        healthScore } = route.params;
+
+ 
+    const [isLoading, setIsLoading] = useState(true);
+    useEffect(() => { setIsLoading(false);}, [id]);
 
 
     const styles = StyleSheet.create({
@@ -62,35 +74,6 @@ function DynamicRecipe() {
     });
 
 
-    const { id, image, title } = route.params;
-
-    const [ingData, setIngData] = useState([]);
-    const [insData, setInsData] = useState([]);
-    const [detailData, setDetailData] = useState({});
-    const [isLoading, setIsLoading] = useState(true);
-
-
-    useEffect(() => {
-        axios.get(`https://api.spoonacular.com/recipes/${id}/information?includeNutrition=false&apiKey=${process.env.API_KEY}`)
-            .then(response => {
-                setDetailData(response.data);
-                setIngData(response.data.extendedIngredients);
-                setIsLoading(false);
-
-
-                axios.get(`https://api.spoonacular.com/recipes/${id}/analyzedInstructions?apiKey=${process.env.API_KEY}`)
-                    .then(response => {
-                        setInsData(response.data);
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-            })
-            .catch(error => {
-                console.log(error);
-            });
-    }, [id]);
-
 
 
     if (isLoading) {
@@ -119,15 +102,15 @@ function DynamicRecipe() {
                 </View>
 
                     <RecipeDetails
-                        timeInMinutes={detailData.readyInMinutes}
-                        serving={detailData.servings}
-                        healthScore={detailData.healthScore} />
+                        timeInMinutes={readyInMinutes}
+                        serving={servings}
+                        healthScore={healthScore} />
 
                     <Text style={styles.title}>ingredients</Text>
-                    {ingData.length > 0 && <RecipeIngredients data={ingData} />}
+                    {extendedIngredients.length > 0 && <RecipeIngredients data={extendedIngredients} />}
 
                     <Text style={styles.title}>preparation</Text>
-                    {insData.length > 0 && <RecipeInstruction data={insData} />}
+                    {analyzedInstructions.length > 0 && <RecipeInstruction data={analyzedInstructions} />}
             </View>
         </ScrollView>
     );
