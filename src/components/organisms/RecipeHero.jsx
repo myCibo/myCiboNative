@@ -72,11 +72,8 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
     height: 200,
-
     borderRadius: 6,
-
   },
-
   textContainer: {
     position: 'absolute',
     top: 0,
@@ -90,12 +87,9 @@ const styles = StyleSheet.create({
     fontSize: 24,
     color: '#EDF3F4',
     fontWeight: 'medium',
-
     marginTop: 5,
     marginBottom: 13,
     marginLeft: 5,
-
-
   },
   description: {
     color: '#7B817F',

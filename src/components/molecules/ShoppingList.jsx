@@ -41,6 +41,7 @@ export default function ShoppingList({
 
   const [showOptionsModal, setShowOptionsModal] = useState(false);
   const [showListModal, setShowListModal] = useState(false);
+  const [modalKey, setModalKey] = useState(Date.now());
 
   const [open, setOpen] = useState(false);
 
@@ -54,17 +55,22 @@ export default function ShoppingList({
 
   const handleToggleListModal = () => {
     setShowListModal(!showListModal);
+    setModalKey(Date.now());
   };
 
   const handleRemoveItem = (itemId) => {
     console.log("Remove item", itemId);
+    console.log("list", list)
     const updatedList = list.filter((item) => item.id !== itemId);
+    console.log("updatedList", updatedList)
     setList(updatedList);
     setListCount(updatedList.length);
+    console.log("made it here")
     const updatedData = {
       ...data,
       list: updatedList
     };
+    console.log("updatedData -- end of the line", updatedData)
     onUpdateList(updatedData);
   };
 
@@ -225,6 +231,7 @@ export default function ShoppingList({
         onRemove={handleRemoveList}
       />
       <ListModal
+        key={modalKey}
         onToggleListModal={handleToggleListModal}
         showListModal={showListModal}
         type="edit"

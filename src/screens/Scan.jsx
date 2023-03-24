@@ -1,32 +1,52 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Text, ScrollView,TouchableOpacity } from 'react-native';
-import ScanCards from '../components/molecules/ScanCard'
+import { View, StyleSheet, Text, ScrollView, TouchableOpacity } from 'react-native';
+import ScanCard from '../components/molecules/ScanCard'
 import SearchBar from '../components/molecules/SearchBar';
 import Icon from '../components/atoms/Icon';
 import Colors from '../constants/styles';
+import LabelledIcon from '../components/molecules/LabelledIcon';
 
 
 //FakeData-------------
 const dataArray = [
-  { id: "1", title: "Apple", quantity: 2, unit: "Pcs", category: "Produce", purchaseDate: "23/02/2023", ExpiryDate: "23/03/2023", },
-  { id: "2", title: "Apple", quantity: 2, unit: "Pcs", category: "Produce", purchaseDate: "23/02/2023", ExpiryDate: "23/03/2023", },
-  { id: "3", title: "Apple", quantity: 2, unit: "Pcs", category: "Produce", purchaseDate: "23/02/2023", ExpiryDate: "23/03/2023", },
+  { id: "1", name: "Apples", amount: 2, unit: "Pcs", category: "Produce", purchaseDate: "2023-03-17", expiresInDays: null, expirationDate: "2023-03-23" },
+  { id: "2", name: "Bananas", amount: 3, unit: "Pcs", category: "Produce", purchaseDate: "2023-03-17", expiresInDays: null, expirationDate: "2023-03-24" },
+  { id: "3", name: "Oranges", amount: 1, unit: "Pcs", category: "Produce", purchaseDate: "2023-03-17", expiresInDays: null, expirationDate: "2023-03-26" },
 ];
 //--------------
 
-
-function editHandler() {
-  console.log("Scan Card Edit Pressed")
-}
-
 function ScanScreen() {
+
+  const [ingredientsData, setIngredientsData] = useState(dataArray);
+
+  const handleAddIngredient = (ingredient) => {
+    console.log(ingredient, 'scan screen add ingredient')
+    
+    const updatedIngredientsData = [...ingredientsData, ingredient];
+    setIngredientsData(updatedIngredientsData);
+  };
+
+  const handleUpdateIngredient = (ingredient) => {
+    const updatedIngredientsData = ingredientsData.map((item) => {
+      if (item.id === ingredient.id) {
+        return ingredient;
+      }
+      return item;
+    });
+    setIngredientsData(updatedIngredientsData);
+  };
+
+  const handleDeleteIngredient = (ingredientId) => {
+    const updatedIngredientsData = ingredientsData.filter((item) => item.id !== ingredientId);
+    setIngredientsData(updatedIngredientsData);
+  };
+
   const styles = StyleSheet.create({
     container: {
       flex: 1,
       alignItems: 'center',
       justifyContent: 'center',
       backgroundColor: Colors['creamyWhite'],
-
     },
     scroll: {
       width: '100%',
@@ -50,14 +70,22 @@ function ScanScreen() {
       <ScrollView contentContainerStyle={styles.scroll}>
         <View style={styles.header}>
           <SearchBar />
-          <TouchableOpacity onPress={() => {console.log("Filter Pressed");}}>
+          <TouchableOpacity onPress={() => { console.log("Filter Pressed"); }}>
             <Icon name='filter' size={32} color={Colors.primaryBlack} />
           </TouchableOpacity>
         </View>
-        
+        <View style={{ width: '100%', alignSelf: 'flex-end', padding: 15, margin: 4 }}>
+          <LabelledIcon
+            label="Add Item"
+            iconPos={0}
+            iconName='add'
+            variant='item'
+            onNew={handleAddIngredient}
+          />
+        </View>
         <View style={{ alignItems: 'center' }}>
-          {dataArray.map((item) => (
-              <ScanCards key={item.id} data={item} onEdit={editHandler} />
+          {ingredientsData.map((item) => (
+            <ScanCard key={item.id} data={item} onUpdate={handleUpdateIngredient} onDelete={handleDeleteIngredient} />
           ))}
         </View>
       </ScrollView>

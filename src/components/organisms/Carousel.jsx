@@ -2,8 +2,6 @@ import { View, StyleSheet, Dimensions, TouchableOpacity, Text, FlatList } from '
 import React, { useState, useEffect } from 'react';
 import Colors from '../../constants/styles';
 
-import SingleRecipeCarousel from '../molecules/SingleRecipeCarousel';
-
 
 const { width: screenWidth } = Dimensions.get('window');
 

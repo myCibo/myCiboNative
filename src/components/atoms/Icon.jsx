@@ -36,201 +36,49 @@ import UserCircle from 'assets/icons/user-circle.svg';
 
 const Icon = ({ name = 'default', size = 100, color = 'white' }) => {
 
-    switch (name) {
+    const icons = {
+        'add': Add,
+        'arrow-back': ArrowBack,
+        'arrow-forward': ArrowForward,
+        'arrow-down': ArrowDown,
+        'arrow-long-left': ArrowLongLeft,
+        'bag': Bag,
+        'book': Book,
+        'calendar': Calendar,
+        'camera': Camera,
+        'check-circle': CheckCircle,
+        'circle': Circle,
+        'clock': Clock,
+        'close': Close,
+        'cooking': Cooking,
+        'dots-vertical': DotsVertical,
+        'ecg-heart': ECGHeart,
+        'edit': Edit,
+        'filter': Filter,
+        'fridge': Fridge,
+        'heart': Heart,
+        'heart-filled': HeartFilled,
+        'hash': Hash,
+        'home': Home,
+        'list': List,
+        'magnifying-glass': MagnifyingGlass,
+        'share-filled': ShareFilled,
+        'share-outlined': ShareOutlined,
+        'trash-x': TrashX,
+        'trash': Trash,
+        'upload': Upload,
+        'user-circle': UserCircle,
+        'default': Home
+    };
 
-        case 'add':
-            return (
-                <View>
-                    <Add color={color} width={size} height={size} />
-                </View>
-            );
-        case 'arrow-left':
-            return (
-                <View>
-                    <ArrowBack color={color} width={size} height={size} />
-                </View>
-            );
-        case 'arrow-right':
-            return (
-                <View>
-                    <ArrowForward color={color} width={size} height={size} />
-                </View>
-            );
-        case 'arrow-down':
-            return (
-                <View>
-                    <ArrowDown color={color} width={size} height={size} />
-                </View>
-            );
-        case 'arrow-long-left':
-            return (
-                <View>
-                    <ArrowLongLeft color={color} width={size} height={size} />
-                </View>
-            );
-        case 'bag':
-            return (
-                <View>
-                    <Bag color={color} width={size} height={size} />
-                </View>
-            );
-        case 'book':
-            return (
-                <View>
-                    <Book color={color} width={size} height={size} />
-                </View>
-            );
-        case 'calendar':
-            return (
-                <View>
-                    <Calendar color={color} width={size} height={size} />
-                </View>
-            );
-        case 'camera':
-            return (
-                <View>
-                    <Camera color={color} width={size} height={size} />
-                </View>
-            );
-        case 'check-circle':
-            return (
-                <View>
-                    <CheckCircle color={color} width={size} height={size} />
-                </View>
-            );
-        case 'circle':
-            return (
-                <View>
-                    <Circle color={color} width={size} height={size} />
-                </View>
-            );
-        case 'clock':
-            return (
-                <View>
-                    <Clock color={color} width={size} height={size} />
-                </View>
-            );
-        case 'close':
-            return (
-                <View>
-                    <Close color={color} width={size} height={size} />
-                </View>
-            );
-        case 'cooking':
-            return (
-                <View>
-                    <Cooking color={color} width={size} height={size} />
-                </View>
-            );
-        case 'dots-vertical':
-            return (
-                <View>
-                    <DotsVertical color={color} width={size} height={size} />
-                </View>
-            );
-        case 'ecg-heart':
-            return (
-                <View>
-                    <ECGHeart color={color} width={size} height={size} />
-                </View>
-            );
-        case 'edit':
-            return (
-                <View>
-                    <Edit color={color} width={size} height={size} />
-                </View>
-            );
-        case 'filter':
-            return (
-                <View>
-                    <Filter color={color} width={size} height={size} />
-                </View>
-            );
-        case 'fridge':
-            return (
-                <View>
-                    <Fridge color={color} width={size} height={size} />
-                </View>
-            );
-        case 'hash':
-            return (
-                <View>
-                    <Hash color={color} width={size} height={size} />
-                </View>
-            );
-        case 'heart':
-            return (
-                <View>
-                    <Heart color={color} width={size} height={size} />
-                </View>
-            );
-        case 'heart-filled':
-            return (
-                <View>
-                    <HeartFilled color={color} width={size} height={size} />
-                </View>
-            );
-        case 'home':
-            return (
-                <View>
-                    <Home color={color} width={size} height={size} />
-                </View>
-            );
-        case 'list':
-            return (
-                <View>
-                    <List color={color} width={size} height={size} />
-                </View>
-            );
-        case 'magnifying-glass':
-            return (
-                <View>
-                    <MagnifyingGlass color={color} width={size} height={size} />
-                </View>
-            );
-        case 'share-filled':
-            return (
-                <View>
-                    <ShareFilled color={color} width={size} height={size} />
-                </View>
-            );
-        case 'share-outlined':
-            return (
-                <View>
-                    <ShareOutlined color={color} width={size} height={size} />
-                </View>
-            );
-        case 'trash-x':
-            return (
-                <View>
-                    <TrashX color={color} width={size} height={size} />
-                </View>
-            );
-        case 'trash':
-            return (
-                <View>
-                    <Trash color={color} width={size} height={size} />
-                </View>
-            );
-        case 'upload':
-            return (
-                <View>
-                    <Upload color={color} width={size} height={size} />
-                </View>
-            );
-        case 'user-circle':
-            return (
-                <View>
-                    <UserCircle color={color} width={size} height={size} />
-                </View>
-            );
-        default:
-            return (
-                <View>
-                    <Fridge color={color} width={size} height={size} />
-                </View>
-            );
-    }
+    const IconComponent = icons[name] || icons.default;
+
+    return (
+        <View>
+            <IconComponent color={color} width={size} height={size} />
+        </View>
+    );
+
 };
 
 export default Icon;
