@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import { View, KeyboardAvoidingView, Platform, Dimensions, Keyboard } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
+import CameraScreen from "../screens/CameraScreen";
+import ReceiptDataScreen from "../screens/ReceiptDataScreen";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 import Icon from "../components/atoms/Icon";
@@ -8,9 +10,10 @@ import Colors from "../constants/styles"
 import FridgeScreen from "../screens/Fridge";
 import HomeScreen from "../screens/Home";
 import RecipeScreen from "../screens/Recipes";
-import ScanScreen from "../screens/Scan";
+import ScanScreen from "../screens/ScanScreen";
 import ShoppingScreen from "../screens/Shopping";
 import DynamicRecipe from "../screens/DynamicRecipe";
+import ProcessingScreen from "../screens/ProcessingScreen";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -97,8 +100,8 @@ function MyTabs() {
     >
       <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="Fridge" component={FridgeScreen} />
-      <Tab.Screen name="Scan" component={ScanScreen} />
-      <Tab.Screen name="Recipes" component={RecipeScreen} />
+      <Tab.Screen name="Scan" component={CameraScreen} />
+      <Tab.Screen name="Recipes" component={RecipeScreen}/>
       <Tab.Screen name="Lists" component={ShoppingScreen} />
     </Tab.Navigator>
     
@@ -111,6 +114,9 @@ const NavigationFooter = () => {
       <Stack.Navigator>
         <Stack.Screen name="Main" component={MyTabs} options={{ headerShown: false }} />
         <Stack.Screen name="DynamicRecipe" component={DynamicRecipe} />
+        <Stack.Screen name="ScanScreen" component={ScanScreen} />
+        <Stack.Screen name="ReceiptDataScreen" component={ReceiptDataScreen} />
+        <Stack.Screen name="Processing" component={ProcessingScreen} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
