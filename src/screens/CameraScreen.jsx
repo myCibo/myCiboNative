@@ -38,6 +38,7 @@ const CameraScreen = ({ navigation }) => {
         
       try {
         const result = await TabScanner.scanReceipt(photo.uri);
+        console.log("read success", result)
         navigation.navigate("ReceiptDataScreen", { data: result });
       } catch (error) {
         console.error("Error scanning receipt:", error);

@@ -13,7 +13,6 @@ const TabScanner = {
         type: "image/jpeg",
         name: "receipt.jpg",
       });
-      formData.append("apikey", API_KEY);
 
       const response = await axios.post(
         `${API_BASE_URL}/api/${API_VERSION}/process`,
@@ -21,6 +20,7 @@ const TabScanner = {
         {
           headers: {
             "Content-Type": "multipart/form-data",
+            'apikey': API_KEY
           },
         }
       );
@@ -39,14 +39,19 @@ const TabScanner = {
   async getReceiptData(token) {
     try {
       const response = await axios.get(
-        `${API_BASE_URL}/api/result/${token}?apikey=${API_KEY}`
+        `${API_BASE_URL}/api/result/${token}`, {
+        headers: {
+          'apikey': API_KEY
+        },
+      }
       );
-
       if (response.data.status === "done") {
         return response.data;
-      } else {
+      } else if (response.data.status === "pending") {
         await new Promise((resolve) => setTimeout(resolve, 1000));
         return this.getReceiptData(token);
+      } else {
+        return "Read failed. SOS. Not poggers."
       }
     } catch (error) {
       console.error("Error getting receipt data:", error);
