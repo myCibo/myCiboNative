@@ -10,9 +10,11 @@ const ingredientData =
         {
             id: 2,
             name: 'Bananas',
+            categoryId: 1,
+            ingredientId: 12345,
             expirationTime: 5, // Bananas typically last 2-7 days
             category: 'Fruits',
-            unit: 'Bunch',
+            unitId: 3,
         },
         {
             id: 3,

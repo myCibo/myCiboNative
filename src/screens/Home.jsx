@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, ActivityIndicator, Button } from 'react-native';
 import Carousel from '../components/organisms/Carousel';
 import CategorySquare from '../components/molecules/CategorySquare';
 import RecipeCard from '../components/molecules/RecipeCard';
@@ -10,6 +10,7 @@ import axios from 'axios';
 import countMissingIngredients from '../utils/countMissingIngredients';
 import { calculateExpiresInDays } from '../utils/expirationCalculator';
 import prioritizeIngredients from '../utils/prioritizeIngredients';
+import { useAuth } from '../../AuthProvider';
 
 function HomeScreen() {
 
@@ -112,6 +113,8 @@ function HomeScreen() {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
+  const { user, login, logout } = useAuth();
+
   const handleLinkPress = (destination) => {
     navigation.navigate(destination);
   };
@@ -176,44 +179,60 @@ function HomeScreen() {
     },
   };
 
-  if (isLoading) {
-    return (
-      <View style={styles.loader}>
-        {/* <Text>Anything inside this view will show up while loading thre page </Text>*/}
-        <ActivityIndicator size="large" color="#b82d1b" />
-      </View>
-    );
-  }
-
   return (
-    <ScrollView style={styles.contentContainer}>
-      <View style={styles.container}>
-        <View style={styles.header}>
-          <Text style={styles.headerText}>Fridge</Text>
-          <TouchableOpacity style={styles.headerButton} onPress={() => handleLinkPress('Fridge')}>
-            <Icon name='list' size={24} color={Colors.primaryBlack} />
-            <Text style={styles.headerButtonText}> View All</Text>
-          </TouchableOpacity>
-        </View>
-        <Carousel
-          data={fridgeCategories}
-          CardComponent={CategorySquare}
-        />
-        <View style={styles.header}>
-          <Text style={styles.headerText}>Recipes</Text>
-          <TouchableOpacity style={styles.headerButton} onPress={() => handleLinkPress('Recipes')}>
-            <Icon name='list' size={24} color={Colors.primaryBlack} />
-            <Text style={styles.headerButtonText}> View All</Text>
-          </TouchableOpacity>
-        </View>
-        <Carousel
-          data={data}
-          CardComponent={RecipeCard}
-        />
-      </View>
-    </ScrollView>
-
+    <>
+      {user ? (
+        <>
+          <Text>Welcome, {user.name}!</Text>
+          <Button onPress={logout} title="Logout" />
+        </>
+      ) : (
+        <Button onPress={login} title="Login" />
+      )}
+    </>
   );
-}
+};
 
 export default HomeScreen;
+
+// if (isLoading) {
+//   return (
+//     <View style={styles.loader}>
+//       {/* <Text>Anything inside this view will show up while loading thre page </Text>*/}
+//       <ActivityIndicator size="large" color="#b82d1b" />
+//     </View>
+//   );
+// }
+
+// return (
+//   <ScrollView style={styles.contentContainer}>
+//     <View style={styles.container}>
+//       <View style={styles.header}>
+//         <Text style={styles.headerText}>Fridge</Text>
+//         <TouchableOpacity style={styles.headerButton} onPress={() => handleLinkPress('Fridge')}>
+//           <Icon name='list' size={24} color={Colors.primaryBlack} />
+//           <Text style={styles.headerButtonText}> View All</Text>
+//         </TouchableOpacity>
+//       </View>
+//       <Carousel
+//         data={fridgeCategories}
+//         CardComponent={CategorySquare}
+//       />
+//       <View style={styles.header}>
+//         <Text style={styles.headerText}>Recipes</Text>
+//         <TouchableOpacity style={styles.headerButton} onPress={() => handleLinkPress('Recipes')}>
+//           <Icon name='list' size={24} color={Colors.primaryBlack} />
+//           <Text style={styles.headerButtonText}> View All</Text>
+//         </TouchableOpacity>
+//       </View>
+//       <Carousel
+//         data={data}
+//         CardComponent={RecipeCard}
+//       />
+//     </View>
+//   </ScrollView>
+
+// );
+// }
+
+// export default HomeScreen;

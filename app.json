@@ -1,7 +1,8 @@
 {
   "expo": {
     "name": "TheRealCibo",
-    "slug": "TheRealCibo",
+    "scheme": "mycibo",
+    "slug": "cibo-dev",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "assets/images/Cibo.png",
@@ -25,6 +26,12 @@
     },
     "web": {
       "favicon": "assets/images/Cibo.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "4141d4f1-75b3-41c0-aac9-33cdd2540116"
+      }
+    },
+    "owner": "lbeique"
   }
 }

@@ -3,10 +3,13 @@ import React from 'react';
 
 import NavigationFooter from './src/navigation/NavigationFooter';
 import { createStackNavigator } from '@react-navigation/stack';
+import { AuthProvider } from './AuthProvider';
 
 
 export default function App() {
   return (
-    <NavigationFooter />
+    <AuthProvider>
+      <NavigationFooter />
+    </AuthProvider>
   );
 }
