@@ -35,7 +35,7 @@ const CameraScreen = ({ navigation }) => {
   const takePictureAndScan = async () => {
     if (cameraRef) {
       const photo = await cameraRef.takePictureAsync();
-        
+      navigation.navigate("ProcessingScreen");
       try {
         const result = await TabScanner.scanReceipt(photo.uri);
         console.log("read success", result)

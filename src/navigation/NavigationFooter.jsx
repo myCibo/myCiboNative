@@ -10,7 +10,6 @@ import Colors from "../constants/styles"
 import FridgeScreen from "../screens/Fridge";
 import HomeScreen from "../screens/Home";
 import RecipeScreen from "../screens/Recipes";
-import ScanScreen from "../screens/ScanScreen";
 import ShoppingScreen from "../screens/Shopping";
 import DynamicRecipe from "../screens/DynamicRecipe";
 import ProcessingScreen from "../screens/ProcessingScreen";
@@ -114,9 +113,8 @@ const NavigationFooter = () => {
       <Stack.Navigator>
         <Stack.Screen name="Main" component={MyTabs} options={{ headerShown: false }} />
         <Stack.Screen name="DynamicRecipe" component={DynamicRecipe} />
-        <Stack.Screen name="ScanScreen" component={ScanScreen} />
         <Stack.Screen name="ReceiptDataScreen" component={ReceiptDataScreen} />
-        <Stack.Screen name="Processing" component={ProcessingScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="ProcessingScreen" component={ProcessingScreen} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
