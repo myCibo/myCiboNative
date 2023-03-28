@@ -120,9 +120,19 @@ const FridgeScreen = () => {
   //Search Related 
   const handleSearch = (value)=>{
     const filteredArray = ingredientsData.filter(item => {
-      return item.category.toLowerCase().includes(value.toLowerCase()) ||
-             item.name.toLowerCase().includes(value.toLowerCase());
+      const lowercaseValue = value.toLowerCase();
+      const lowercaseName = item.name.toLowerCase();
+      const lowercaseCategory = item.category.toLowerCase();
+      const nameWords = lowercaseName.split(' ');
+      const categoryWords = lowercaseCategory.split(' ');
+    
+      // Check if the value is in the beginning of any word in the name or category
+      const nameMatch = nameWords.some(word => word.startsWith(lowercaseValue));
+      const categoryMatch = categoryWords.some(word => word.startsWith(lowercaseValue));
+    
+      return nameMatch || categoryMatch;
     });
+    
     setDisplayData(filteredArray)
   }
 

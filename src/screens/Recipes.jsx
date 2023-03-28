@@ -60,7 +60,7 @@ function RecipeScreen() {
 
   const handleSearch = (value) => {
 
-    fetch(`https://api.spoonacular.com/recipes/complexSearch?query=${value}&number=3&apiKey=${process.env.API_KEY}`)
+    fetch(`https://api.spoonacular.com/recipes/complexSearch?query=${value}&number=10&apiKey=${process.env.API_KEY}`)
 
       .then(response => response.json())
       .then(data => {
@@ -89,7 +89,7 @@ function RecipeScreen() {
 
   // Function to categorize recipes based on type
   function categorizeRecipes(recipes) {
-    
+
     recipes.forEach((recipe) => {
       if (recipes[0] == recipe) {
         categorizedRecipes.hero.push(recipe);
@@ -121,7 +121,6 @@ function RecipeScreen() {
   if (isLoading) {
     return (
       <View style={styles.loader}>
-        {/* <Text>Anything inside this view will show up while loading thre page </Text>*/}
         <ActivityIndicator size="large" color="#b82d1b" />
       </View>
     );
@@ -141,14 +140,11 @@ function RecipeScreen() {
         </View>
 
         {/* Search Result  */}
-
-        {!showMainPage && searchResultArray.length == 0 && (
-          <>
-            <Text>Oh NOOO  there is no match so saddd</Text>
-          </>
+        {!showMainPage && searchResultArray.length === 0 && (
+          <Text>Sorry, no matches were found</Text>
         )}
 
-        {!showMainPage && searchResultArray.length > 0  && (
+        {!showMainPage && searchResultArray.length > 0 && (
           <>
             {searchResultArray.map((recipe, index) => (
               <TouchableOpacity style={{ marginBottom: 16 }} key={index} onPress={() => handleSearchCardPress(recipe)}>
@@ -159,22 +155,17 @@ function RecipeScreen() {
         )}
 
 
+        {/* Main Page */}
 
         {showMainPage && (
           <>
-            {/* Hero */}
             {data.hero && data.hero.length > 0 && (
-              <View style={{ flex: 1, alignItems: "center", justifyContent: "center", }}>
-                <RecipeHero
-                  data={data.hero[0]}
-                  label="For You"
-                />
+              <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+                <RecipeHero data={data.hero[0]} label="For You" />
               </View>
             )}
 
-            {/* Carousels */}
             <RecipeCarouselLib data={data} />
-
           </>
         )}
       </View>

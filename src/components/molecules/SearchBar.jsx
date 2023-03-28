@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import Colors from '../../constants/styles';
 import Icon from '../atoms/Icon';
@@ -6,8 +6,8 @@ import Icon from '../atoms/Icon';
 export default function SearchBar({ placeholder, onSearch, onBack}) {
   const [searchValue, setSearchValue] = useState('');
   const [isFocused, setIsFocused] = useState(false);
+  const inputRef = useRef(null);
 
- 
   const handleSearch = () => {
     searchValue != "" && onSearch(searchValue)
   };
@@ -27,8 +27,8 @@ export default function SearchBar({ placeholder, onSearch, onBack}) {
 
   const handleBack = () =>{
     setSearchValue('')
-    setIsFocused(false);
     onBack()
+    inputRef.current.blur();
   }
 
   const styles = StyleSheet.create({
@@ -95,6 +95,7 @@ export default function SearchBar({ placeholder, onSearch, onBack}) {
               handleBack();
             }
           }}
+          ref={inputRef}
         />
       </View>
       {/* {searchValue.length > 0 && (
