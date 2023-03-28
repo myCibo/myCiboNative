@@ -4,8 +4,9 @@ import { View, ScrollView, Text, StyleSheet, Image, TouchableOpacity, ActivityIn
 import RecipeHero from "../components/organisms/RecipeHero";
 import Carousel from "../components/organisms/Carousel";
 import RecipeCarouselLib from "../components/organisms/RecipeCarouselLib";
-import SearchBar from '../components/molecules/SearchBar';
+import SearchBar from '../components/molecules/RecipeSearchBar';
 import { useNavigation } from '@react-navigation/native';
+import RecipeSearchCard from "../components/molecules/RecipeSearchCard"
 
 import Icon from '../components/atoms/Icon';
 import Colors from '../constants/styles';
@@ -34,27 +35,7 @@ function RecipeScreen() {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchResultArray, setSearchResultArray] = useState([]);
-
-
-
-
-  const handleSearch = (value) => {
-    setSearchResultArray([]);
-    fetch(`https://api.spoonacular.com/recipes/complexSearch?query=${value}&number=5&apiKey=${process.env.API_KEY}`)
-
-      .then(response => response.json())
-      .then(data => {
-        setSearchResultArray(data.results);
-      })
-      .catch(error => console.error(error));
-  };
-
-  const handleSearchCardPress = (recipe)=>{
-    const { id, image, title } = recipe;
-    navigation.navigate('DynamicRecipe', { id, image, title });
-
-  }
-
+  const [showMainPage, setShowMainPage] = useState(true);
 
 
   useEffect(() => {
@@ -62,7 +43,7 @@ function RecipeScreen() {
 
     axios
       .get(
-        `https://api.spoonacular.com/recipes/random?number=10&apiKey=${process.env.API_KEY}`
+        `https://api.spoonacular.com/recipes/random?number=1&apiKey=${process.env.API_KEY}`
 
       )
       .then((response) => {
@@ -77,8 +58,38 @@ function RecipeScreen() {
       });
   }, []);
 
+  const handleSearch = (value) => {
+
+    fetch(`https://api.spoonacular.com/recipes/complexSearch?query=${value}&number=3&apiKey=${process.env.API_KEY}`)
+
+      .then(response => response.json())
+      .then(data => {
+        setSearchResultArray([]);
+        setSearchResultArray(data.results);
+
+        setShowMainPage(false)
+
+      })
+      .catch(error => console.error(error));
+  };
+
+
+  const handleSearchCardPress = (recipe) => {
+    const { id, image, title } = recipe;
+    navigation.navigate('DynamicRecipe', { id, image, title });
+
+  }
+
+  const handleBack = () => {
+    console.log("back is pressd in Recipes Screen ")
+    setShowMainPage(true)
+    setSearchResultArray([]);
+
+  }
+
   // Function to categorize recipes based on type
   function categorizeRecipes(recipes) {
+    
     recipes.forEach((recipe) => {
       if (recipes[0] == recipe) {
         categorizedRecipes.hero.push(recipe);
@@ -118,44 +129,44 @@ function RecipeScreen() {
 
 
   return (
-    <ScrollView Style={styles.contentContainer}>
+    <ScrollView style={styles.contentContainer}>
       <View style={styles.container}>
 
         {/* Header */}
         <View style={styles.header}>
-          <SearchBar placeholder="Search Recipe" onSearch={handleSearch} />
+          <SearchBar placeholder="Search Recipe" onSearch={handleSearch} onBack={handleBack} />
           <TouchableOpacity onPress={() => { console.log("Filter"); }}>
             <Icon name='filter' size={32} color={Colors.primaryBlack} />
           </TouchableOpacity>
         </View>
 
         {/* Search Result  */}
-        {/* 
-          search result : 
-          array of objects/revcipes, keys are id,image, title, imagetype
-          add a 'x' to clear the searchResultArray
-          component goes here and data will nbe passed here 
-          overlay on others  */}
-        {searchResultArray.length > 0 ? (
+
+        {!showMainPage && searchResultArray.length == 0 && (
+          <>
+            <Text>Oh NOOO  there is no match so saddd</Text>
+          </>
+        )}
+
+        {!showMainPage && searchResultArray.length > 0  && (
           <>
             {searchResultArray.map((recipe, index) => (
-            
-              <TouchableOpacity  onPress={() => handleSearchCardPress(recipe)}>
-                <Text key={index}>{recipe.title}</Text>
+              <TouchableOpacity style={{ marginBottom: 16 }} key={index} onPress={() => handleSearchCardPress(recipe)}>
+                <RecipeSearchCard image={recipe.image} title={recipe.title} id={recipe.id} />
               </TouchableOpacity>
             ))}
-            </>
+          </>
+        )}
 
-        ) :
+
+
+        {showMainPage && (
           <>
             {/* Hero */}
             {data.hero && data.hero.length > 0 && (
               <View style={{ flex: 1, alignItems: "center", justifyContent: "center", }}>
                 <RecipeHero
-                  id={data.hero[0].id}
-                  image={data.hero[0].image}
-                  link="#"
-                  title={data.hero[0].title}
+                  data={data.hero[0]}
                   label="For You"
                 />
               </View>
@@ -163,10 +174,12 @@ function RecipeScreen() {
 
             {/* Carousels */}
             <RecipeCarouselLib data={data} />
+
           </>
-        }
+        )}
       </View>
     </ScrollView>
+
   );
 }
 

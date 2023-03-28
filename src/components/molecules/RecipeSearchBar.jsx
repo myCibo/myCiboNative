@@ -3,18 +3,12 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-nativ
 import Colors from '../../constants/styles';
 import Icon from '../atoms/Icon';
 
-export default function SearchBar({ placeholder, onSearch, onBack}) {
+export default function RecipeSearchBar({ placeholder, onSearch, onBack}) {
   const [searchValue, setSearchValue] = useState('');
   const [isFocused, setIsFocused] = useState(false);
 
- 
   const handleSearch = () => {
-    searchValue != "" && onSearch(searchValue)
-  };
-
-  const handleChange = (value) => {
-    setSearchValue(value)
-    value !== "" ? onSearch(value): handleBack()
+    searchValue != "" ? onSearch(searchValue): handleBack()
   };
 
   const handleFocus = () => {
@@ -27,7 +21,6 @@ export default function SearchBar({ placeholder, onSearch, onBack}) {
 
   const handleBack = () =>{
     setSearchValue('')
-    setIsFocused(false);
     onBack()
   }
 
@@ -86,7 +79,7 @@ export default function SearchBar({ placeholder, onSearch, onBack}) {
           placeholder={placeholder}
           placeholderTextColor="#7B817F"
           value={searchValue}
-          onChangeText={handleChange}
+          onChangeText={setSearchValue}
           onSubmitEditing={handleSearch}
           onFocus={handleFocus}
           onBlur={handleBlur}

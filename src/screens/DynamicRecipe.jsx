@@ -12,19 +12,49 @@ import RecipeDetails from '../components/molecules/RecipeDetails';
 
 function DynamicRecipe() {
     const route = useRoute();
-    const { id,
-        image,
-        title,
-        analyzedInstructions,
-        extendedIngredients,
-        servings,
-        readyInMinutes,
-        healthScore } = route.params;
+    const data = route.params;
 
- 
+    const [title, setTitle] = useState("");
+    const [image, setImage] = useState("");
+    const [analyzedInstructions, setAnalyzedInstructions] = useState("");
+    const [extendedIngredients, setExtendedIngredients] = useState("");
+    const [servings, setServings] = useState("");
+    const [readyInMinutes, setReadyInMinutes] = useState("");
+    const [healthScore, setHealthScore] = useState("");
     const [isLoading, setIsLoading] = useState(true);
-    useEffect(() => { setIsLoading(false);}, [id]);
 
+
+    useEffect(() => {
+        if (!data?.analyzedInstructions) {
+          axios.get(`https://api.spoonacular.com/recipes/${data.id}/information?apiKey=${process.env.API_KEY}`)
+            .then((response) => {
+              const newData = response.data
+              setTitle(newData.title)
+              setImage(newData.image)
+              setAnalyzedInstructions(newData.analyzedInstructions)
+              setExtendedIngredients(newData.extendedIngredients)
+              setServings(newData.servings)
+              setReadyInMinutes(newData.readyInMinutes)
+              setHealthScore(newData.healthScore)
+            })
+            .catch((error) => {
+              console.log(error);
+            })
+            .finally(() => {
+              setIsLoading(false);
+            });
+        } else {
+          setTitle(data.title)
+          setImage(data.image)
+          setAnalyzedInstructions(data.analyzedInstructions)
+          setExtendedIngredients(data.extendedIngredients)
+          setServings(data.servings)
+          setReadyInMinutes(data.readyInMinutes)
+          setHealthScore(data.healthScore)
+          setIsLoading(false);
+        }
+      }, [data.id]);
+      
 
     const styles = StyleSheet.create({
         headerContainer: {
@@ -68,7 +98,7 @@ function DynamicRecipe() {
             fontWeight: 'bold',
             alignSelf: 'flex-start',
             textAlign: 'left',
-            margin:20,
+            margin: 20,
 
         },
     });
@@ -88,7 +118,7 @@ function DynamicRecipe() {
 
     return (
         <ScrollView>
-            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                 <View style={styles.headerContainer}>
                     <Image
                         source={{ uri: image }}
@@ -101,16 +131,16 @@ function DynamicRecipe() {
                     </LinearGradient>
                 </View>
 
-                    <RecipeDetails
-                        timeInMinutes={readyInMinutes}
-                        serving={servings}
-                        healthScore={healthScore} />
+                <RecipeDetails
+                    timeInMinutes={readyInMinutes}
+                    serving={servings}
+                    healthScore={healthScore} />
 
-                    <Text style={styles.title}>ingredients</Text>
-                    {extendedIngredients.length > 0 && <RecipeIngredients data={extendedIngredients} />}
+                <Text style={styles.title}>ingredients</Text>
+                {extendedIngredients?.length > 0 && <RecipeIngredients data={extendedIngredients} />}
 
-                    <Text style={styles.title}>preparation</Text>
-                    {analyzedInstructions.length > 0 && <RecipeInstruction data={analyzedInstructions} />}
+                <Text style={styles.title}>preparation</Text>
+                {analyzedInstructions?.length > 0 && <RecipeInstruction data={analyzedInstructions} />}
             </View>
         </ScrollView>
     );

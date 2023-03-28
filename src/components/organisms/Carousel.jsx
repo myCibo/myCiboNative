@@ -11,7 +11,7 @@ const Carousel = ({
     title = null,
     CardComponent,
     horizontal = true,
-    Header,
+    Header = null,
 }) => {
     // console.log(data)
     const renderItem = ({ item }) => {
@@ -21,6 +21,7 @@ const Carousel = ({
                 marginRight: item.isLast ? 10 : 0, // set margin right for last item
             }
         });
+        // console.log(item)
         return <CardComponent {...item} style={styles.card} />;
     };
 

@@ -83,9 +83,11 @@ const ingredientsDataInitial = [
 const FridgeScreen = () => {
 
   const [ingredientsData, setIngredientsData] = useState(ingredientsDataInitial);
+  const [displayData, setDisplayData] = useState(ingredientsData);
+
 
   // group ingredients by category. 
-  const ingredientsByCategory = ingredientsData.reduce((acc, ingredient) => {
+  const ingredientsByCategory = displayData.reduce((acc, ingredient) => {
     if (!acc[ingredient.category]) {
       acc[ingredient.category] = [];
     }
@@ -114,6 +116,22 @@ const FridgeScreen = () => {
     setIngredientsData(updatedIngredientsData);
   };
 
+
+  //Search Related 
+  const handleSearch = (value)=>{
+    const filteredArray = ingredientsData.filter(item => {
+      return item.category.toLowerCase().includes(value.toLowerCase()) ||
+             item.name.toLowerCase().includes(value.toLowerCase());
+    });
+    setDisplayData(filteredArray)
+  }
+
+  const handleSearchBack = ()=>{
+    setDisplayData(ingredientsData)
+    console.log("back is clicked  ")
+  }
+
+  
   const styles = StyleSheet.create({
     container: {
       flex: 1,
@@ -175,12 +193,10 @@ const FridgeScreen = () => {
     ));
   };
 
-
-
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <SearchBar />
+        <SearchBar placeholder="Search Ingredient" onSearch={handleSearch} onBack={handleSearchBack}/>
         <TouchableOpacity
           onPress={() => {
             console.log("Filter");
@@ -194,6 +210,7 @@ const FridgeScreen = () => {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.contentContainer}
       >
+
         {renderIngredientsByCategory()}
       </ScrollView>
     </View>
