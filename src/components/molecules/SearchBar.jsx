@@ -61,7 +61,9 @@ export default function SearchBar({ placeholder, onSearch, onBack}) {
       height: 24,
       alignItems: 'center',
       justifyContent: 'center',
+      color:'red',
     },
+  
   });
 
   return (

@@ -60,7 +60,7 @@ function RecipeScreen() {
 
   const handleSearch = (value) => {
 
-    fetch(`https://api.spoonacular.com/recipes/complexSearch?query=${value}&number=10&apiKey=${process.env.API_KEY}`)
+    fetch(`https://api.spoonacular.com/recipes/complexSearch?query=${value}&number=3&apiKey=${process.env.API_KEY}`)
 
       .then(response => response.json())
       .then(data => {
@@ -128,52 +128,47 @@ function RecipeScreen() {
 
 
   return (
-    <ScrollView style={styles.contentContainer}>
-      <View style={styles.container}>
-
-        {/* Header */}
+    <View style={{ flex: 1 }}>
         <View style={styles.header}>
           <SearchBar placeholder="Search Recipe" onSearch={handleSearch} onBack={handleBack} />
           <TouchableOpacity onPress={() => { console.log("Filter"); }}>
             <Icon name='filter' size={32} color={Colors.primaryBlack} />
           </TouchableOpacity>
         </View>
-
-        {/* Search Result  */}
-        {!showMainPage && searchResultArray.length === 0 && (
-          <Text>Sorry, no matches were found</Text>
-        )}
-
-        {!showMainPage && searchResultArray.length > 0 && (
-          <>
-            {searchResultArray.map((recipe, index) => (
-              <TouchableOpacity style={{ marginBottom: 16 }} key={index} onPress={() => handleSearchCardPress(recipe)}>
-                <RecipeSearchCard image={recipe.image} title={recipe.title} id={recipe.id} />
-              </TouchableOpacity>
-            ))}
-          </>
-        )}
-
-
-        {/* Main Page */}
-
-        {showMainPage && (
-          <>
-            {data.hero && data.hero.length > 0 && (
-              <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-                <RecipeHero data={data.hero[0]} label="For You" />
-              </View>
-            )}
-
-            <RecipeCarouselLib data={data} />
-          </>
-        )}
-      </View>
-    </ScrollView>
-
+      <ScrollView style={styles.contentContainer}>
+        <View style={styles.container}>
+          {/* Search Result  */}
+          {!showMainPage && searchResultArray.length === 0 && (
+            <Text>Sorry, no matches were found</Text>
+          )}
+  
+          {!showMainPage && searchResultArray.length > 0 && (
+            <>
+              {searchResultArray.map((recipe, index) => (
+                <TouchableOpacity style={{ marginBottom: 16 }} key={index} onPress={() => handleSearchCardPress(recipe)}>
+                  <RecipeSearchCard image={recipe.image} title={recipe.title} id={recipe.id} />
+                </TouchableOpacity>
+              ))}
+            </>
+          )}
+  
+          {/* Main Page */}
+          {showMainPage && (
+            <>
+              {data.hero && data.hero.length > 0 && (
+                <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+                  <RecipeHero data={data.hero[0]} label="For You" />
+                </View>
+              )}
+              <RecipeCarouselLib data={data} />
+            </>
+          )}
+        </View>
+      </ScrollView>
+    </View>
   );
-}
 
+            }
 
 
 const styles = StyleSheet.create({
@@ -183,8 +178,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     width: "100%",
     backgroundColor: Colors['creamyWhite'],
-
-
   },
 
   header: {
@@ -196,6 +189,16 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     gap: 10,
     marginVertical: 10,
+    backgroundColor: Colors['creamyWhite'],
+    // backgroundColor: "red", // Set a background color for the header
+
+    position: "sticky", // Make the header sticky
+    top: 0, // Set the top position to 0
+    zIndex: 1, // Set a z-index to make the header appear on top of the content
+  },
+  contentContainer: {
+    flex: 1,
+    backgroundColor: Colors['creamyWhite'],
   },
   loader: {
     flex: 1,
