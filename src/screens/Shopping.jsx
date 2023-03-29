@@ -131,6 +131,7 @@ const Shopping = () => {
           data={shoppingList}
           onUpdateList={(list) => handleUpdateListEntry(shoppingList.id, list)}
           onRemoveList={() => handleRemoveListEntry(shoppingList.id)}
+          
         />
       );
     });

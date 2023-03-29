@@ -72,7 +72,7 @@ export default function SearchBar({ placeholder, onSearch, onBack}) {
             {isFocused || searchValue.length > 0? (
               <TouchableOpacity onPress={handleBack}>
               <View style={styles.leftIcon} >
-                <Icon name="arrow-back" size={24} color="#000000" />
+                <Icon name="arrow-back" size={24} color={Colors['fontGray']} />
               </View>
               </TouchableOpacity>
             ) : (

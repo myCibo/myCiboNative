@@ -161,6 +161,8 @@ const FridgeScreen = () => {
       paddingVertical: 10,
       paddingHorizontal: 20,
       gap: 10,
+      marginVertical: 10,
+
     },
     categoryHeader: {
       flexDirection: "row",

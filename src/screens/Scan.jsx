@@ -11,7 +11,7 @@ import LabelledIcon from '../components/molecules/LabelledIcon';
 const dataArray = [
   { id: "1", name: "Apples", amount: 2, unit: "Pcs", category: "Produce", purchaseDate: "2023-03-17", expiresInDays: null, expirationDate: "2023-03-23" },
   { id: "2", name: "Bananas", amount: 3, unit: "Pcs", category: "Produce", purchaseDate: "2023-03-17", expiresInDays: null, expirationDate: "2023-03-24" },
-  { id: "3", name: "Oranges", amount: 1, unit: "Pcs", category: "smth else", purchaseDate: "2023-03-17", expiresInDays: null, expirationDate: "2023-03-26" },
+  { id: "3", name: "Oranges", amount: 1, unit: "Pcs", category: "Produce", purchaseDate: "2023-03-17", expiresInDays: null, expirationDate: "2023-03-26" },
 ];
 //--------------
 
@@ -86,30 +86,34 @@ function ScanScreen() {
 
   return (
     <View style={styles.container}>
-        <View style={styles.header}>
-          <SearchBar placeholder="Search Item" onSearch={handleSearch} onBack={handleSearchBack} />
-          <TouchableOpacity onPress={() => { console.log("Filter Pressed"); }}>
-            <Icon name='filter' size={32} color={Colors.primaryBlack} />
-          </TouchableOpacity>
-        </View>
-        <ScrollView contentContainerStyle={styles.scroll}>
+      <View style={styles.header}>
+        <SearchBar placeholder="Search Item" onSearch={handleSearch} onBack={handleSearchBack} />
+        <TouchableOpacity onPress={() => { console.log("Filter Pressed"); }}>
+          <Icon name='filter' size={32} color={Colors.primaryBlack} />
+        </TouchableOpacity>
+      </View>
+      <ScrollView contentContainerStyle={styles.scroll}>
 
-        <View style={{ width: '100%', alignSelf: 'flex-end', padding: 5, margin: 4 }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: 340, padding: 5, margin: 4 }}>
+          <Text style={{ alignSelf: 'flex-start', marginRight: 8 }}>{displayData.length} Items</Text>
           <LabelledIcon
             label="Add Item"
             iconPos={0}
             iconName='add'
             variant='item'
             onNew={handleAddIngredient}
-             />
+          />
         </View>
+
 
         <View style={{ alignItems: 'center' }}>
           {displayData.length > 0 ? (
-            displayData.map((item) => (
-              <ScanCard key={item.id} data={item} onUpdate={handleUpdateIngredient} onDelete={handleDeleteIngredient} />
+            displayData.map((item, index) => (
+              <View key={item.id} style={{ marginBottom: index === displayData.length - 1 ? 0 : 12 }}>
+                <ScanCard data={item} onUpdate={handleUpdateIngredient} onDelete={handleDeleteIngredient} />
+              </View>
             ))
-          ) : ( <Text> No results found</Text>)}
+          ) : (<Text> No results found</Text>)}
         </View>
 
       </ScrollView>
