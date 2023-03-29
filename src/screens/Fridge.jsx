@@ -118,30 +118,30 @@ const FridgeScreen = () => {
 
 
   //Search Related 
-  const handleSearch = (value)=>{
+  const handleSearch = (value) => {
     const filteredArray = ingredientsData.filter(item => {
       const lowercaseValue = value.toLowerCase();
       const lowercaseName = item.name.toLowerCase();
       const lowercaseCategory = item.category.toLowerCase();
       const nameWords = lowercaseName.split(' ');
       const categoryWords = lowercaseCategory.split(' ');
-    
+
       // Check if the value is in the beginning of any word in the name or category
       const nameMatch = nameWords.some(word => word.startsWith(lowercaseValue));
       const categoryMatch = categoryWords.some(word => word.startsWith(lowercaseValue));
-    
+
       return nameMatch || categoryMatch;
     });
-    
+
     setDisplayData(filteredArray)
   }
 
-  const handleSearchBack = ()=>{
+  const handleSearchBack = () => {
     setDisplayData(ingredientsData)
     console.log("back is clicked  ")
   }
 
-  
+
   const styles = StyleSheet.create({
     container: {
       flex: 1,
@@ -206,7 +206,7 @@ const FridgeScreen = () => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <SearchBar placeholder="Search Ingredient" onSearch={handleSearch} onBack={handleSearchBack}/>
+        <SearchBar placeholder="Search Ingredient, Categories" onSearch={handleSearch} onBack={handleSearchBack} />
         <TouchableOpacity
           onPress={() => {
             console.log("Filter");
@@ -221,7 +221,11 @@ const FridgeScreen = () => {
         contentContainerStyle={styles.contentContainer}
       >
 
-        {renderIngredientsByCategory()}
+        {displayData.length > 0 
+        ? (renderIngredientsByCategory()) 
+        : (<Text> No results found</Text>
+        )}
+        
       </ScrollView>
     </View>
   );

@@ -139,7 +139,7 @@ function RecipeScreen() {
         <View style={styles.container}>
           {/* Search Result  */}
           {!showMainPage && searchResultArray.length === 0 && (
-            <Text>Sorry, no matches were found</Text>
+            <Text> No results found</Text>
           )}
   
           {!showMainPage && searchResultArray.length > 0 && (

@@ -11,17 +11,19 @@ import LabelledIcon from '../components/molecules/LabelledIcon';
 const dataArray = [
   { id: "1", name: "Apples", amount: 2, unit: "Pcs", category: "Produce", purchaseDate: "2023-03-17", expiresInDays: null, expirationDate: "2023-03-23" },
   { id: "2", name: "Bananas", amount: 3, unit: "Pcs", category: "Produce", purchaseDate: "2023-03-17", expiresInDays: null, expirationDate: "2023-03-24" },
-  { id: "3", name: "Oranges", amount: 1, unit: "Pcs", category: "Produce", purchaseDate: "2023-03-17", expiresInDays: null, expirationDate: "2023-03-26" },
+  { id: "3", name: "Oranges", amount: 1, unit: "Pcs", category: "smth else", purchaseDate: "2023-03-17", expiresInDays: null, expirationDate: "2023-03-26" },
 ];
 //--------------
 
 function ScanScreen() {
 
   const [ingredientsData, setIngredientsData] = useState(dataArray);
+  const [displayData, setDisplayData] = useState(ingredientsData);
+
 
   const handleAddIngredient = (ingredient) => {
     console.log(ingredient, 'scan screen add ingredient')
-    
+
     const updatedIngredientsData = [...ingredientsData, ingredient];
     setIngredientsData(updatedIngredientsData);
   };
@@ -41,11 +43,28 @@ function ScanScreen() {
     setIngredientsData(updatedIngredientsData);
   };
 
+
+  //Search Related 
+  const handleSearch = (value) => {
+    const filteredArray = dataArray.filter(item => {
+      const { name, category } = item
+      return (name.toLowerCase().startsWith(value.toLowerCase())
+        || category.toLowerCase().startsWith(value.toLowerCase()));
+    });
+    setDisplayData(filteredArray)
+  }
+
+  const handleSearchBack = () => {
+    setDisplayData(ingredientsData)
+    console.log("back is clicked  ")
+  }
+
   const styles = StyleSheet.create({
     container: {
       flex: 1,
       alignItems: 'center',
       justifyContent: 'center',
+      width: "100%",
       backgroundColor: Colors['creamyWhite'],
     },
     scroll: {
@@ -67,27 +86,32 @@ function ScanScreen() {
 
   return (
     <View style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scroll}>
         <View style={styles.header}>
-          <SearchBar />
+          <SearchBar placeholder="Search Item" onSearch={handleSearch} onBack={handleSearchBack} />
           <TouchableOpacity onPress={() => { console.log("Filter Pressed"); }}>
             <Icon name='filter' size={32} color={Colors.primaryBlack} />
           </TouchableOpacity>
         </View>
-        <View style={{ width: '100%', alignSelf: 'flex-end', padding: 15, margin: 4 }}>
+        <ScrollView contentContainerStyle={styles.scroll}>
+
+        <View style={{ width: '100%', alignSelf: 'flex-end', padding: 5, margin: 4 }}>
           <LabelledIcon
             label="Add Item"
             iconPos={0}
             iconName='add'
             variant='item'
             onNew={handleAddIngredient}
-          />
+             />
         </View>
+
         <View style={{ alignItems: 'center' }}>
-          {ingredientsData.map((item) => (
-            <ScanCard key={item.id} data={item} onUpdate={handleUpdateIngredient} onDelete={handleDeleteIngredient} />
-          ))}
+          {displayData.length > 0 ? (
+            displayData.map((item) => (
+              <ScanCard key={item.id} data={item} onUpdate={handleUpdateIngredient} onDelete={handleDeleteIngredient} />
+            ))
+          ) : ( <Text> No results found</Text>)}
         </View>
+
       </ScrollView>
     </View>
   );
