@@ -21,7 +21,11 @@ function truncateTitle(title) {
 
 
 
-const SingleRecipeCarousel = ({ image, id, title }) => {
+const SingleRecipeCarousel = ({ 
+  image, 
+  id, 
+  title 
+}) => {
   const navigation = useNavigation();
   // const stack = createStackNavigator();
 
@@ -66,7 +70,7 @@ const styles = StyleSheet.create({
     // height:'auto',
     flexDirection: 'column',
     alignItems: 'flex-start',
-    margin: 5,
+    // margin: 5,
   },
   card: {
     width: 200,
@@ -78,11 +82,17 @@ const styles = StyleSheet.create({
     // position: relative,
     // padding: 16,
 
-    elevation: 5,
-    shadowOffset: { width: 0, height: 8 },
-    shadowColor: '#000000',
-    shadowOpacity: 0.1,
-    shadowRadius: 20,
+    ...Platform.select({
+      ios: {
+        shadowColor: 'black',
+        shadowOffset: { width: 0, height: 8 },
+        shadowOpacity: 0.1,
+        shadowRadius: 20,
+      },
+      android: {
+        elevation: 5,
+      },
+    }),
     // borderRadius:4,Fstretc
 
   },

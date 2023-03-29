@@ -31,15 +31,18 @@ export default function IngredientItem({
 
   const ingredientData = data || {};
 
-  const color = getExpirationColor(ingredientData.expiration);
+  const color = getExpirationColor(ingredientData.expiresInDays);
 
   const [showOptions, setShowOptions] = useState(false);
   const [showItemModal, setShowItemModal] = useState(false);
+  const [modalKey, setModalKey] = useState(Date.now());
+
   const handleToggleModal = () => {
     setShowOptions(!showOptions);
   };
   const handleToggleItemModal = () => {
     setShowItemModal(!showItemModal);
+    setModalKey(Date.now());
   };
 
   const handleUpdate = (data) => {
@@ -83,7 +86,9 @@ export default function IngredientItem({
         <View style={styles.textContainer}>
           <Text style={styles.text}>{ingredientData.name}</Text>
           <Text style={[styles.text, styles.expirationText]}>
-            Expires in {ingredientData.expiration} Days
+            {ingredientData.expiresInDays > 0
+              ? `Expires in ${ingredientData.expiresInDays} days`
+              : `Expired for ${Math.abs(ingredientData.expiresInDays)} days`}
           </Text>
         </View>
         <View>
@@ -98,6 +103,7 @@ export default function IngredientItem({
           onRemove={handleDelete}
         />
         <ItemModal
+          key={modalKey}
           onToggleItemModal={handleToggleItemModal}
           showItemModal={showItemModal}
           type="edit"
