@@ -1,5 +1,6 @@
 {
   "expo": {
+    "scheme": "cibo",
     "name": "TheRealCibo",
     "slug": "TheRealCibo",
     "version": "1.0.0",
@@ -21,10 +22,16 @@
       "adaptiveIcon": {
         "foregroundImage": "assets/images/Cibo.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.cibo.mycibo"
     },
     "web": {
       "favicon": "assets/images/Cibo.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "45ca0bbe-8446-45be-92d6-07f512190282"
+      }
     }
   }
 }

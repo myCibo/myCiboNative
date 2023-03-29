@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, ActivityIndicator, Button } from 'react-native';
 import Carousel from '../components/organisms/Carousel';
 import CategorySquare from '../components/molecules/CategorySquare';
 import RecipeCard from '../components/molecules/RecipeCard';
@@ -10,8 +10,28 @@ import axios from 'axios';
 import countMissingIngredients from '../utils/countMissingIngredients';
 import { calculateExpiresInDays } from '../utils/expirationCalculator';
 import prioritizeIngredients from '../utils/prioritizeIngredients';
-
+import * as Google from 'expo-auth-session/providers/google';
 function HomeScreen() {
+  // WebBrowser.maybeCompleteAuthSession();
+  const [request, response, promptAsync] = Google.useAuthRequest({
+    expoClientId: "552993921134-4lfc1ep9u4c3ud0h73tqtrhte75ldbtn.apps.googleusercontent.com",
+    androidClientId: '552993921134-tj76atrjgaav85pfoovenbgadoi5bnfa.apps.googleusercontent.com',
+    selectAccount: true,
+    // iosClientId: 'GOOGLE_GUID.apps.googleusercontent.com',
+  });
+  if (response?.type === 'success') {
+    (async () => {
+      const userData = await fetch(
+        "https://www.googleapis.com/userinfo/v2/me",
+        {
+          headers: { Authorization: `Bearer ${response.params.access_token}` },
+        }
+      );
+
+      const user = await userData.json();
+      console.log('user info:', user)
+    })();
+  }
 
   const fridgeCategories = [
     {
@@ -187,6 +207,13 @@ function HomeScreen() {
 
   return (
     <ScrollView style={styles.contentContainer}>
+      <Button
+        title="Sign in with Google"
+        disabled={!request}
+        onPress={() => {
+          promptAsync();
+        }}
+      />
       <View style={styles.container}>
         <View style={styles.header}>
           <Text style={styles.headerText}>Fridge</Text>
