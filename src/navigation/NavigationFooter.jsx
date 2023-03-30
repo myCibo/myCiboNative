@@ -72,7 +72,7 @@ function NavigationFooter() {
   const renderTabIcon = (iconName, isFocused) => {
     const iconColor = isFocused ? Colors.primaryRed : Colors.white;
     const backgroundColor = isFocused ? Colors.white : Colors.primaryRed;
-    const iconSize = 24;
+    const iconSize = 25;
     const borderRadius = 25;
     const padding = 10;
 
@@ -101,7 +101,7 @@ function NavigationFooter() {
           inactiveTintColor: Colors.primaryRed,
           tabBarStyle: {
             backgroundColor: Colors.primaryRed,
-            height: 100,
+            height: 90,
             paddingBottom: 10,
             paddingTop: 10,
             paddingRight: 5,
