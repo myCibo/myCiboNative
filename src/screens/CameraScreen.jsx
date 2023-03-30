@@ -52,7 +52,7 @@ const CameraScreen = ({ navigation }) => {
   };
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1}}>
       {isFocused && (
         <Camera
           style={{ flex: 1 }}
@@ -63,16 +63,24 @@ const CameraScreen = ({ navigation }) => {
       )}
       {!isProcessing && (
         <TouchableOpacity
-          style={{
-            flex: 0.1,
-            alignSelf: "center",
-            alignItems: "center",
-            backgroundColor: "transparent",
-          }}
-          onPress={takePictureAndScan}
-        >
-          <Text style={{ fontSize: 18, marginBottom: 10, color: "black" }}>Capture</Text>
-        </TouchableOpacity>
+        style={{
+          position: "absolute",
+          bottom: 20,
+          alignSelf: "center",
+          alignItems: "center",
+          width: 70,
+          height: 70,
+          borderRadius: 35,
+          backgroundColor: "#fff",
+          justifyContent: "center",
+          borderWidth: 2,
+          borderColor: "#ccc",
+        }}
+        onPress={takePictureAndScan}
+      >
+        <Text style={{ fontSize: 18, fontWeight:"bold"}}>Scan</Text>
+        {/* <View style={{ width: 60, height: 60, borderRadius: 30, backgroundColor: "#fff" }} /> */}
+      </TouchableOpacity>
       )}
     </View>
   );
