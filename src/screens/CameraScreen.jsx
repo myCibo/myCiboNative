@@ -1,14 +1,15 @@
-// src/screens/CameraScreen.js
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { View, TouchableOpacity, Text } from "react-native";
 import { Camera } from "expo-camera";
-import { useFocusEffect } from "@react-navigation/native";
+import { useIsFocused } from "@react-navigation/native";
 import TabScanner from "../api/TabScanner";
 
 const CameraScreen = ({ navigation }) => {
   const [hasPermission, setHasPermission] = useState(null);
   const [cameraRef, setCameraRef] = useState(null);
   const [isProcessing, setIsProcessing] = useState(false);
+
+  const isFocused = useIsFocused();
 
   useEffect(() => {
     (async () => {
@@ -17,13 +18,16 @@ const CameraScreen = ({ navigation }) => {
     })();
   }, []);
 
-  useFocusEffect(
-    React.useCallback(() => {
-      if (isProcessing) {
-        setIsProcessing(false);
+  useEffect(() => {
+    if (!isFocused && cameraRef) {
+      cameraRef.pausePreview();
+    }
+    return () => {
+      if (cameraRef) {
+        cameraRef.resumePreview();
       }
-    }, [isProcessing])
-  );
+    };
+  }, [isFocused, cameraRef]);
 
   if (hasPermission === null) {
     return <View />;
@@ -38,7 +42,7 @@ const CameraScreen = ({ navigation }) => {
       navigation.navigate("ProcessingScreen");
       try {
         const result = await TabScanner.scanReceipt(photo.uri);
-        console.log("read success", result)
+        console.log("read success", result);
         navigation.navigate("ReceiptDataScreen", { data: result });
       } catch (error) {
         console.error("Error scanning receipt:", error);
@@ -46,12 +50,17 @@ const CameraScreen = ({ navigation }) => {
       }
     }
   };
-  
-  
 
   return (
     <View style={{ flex: 1 }}>
-      <Camera style={{ flex: 1 }} ref={(ref) => setCameraRef(ref)} />
+      {isFocused && (
+        <Camera
+          style={{ flex: 1 }}
+          ref={(ref) => setCameraRef(ref)}
+          type={Camera.Constants.Type.back}
+          autoFocus={Camera.Constants.AutoFocus.on}
+        />
+      )}
       {!isProcessing && (
         <TouchableOpacity
           style={{
