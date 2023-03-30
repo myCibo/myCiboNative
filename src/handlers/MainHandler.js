@@ -3,7 +3,11 @@ import axios from "axios";
 // MainHandler class
 export default class MainHandler {
   constructor() {
-    this.baseURL = process.env.BACKEND_URL;
+    if (process.env.NODE_ENV === "development") {
+      this.baseURL = process.env.DEV_BACKEND_URL;
+    } else {
+      this.baseURL = process.env.BACKEND_URL;
+    }
     this.api = axios.create({ baseURL });
   }
 

@@ -1,3 +1,5 @@
+import MainHandler from "./MainHandler";
+
 export default class ShoppingListHandler extends MainHandler {
   constructor() {
     super();

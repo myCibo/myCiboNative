@@ -1,3 +1,5 @@
+import MainHandler from "./MainHandler";
+
 export default class FridgeHandler extends MainHandler {
   constructor() {
     super();
