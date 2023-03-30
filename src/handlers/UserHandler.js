@@ -7,4 +7,64 @@ export default class UserHandler extends MainHandler {
     console.error("Error:", error);
   }
 
+  getAllUsers(callback) {
+    this.get("/users", (error, data) => {
+      if (error) {
+        this.errorHandler(error);
+        return;
+      }
+      callback(data);
+    });
+  }
+
+  getUserById(id, callback) {
+    this.get(`/users/id/${id}`, (error, data) => {
+      if (error) {
+        this.errorHandler(error);
+        return;
+      }
+      callback(data);
+    });
+  }
+
+  getUserByEmail(email, callback) {
+    this.get(`/users/email/${email}`, (error, data) => {
+      if (error) {
+        this.errorHandler(error);
+        return;
+      }
+      callback(data);
+    });
+  }
+
+  createUser(data, callback) {
+    this.post("/users", data, (error, data) => {
+      if (error) {
+        this.errorHandler(error);
+        return;
+      }
+      callback(data);
+    });
+  }
+
+  updateUser(id, data, callback) {
+    this.put(`/users/${id}`, data, (error, data) => {
+      if (error) {
+        this.errorHandler(error);
+        return;
+      }
+      callback(data);
+    });
+  }
+
+  deleteUser(id, callback) {
+    this.delete(`/users/${id}`, (error, data) => {
+      if (error) {
+        this.errorHandler(error);
+        return;
+      }
+      callback(data);
+    });
+  }
+
 }
