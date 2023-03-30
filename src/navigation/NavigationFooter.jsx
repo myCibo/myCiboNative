@@ -141,6 +141,7 @@ function NavigationFooter() {
           name="Camera"
           component={CameraStack}
           options={{
+            tabBarStyle: { display: 'none' },
             headerShown: false,
             tabBarLabel: 'Camera',
             tabBarIcon: ({ color, size, focused }) => (
