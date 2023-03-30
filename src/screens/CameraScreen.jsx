@@ -43,7 +43,7 @@ const CameraScreen = ({ navigation }) => {
       try {
         const result = await TabScanner.scanReceipt(photo.uri);
         console.log("read success", result);
-        navigation.navigate("ReceiptDataScreen", { data: result });
+        navigation.replace("ReceiptDataScreen", { data: result });
       } catch (error) {
         console.error("Error scanning receipt:", error);
         navigation.navigate("Home"); // Go back to the CameraScreen if there's an error
