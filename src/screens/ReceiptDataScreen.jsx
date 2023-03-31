@@ -1,3 +1,4 @@
+// src/screens/ReceiptDataScreen.js
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Text, ScrollView, TouchableOpacity } from 'react-native';
 import ScanCard from '../components/molecules/ScanCard'
@@ -6,16 +7,22 @@ import Icon from '../components/atoms/Icon';
 import Colors from '../constants/styles';
 import LabelledIcon from '../components/molecules/LabelledIcon';
 
+const ReceiptDataScreen = ({ route }) => {
+  const { data } = route.params;
+  console.log("Data received in ReceiptDataScreen:", data);
 
-//FakeData-------------
-const dataArray = [
-  { id: "1", name: "Apples", amount: 2, unit: "Pcs", category: "Produce", purchaseDate: "2023-03-17", expiresInDays: null, expirationDate: "2023-03-23" },
-  { id: "2", name: "Bananas", amount: 3, unit: "Pcs", category: "Produce", purchaseDate: "2023-03-17", expiresInDays: null, expirationDate: "2023-03-24" },
-  { id: "3", name: "Oranges", amount: 1, unit: "Pcs", category: "Produce", purchaseDate: "2023-03-17", expiresInDays: null, expirationDate: "2023-03-26" },
-];
-//--------------
-
-function ScanScreen() {
+  const lineItems = data.result.lineItems; // Access lineItems using data.result.lineItems
+  const purchaseDate = data.result.date;
+  const dataArray = lineItems.map((item, index) => ({
+    id: (index + 1).toString(),
+    name: item.descClean,
+    amount: item.qty === 0 ? 1 : item.qty, // Set default qty to 1 if it's 0
+    unit: item.unit,
+    category: "",
+    purchaseDate: purchaseDate,
+    expiresInDays: null,
+    expirationDate: null,
+  }));
 
   const [ingredientsData, setIngredientsData] = useState(dataArray);
   const [displayData, setDisplayData] = useState(ingredientsData);
@@ -119,6 +126,6 @@ function ScanScreen() {
       </ScrollView>
     </View>
   );
-}
+};
 
-export default ScanScreen;
+export default ReceiptDataScreen;
