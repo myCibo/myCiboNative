@@ -14,15 +14,15 @@ export default colors = {
 
     // Category colors
     "baking": "#B3A96C",
-    "breverage": "#C9D584",
+    "breverages": "#A5B7C9",
     "canned": "#A5B7C9",
-    "nut": "#F4E1B2",
+    "nuts": "#74855D",
     "dairy": "#F0A047",
     "frozen": "#8F9FC8",
-    "condiment": "#EAD675",
-    "grain": "#CFBF88",
-    "protein": "#D35247",
-    "spice": "#DDAE55",
+    "condiments": "#EAD675",
+    "grains": "#A18146",
+    "proteins": "#D35247",
+    "spices": "#DDAE55",
     "produce": "#6B987A",
 
     // Friendly colors

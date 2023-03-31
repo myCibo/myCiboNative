@@ -110,7 +110,7 @@ export default class FridgeHandler extends MainHandler {
   }
 
   updateFridgeItem(id, data, callback) {
-    this.put(`/fridgeItems/${ id }`, data, (error, data) => {
+    this.put(`/fridgeItems/${ id }`, { itemData: data }, (error, data) => {
       if (error) {
         this.errorHandler(error);
         return;

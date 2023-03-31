@@ -11,12 +11,13 @@ import countMissingIngredients from '../utils/countMissingIngredients';
 import { calculateExpiresInDays } from '../utils/expirationCalculator';
 import prioritizeIngredients from '../utils/prioritizeIngredients';
 import FridgeHandler from '../handlers/FridgeHandler';
-import UserHandler from '../handlers/UserHandler';
+import { useContext } from 'react';
+import UserContext from '../contexts/UserContext';
 
-const userHandler = new UserHandler();
 const fridgeHandler = new FridgeHandler();
 
 function HomeScreen() {
+  const user = useContext(UserContext);
 
   const navigation = useNavigation();
   const [data, setData] = useState([]);
@@ -29,18 +30,16 @@ function HomeScreen() {
   };
 
   useEffect(() => {
-    userHandler.getAllUsers((users) => {
-      const userId = users[0].id;
-      fridgeHandler.getFridgeItems(userId, (fridgeItems) => {
-        const ingredients = fridgeItems.map((item) => ({
-          ...item,
-          expiresInDays: calculateExpiresInDays(item.expirationDate),
-        }));
-        setIngredientsData(ingredients);
-      });
-      fridgeHandler.getCategoryCards(userId, (categoryCards) => {
-        setCategoryCards(categoryCards);
-      });
+    const userId = user.id;
+    fridgeHandler.getFridgeItems(userId, (fridgeItems) => {
+      const ingredients = fridgeItems.map((item) => ({
+        ...item,
+        expiresInDays: calculateExpiresInDays(item.expirationDate),
+      }));
+      setIngredientsData(ingredients);
+    });
+    fridgeHandler.getCategoryCards(userId, (categoryCards) => {
+      setCategoryCards(categoryCards);
     });
   }, []);
 

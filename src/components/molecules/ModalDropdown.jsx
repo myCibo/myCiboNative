@@ -11,11 +11,17 @@ export default function ModalDropdown({
     selected,
 }) {
 
+    useEffect(() => {
+        if (selected) {
+          setSelectedItemName(selected);
+        }
+      }, [selected]);
+
     const [open, setOpen] = useState(false);
-    const [selectedItem, setSelectedItem] = useState(selected || null);
+    const [selectedItemName, setSelectedItemName] = useState(selected || null);
 
     const handleSelect = (item) => {
-        setSelectedItem(item);
+        setSelectedItemName(item.name);
         onChange(item)
         setOpen(false);
     };
@@ -23,12 +29,6 @@ export default function ModalDropdown({
     const handleOpen = () => {
         setOpen(!open);
     };
-
-    useEffect(() => {
-        if (selected) {
-            setSelectedItem(selected);
-        }
-    }, [selected]);
 
     const styles = StyleSheet.create({
         container: {
@@ -116,7 +116,7 @@ export default function ModalDropdown({
                     data={data}
                     renderItem={({ item, index }) => (
                         <TouchableHighlight
-                            onPress={() => handleSelect(item.name)}
+                            onPress={() => handleSelect(item)}
                             activeOpacity={0.9}
                             underlayColor={Colors['lightGreen']}
                         >
@@ -136,7 +136,7 @@ export default function ModalDropdown({
             <TouchableWithoutFeedback onPress={handleOpen}>
                 <View style={styles.itemContainer}>
                     <View style={styles.item}>
-                        <Text>{selectedItem ? selectedItem : placeholder}</Text>
+                        <Text>{selectedItemName ? selectedItemName : placeholder}</Text>
                     </View>
                     <View style={[styles.icon, styles.iconOpen]}>
                         <Icon name="arrow-down" size={24} color={Colors['fontGray']} />

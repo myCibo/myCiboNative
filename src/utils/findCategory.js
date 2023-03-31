@@ -10,7 +10,7 @@ export default function findCategory(category) {
     },
     {
       name: 'Breverages',
-      color: Colors.breverage,
+      color: Colors.breverages,
     },
     {
       name: 'Canned',
@@ -18,7 +18,7 @@ export default function findCategory(category) {
     },
     {
       name: 'Condiments',
-      color: Colors.condiment,
+      color: Colors.condiments,
     },
     {
       name: 'Dairy',
@@ -30,15 +30,15 @@ export default function findCategory(category) {
     },
     {
       name: 'Grains',
-      color: Colors.grain,
+      color: Colors.grains,
     },
     {
-      name: 'Meat',
-      color: Colors.meat,
+      name: 'Proteins',
+      color: Colors.proteins,
     },
     {
       name: 'Nuts',
-      color: Colors.nut,
+      color: Colors.nuts,
     },
     {
       name: 'Produce',
@@ -46,7 +46,7 @@ export default function findCategory(category) {
     },
     {
       name: 'Spices',
-      color: Colors.spice,
+      color: Colors.spices,
     }
   ];
 

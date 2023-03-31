@@ -11,7 +11,7 @@ export default function ModalSearch({
   selected,
 }) {
 
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState(selected?.name || '');
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [currentData, setCurrentData] = useState(data);
   const [isFocused, setIsFocused] = useState(false);
@@ -46,12 +46,6 @@ export default function ModalSearch({
   const handleFocus = () => {
     setIsFocused(true);
   };
-
-  useEffect(() => {
-    if (selected) {
-      setSearchQuery(selected.name);
-    }
-  }, [selected]);
 
   const styles = StyleSheet.create({
     container: {

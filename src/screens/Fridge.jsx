@@ -6,83 +6,27 @@ import LabelledIcon from '../components/molecules/LabelledIcon';
 import Icon from '../components/atoms/Icon';
 import Colors from '../constants/styles';
 import { calculateExpiresInDays } from '../utils/expirationCalculator';
+import FridgeHandler from '../handlers/FridgeHandler';
+import { useContext } from 'react';
+import UserContext from '../contexts/UserContext';
 
-
-const ingredientsDataInitial = [
-  {
-    id: '1',
-    name: 'Milk',
-    category: 'Dairy',
-    unit: 'Litre',
-    amount: 1,
-    purchaseDate: '2023-03-17',
-    expirationDate: '2023-03-24',
-    expirationTime: 7,
-    expiresInDays: null,
-  },
-  {
-    id: '2',
-    name: 'Eggs',
-    category: 'Dairy',
-    unit: 'Item',
-    amount: 1,
-    purchaseDate: '2023-03-17',
-    expirationDate: '2023-04-14',
-    expirationTime: 28,
-    expiresInDays: null,
-  },
-  {
-    id: '3',
-    name: 'Potatoes',
-    category: 'Vegetables',
-    unit: 'Item',
-    amount: 1,
-    purchaseDate: '2023-03-14',
-    expirationDate: '2023-04-14',
-    expirationTime: 30,
-    expiresInDays: null,
-  },
-  {
-    id: '4',
-    name: 'Brown rice',
-    category: 'Grains',
-    unit: 'Grams',
-    amount: 1,
-    purchaseDate: '2023-03-17',
-    expirationDate: '2024-03-17',
-    expirationTime: 365,
-    expiresInDays: null,
-  },
-  {
-    id: '5',
-    name: 'Ground beef',
-    category: 'Meat',
-    unit: 'Grams',
-    amount: 1,
-    purchaseDate: '2023-03-21',
-    expirationDate: '2023-03-24',
-    expirationTime: 3,
-    expiresInDays: null,
-  },
-  {
-    id: '6',
-    name: 'Chicken',
-    category: 'Meat',
-    unit: 'Grams',
-    amount: 1,
-    purchaseDate: '2023-03-23',
-    expirationDate: '2023-03-25',
-    expirationTime: 2,
-    expiresInDays: null,
-  },
-].map((ingredient) => ({
-  ...ingredient,
-  expiresInDays: calculateExpiresInDays(ingredient.expirationDate),
-}));
+const fridgeHandler = new FridgeHandler();
 
 const FridgeScreen = () => {
+  const user = useContext(UserContext);
 
-  const [ingredientsData, setIngredientsData] = useState(ingredientsDataInitial);
+  const [ingredientsData, setIngredientsData] = useState([]);
+
+
+  useEffect(() => {
+    fridgeHandler.getFridgeItems(user.id, (data) => {
+      const updatedData = data.map((ingredient) => ({
+        ...ingredient,
+        expiresInDays: calculateExpiresInDays(ingredient.expirationDate),
+      }));
+      setIngredientsData(updatedData);
+    });
+  }, []);
 
   // group ingredients by category. 
   const ingredientsByCategory = ingredientsData.reduce((acc, ingredient) => {
@@ -93,25 +37,37 @@ const FridgeScreen = () => {
     return acc;
   }, {});
 
-  const handleAddIngredient = (ingredient) => {
-    const updatedIngredientsData = [...ingredientsData, ingredient];
-    setIngredientsData(updatedIngredientsData);
-  };
-
-
-  const handleUpdateIngredient = (ingredient) => {
-    const updatedIngredientsData = ingredientsData.map((item) => {
-      if (item.id === ingredient.id) {
-        return ingredient;
-      }
-      return item;
+  const handleAddFridgeItem = (ingredient) => {
+    const userId = user.id;
+    const newItem = {
+      userId: userId,
+      itemData: ingredient,
+    };
+    fridgeHandler.createFridgeItem(newItem, (data) => {
+      data.expiresInDays = calculateExpiresInDays(data.expirationDate);
+      const updatedIngredientsData = [...ingredientsData, data];
+      setIngredientsData(updatedIngredientsData);
     });
-    setIngredientsData(updatedIngredientsData);
   };
 
-  const handleDeleteIngredient = (ingredientId) => {
-    const updatedIngredientsData = ingredientsData.filter((item) => item.id !== ingredientId);
-    setIngredientsData(updatedIngredientsData);
+  const handleUpdateFridgeItem = (ingredient) => {
+    fridgeHandler.updateFridgeItem(ingredient.id, ingredient, () => {
+      const updatedIngredientsData = ingredientsData.map((item) => {
+        if (item.id === ingredient.id) {
+          item.expiresInDays = calculateExpiresInDays(ingredient.expirationDate);
+          return ingredient;
+        }
+        return item;
+      });
+      setIngredientsData(updatedIngredientsData);
+    });
+  };
+
+  const handleDeleteFridgeItem = (ingredientId) => {
+    fridgeHandler.deleteFridgeItem(ingredientId, () => {
+      const updatedIngredientsData = ingredientsData.filter((item) => item.id !== ingredientId);
+      setIngredientsData(updatedIngredientsData);
+    });
   };
 
   const styles = StyleSheet.create({
@@ -123,7 +79,7 @@ const FridgeScreen = () => {
       backgroundColor: Colors['creamyWhite'],
     },
     contentContainer: {
-      width: "60%",
+      width: "61%",
     },
     header: {
       flexDirection: "row",
@@ -159,7 +115,7 @@ const FridgeScreen = () => {
             iconPos={1}
             iconName='add'
             variant='item'
-            onNew={handleAddIngredient}
+            onNew={handleAddFridgeItem}
             data={{ category }}
           />
         </View>
@@ -167,8 +123,8 @@ const FridgeScreen = () => {
           <IngredientItem
             key={ingredient.id}
             data={ingredient}
-            onUpdate={handleUpdateIngredient}
-            onDelete={handleDeleteIngredient}
+            onUpdate={handleUpdateFridgeItem}
+            onDelete={handleDeleteFridgeItem}
           />
         ))}
       </View>

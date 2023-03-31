@@ -29,6 +29,30 @@ export default class UserHandler extends MainHandler {
     });
   }
 
+  getAllUsersPromise() {
+    return new Promise((resolve, reject) => {
+      this.get("/users", (error, data) => {
+        if (error) {
+          reject(error);
+          return;
+        }
+        resolve(data);
+      });
+    });
+  }
+  
+  getUserByIdPromise(id) {
+    return new Promise((resolve, reject) => {
+      this.get(`/users/id/${id}`, (error, data) => {
+        if (error) {
+          reject(error);
+          return;
+        }
+        resolve(data);
+      });
+    });
+  }
+
   getUserByEmail(email, callback) {
     this.get(`/users/email/${email}`, (error, data) => {
       if (error) {
