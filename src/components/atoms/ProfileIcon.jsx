@@ -3,8 +3,8 @@ import { Image } from 'react-native';
 export default function ProfileIcon(iconSource) {
     const styles = {
         profilePic: {
-            width: 50,
-            height: 50,
+            width: 35,
+            height: 35,
             borderRadius: 50,
         }
     };

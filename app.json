@@ -4,10 +4,10 @@
     "slug": "TheRealCibo",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./src/assets/images/dairy.png",
+    "icon": "assets/images/myCiboTomato.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./src/assets/images/dairy.png",
+      "image": "assets/images/myCiboSplash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -19,12 +19,12 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./src/assets/images/dairy.png",
+        "foregroundImage": "assets/images/myCiboTomato.png",
         "backgroundColor": "#ffffff"
       }
     },
     "web": {
-      "favicon": "./src/assets/images/dairy.png"
+      "favicon": "assets/images/myCiboTomato.png"
     }
   }
 }

@@ -41,6 +41,7 @@ export default function ShoppingList({
 
   const [showOptionsModal, setShowOptionsModal] = useState(false);
   const [showListModal, setShowListModal] = useState(false);
+  const [modalKey, setModalKey] = useState(Date.now());
 
   const [open, setOpen] = useState(false);
 
@@ -54,17 +55,22 @@ export default function ShoppingList({
 
   const handleToggleListModal = () => {
     setShowListModal(!showListModal);
+    setModalKey(Date.now());
   };
 
   const handleRemoveItem = (itemId) => {
     console.log("Remove item", itemId);
+    console.log("list", list)
     const updatedList = list.filter((item) => item.id !== itemId);
+    console.log("updatedList", updatedList)
     setList(updatedList);
     setListCount(updatedList.length);
+    console.log("made it here")
     const updatedData = {
       ...data,
       list: updatedList
     };
+    console.log("updatedData -- end of the line", updatedData)
     onUpdateList(updatedData);
   };
 
@@ -100,7 +106,8 @@ export default function ShoppingList({
     container: {
       position: 'relative',
       flex: open ? 1 : 0,
-      minWidth: '100%'
+      minWidth: '100%',
+      // margin:0
     },
     cardContainer: {
       flexDirection: 'row',
@@ -110,7 +117,8 @@ export default function ShoppingList({
       backgroundColor: open ? Colors['primaryGreen'] : Colors['white'],
       borderRadius: 4,
       borderWidth: 1,
-      borderColor: Colors['primaryBlack']
+      borderColor: Colors['primaryBlack'],
+      // backgroundColor:'red',
     },
     cardContainerContent: {
       width: '70%',
@@ -225,6 +233,7 @@ export default function ShoppingList({
         onRemove={handleRemoveList}
       />
       <ListModal
+        key={modalKey}
         onToggleListModal={handleToggleListModal}
         showListModal={showListModal}
         type="edit"

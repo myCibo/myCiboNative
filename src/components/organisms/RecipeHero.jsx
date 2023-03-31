@@ -5,13 +5,22 @@ import { LinearGradient } from 'expo-linear-gradient';
 
 import { useNavigation } from '@react-navigation/native';
 
-const RecipeHero = ({ id, image, link, title, label }) => {
+const RecipeHero = ({ data, label }) => {
+  // const RecipeHero = ({ id, image, link, title, label }) => {
+
   const navigation = useNavigation();
 
   const handleCardPress = () => {
-    navigation.navigate('DynamicRecipe', { id, image, title });
-
-
+    navigation.navigate('DynamicRecipe', {
+      id: data.id,
+      image: data.image,
+      title: data.title,
+      analyzedInstructions: data.analyzedInstructions,
+      extendedIngredients: data.extendedIngredients,
+      servings: data.servings,
+      readyInMinutes: data.readyInMinutes,
+      healthScore: data.healthScore
+    });
   };
 
 
@@ -19,14 +28,14 @@ const RecipeHero = ({ id, image, link, title, label }) => {
     <TouchableOpacity onPress={handleCardPress}>
       <View style={styles.card}>
 
-        <Image style={styles.image} source={{ uri: image }} />
+        <Image style={styles.image} source={{ uri: data.image }} />
         <LinearGradient
           colors={['transparent', 'rgba(0,0,0,0.6)']}
           style={styles.gradient}
         />
         <View style={styles.textContainer}>
           <LabelHero message={label} />
-          <Text style={styles.title}>{title}</Text>
+          <Text style={styles.title}>{data.title}</Text>
         </View>
 
       </View>
@@ -72,11 +81,8 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
     height: 200,
-
     borderRadius: 6,
-
   },
-
   textContainer: {
     position: 'absolute',
     top: 0,
@@ -90,12 +96,9 @@ const styles = StyleSheet.create({
     fontSize: 24,
     color: '#EDF3F4',
     fontWeight: 'medium',
-
     marginTop: 5,
     marginBottom: 13,
     marginLeft: 5,
-
-
   },
   description: {
     color: '#7B817F',

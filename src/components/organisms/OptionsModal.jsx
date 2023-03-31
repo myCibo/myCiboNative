@@ -12,7 +12,7 @@ import Colors from "../../constants/styles";
 
 export default function OptionsModal({
   showOptions,
-  optionsType, // optionsType is either 'ingredient' or 'list'
+  optionsType, // optionsType is either 'ingredient' or 'list' or 'scanner'
   onToggleModal = {},
   onToggleItemModal = {},
   onToggleListModal = {},
@@ -145,6 +145,17 @@ export default function OptionsModal({
               <Text style={styles.optionText}>send a copy</Text>
               <TouchableOpacity onPress={handleUploadOptionPress}>
                 <Icon name="upload" size={24} color={Colors['primaryBlack']} />
+              </TouchableOpacity>
+            </View>
+          </TouchableOpacity>
+        )}
+
+        {optionsType === "scanner" && (
+          <TouchableOpacity onPress={handleEditOptionPress}>
+            <View style={styles.optionRow}>
+              <Text style={styles.optionText}>edit</Text>
+              <TouchableOpacity onPress={handleEditOptionPress}>
+                <Icon name="edit" size={24} color={Colors['primaryBlack']} />
               </TouchableOpacity>
             </View>
           </TouchableOpacity>

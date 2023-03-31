@@ -5,81 +5,89 @@ import IngredientItem from '../components/molecules/IngredientItem';
 import LabelledIcon from '../components/molecules/LabelledIcon';
 import Icon from '../components/atoms/Icon';
 import Colors from '../constants/styles';
-import { calculateExpirationTime } from '../utils/expirationCalculator';
+import { calculateExpiresInDays } from '../utils/expirationCalculator';
 
 
 const ingredientsDataInitial = [
   {
-    id: 1,
+    id: '1',
     name: 'Milk',
     category: 'Dairy',
-    measurement: 'Litre',
+    unit: 'Litre',
     amount: 1,
     purchaseDate: '2023-03-17',
-    expirationDate: '2023-03-20',
-    expiration: null,
+    expirationDate: '2023-03-24',
+    expirationTime: 7,
+    expiresInDays: null,
   },
   {
-    id: 2,
+    id: '2',
     name: 'Eggs',
     category: 'Dairy',
-    measurement: 'Item',
+    unit: 'Item',
     amount: 1,
-    purchaseDate: '2023-03-12',
-    expirationDate: '2023-03-12',
-    expiration: null,
+    purchaseDate: '2023-03-17',
+    expirationDate: '2023-04-14',
+    expirationTime: 28,
+    expiresInDays: null,
   },
   {
-    id: 3,
+    id: '3',
     name: 'Potatoes',
     category: 'Vegetables',
-    measurement: 'Item',
+    unit: 'Item',
     amount: 1,
     purchaseDate: '2023-03-14',
-    expirationDate: '2023-03-28',
-    expiration: null,
+    expirationDate: '2023-04-14',
+    expirationTime: 30,
+    expiresInDays: null,
   },
   {
-    id: 4,
-    name: 'Rice',
+    id: '4',
+    name: 'Brown rice',
     category: 'Grains',
-    measurement: 'Grams',
+    unit: 'Grams',
     amount: 1,
     purchaseDate: '2023-03-17',
-    expirationDate: '2023-03-28',
-    expiration: null,
+    expirationDate: '2024-03-17',
+    expirationTime: 365,
+    expiresInDays: null,
   },
   {
-    id: 5,
-    name: 'Beef',
+    id: '5',
+    name: 'Ground beef',
     category: 'Meat',
-    measurement: 'Grams',
+    unit: 'Grams',
     amount: 1,
-    purchaseDate: '2023-03-17',
-    expirationDate: '2023-03-18',
-    expiration: null,
+    purchaseDate: '2023-03-21',
+    expirationDate: '2023-03-24',
+    expirationTime: 3,
+    expiresInDays: null,
   },
   {
-    id: 6,
+    id: '6',
     name: 'Chicken',
     category: 'Meat',
-    measurement: 'Grams',
+    unit: 'Grams',
     amount: 1,
-    purchaseDate: '2023-03-17',
-    expirationDate: '2023-03-18',
-    expiration: null,
+    purchaseDate: '2023-03-23',
+    expirationDate: '2023-03-25',
+    expirationTime: 2,
+    expiresInDays: null,
   },
 ].map((ingredient) => ({
   ...ingredient,
-  expiration: calculateExpirationTime(ingredient.purchaseDate, ingredient.expirationDate),
+  expiresInDays: calculateExpiresInDays(ingredient.expirationDate),
 }));
 
 const FridgeScreen = () => {
 
   const [ingredientsData, setIngredientsData] = useState(ingredientsDataInitial);
+  const [displayData, setDisplayData] = useState(ingredientsData);
 
-  // group ingredients by category. There 
-  const ingredientsByCategory = ingredientsData.reduce((acc, ingredient) => {
+
+  // group ingredients by category. 
+  const ingredientsByCategory = displayData.reduce((acc, ingredient) => {
     if (!acc[ingredient.category]) {
       acc[ingredient.category] = [];
     }
@@ -108,6 +116,32 @@ const FridgeScreen = () => {
     setIngredientsData(updatedIngredientsData);
   };
 
+
+  //Search Related 
+  const handleSearch = (value) => {
+    const filteredArray = ingredientsData.filter(item => {
+      const lowercaseValue = value.toLowerCase();
+      const lowercaseName = item.name.toLowerCase();
+      const lowercaseCategory = item.category.toLowerCase();
+      const nameWords = lowercaseName.split(' ');
+      const categoryWords = lowercaseCategory.split(' ');
+
+      // Check if the value is in the beginning of any word in the name or category
+      const nameMatch = nameWords.some(word => word.startsWith(lowercaseValue));
+      const categoryMatch = categoryWords.some(word => word.startsWith(lowercaseValue));
+
+      return nameMatch || categoryMatch;
+    });
+
+    setDisplayData(filteredArray)
+  }
+
+  const handleSearchBack = () => {
+    setDisplayData(ingredientsData)
+    console.log("back is clicked  ")
+  }
+
+
   const styles = StyleSheet.create({
     container: {
       flex: 1,
@@ -127,6 +161,8 @@ const FridgeScreen = () => {
       paddingVertical: 10,
       paddingHorizontal: 20,
       gap: 10,
+      marginVertical: 10,
+
     },
     categoryHeader: {
       flexDirection: "row",
@@ -169,12 +205,10 @@ const FridgeScreen = () => {
     ));
   };
 
-
-
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <SearchBar />
+        <SearchBar placeholder="Search Ingredient, Categories" onSearch={handleSearch} onBack={handleSearchBack} />
         <TouchableOpacity
           onPress={() => {
             console.log("Filter");
@@ -188,7 +222,12 @@ const FridgeScreen = () => {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.contentContainer}
       >
-        {renderIngredientsByCategory()}
+
+        {displayData.length > 0 
+        ? (renderIngredientsByCategory()) 
+        : (<Text> No results found</Text>
+        )}
+        
       </ScrollView>
     </View>
   );
