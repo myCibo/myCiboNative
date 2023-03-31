@@ -130,7 +130,7 @@ function RecipeScreen() {
   return (
     <View style={{ flex: 1 }}>
         <View style={styles.header}>
-          <SearchBar placeholder="Search Recipe" onSearch={handleSearch} onBack={handleBack} />
+          <SearchBar placeholder="Search Recipe" onSearch={() => handleSearch} onBack={() => handleBack} />
           <TouchableOpacity onPress={() => { console.log("Filter"); }}>
             <Icon name='filter' size={32} color={Colors.primaryBlack} />
           </TouchableOpacity>
@@ -192,7 +192,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors['creamyWhite'],
     // backgroundColor: "red", // Set a background color for the header
 
-    position: "sticky", // Make the header sticky
+    
     top: 0, // Set the top position to 0
     zIndex: 1, // Set a z-index to make the header appear on top of the content
   },
