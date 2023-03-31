@@ -21,10 +21,15 @@ function truncateTitle(title) {
 
 
 
-const SingleRecipeCarousel = ({ 
-  image, 
-  id, 
-  title 
+const SingleRecipeCarousel = ({
+  id,
+  image,
+  title,
+  analyzedInstructions,
+  extendedIngredients,
+  servings,
+  readyInMinutes,
+  healthScore
 }) => {
   const navigation = useNavigation();
   // const stack = createStackNavigator();
@@ -35,9 +40,16 @@ const SingleRecipeCarousel = ({
   const handlePressRecipe = (id) => {
     console.log(`the post with id:"${id}" is pressed`)
     // <Linking
-    navigation.navigate('DynamicRecipe', { id, image, title });
-    // stack.navigat
-    // Linking.openURL('https://www.example.com')
+    navigation.navigate('DynamicRecipe', {
+      id,
+      image,
+      title,
+      analyzedInstructions,
+      extendedIngredients,
+      servings,
+      readyInMinutes,
+      healthScore
+    });
   };
 
 
@@ -70,7 +82,6 @@ const styles = StyleSheet.create({
     // height:'auto',
     flexDirection: 'column',
     alignItems: 'flex-start',
-    // margin: 5,
   },
   card: {
     width: 200,
@@ -79,8 +90,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     borderRadius: 4,
 
-    // position: relative,
-    // padding: 16,
 
     ...Platform.select({
       ios: {

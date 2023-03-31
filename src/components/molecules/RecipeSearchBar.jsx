@@ -1,20 +1,14 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import Colors from '../../constants/styles';
 import Icon from '../atoms/Icon';
 
-export default function SearchBar({ placeholder, onSearch, onBack}) {
+export default function RecipeSearchBar({ placeholder, onSearch, onBack}) {
   const [searchValue, setSearchValue] = useState('');
   const [isFocused, setIsFocused] = useState(false);
-  const inputRef = useRef(null);
 
   const handleSearch = () => {
-    searchValue != "" && onSearch(searchValue)
-  };
-
-  const handleChange = (value) => {
-    setSearchValue(value)
-    value !== "" ? onSearch(value): handleBack()
+    searchValue != "" ? onSearch(searchValue): handleBack()
   };
 
   const handleFocus = () => {
@@ -28,7 +22,6 @@ export default function SearchBar({ placeholder, onSearch, onBack}) {
   const handleBack = () =>{
     setSearchValue('')
     onBack()
-    inputRef.current.blur();
   }
 
   const styles = StyleSheet.create({
@@ -61,9 +54,7 @@ export default function SearchBar({ placeholder, onSearch, onBack}) {
       height: 24,
       alignItems: 'center',
       justifyContent: 'center',
-      color:'red',
     },
-  
   });
 
   return (
@@ -72,7 +63,7 @@ export default function SearchBar({ placeholder, onSearch, onBack}) {
             {isFocused || searchValue.length > 0? (
               <TouchableOpacity onPress={handleBack}>
               <View style={styles.leftIcon} >
-                <Icon name="arrow-back" size={24} color={Colors['fontGray']} />
+              <Icon name="arrow-back" size={24} color={Colors['fontGray']} />
               </View>
               </TouchableOpacity>
             ) : (
@@ -88,7 +79,7 @@ export default function SearchBar({ placeholder, onSearch, onBack}) {
           placeholder={placeholder}
           placeholderTextColor="#7B817F"
           value={searchValue}
-          onChangeText={handleChange}
+          onChangeText={setSearchValue}
           onSubmitEditing={handleSearch}
           onFocus={handleFocus}
           onBlur={handleBlur}
@@ -97,7 +88,6 @@ export default function SearchBar({ placeholder, onSearch, onBack}) {
               handleBack();
             }
           }}
-          ref={inputRef}
         />
       </View>
       {/* {searchValue.length > 0 && (

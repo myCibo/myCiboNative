@@ -10,6 +10,9 @@ import {
 import ShoppingList from "../components/molecules/ShoppingList";
 import LabelledIcon from "../components/molecules/LabelledIcon";
 import Colors from "../constants/styles";
+import Icon from '../components/atoms/Icon';
+import SearchBar from '../components/molecules/SearchBar';
+
 
 const Shopping = () => {
   const [shoppingLists, setShoppingLists] = useState([
@@ -41,6 +44,8 @@ const Shopping = () => {
       ],
     },
   ]);
+  const [displayData, setDisplayData] = useState(shoppingLists);
+
 
   const handleNewListEntry = (data) => {
     console.log("New list entry: ", data)
@@ -70,6 +75,24 @@ const Shopping = () => {
     );
   };
 
+  const handleSearch = (value) => {
+    const filteredArray = shoppingLists.filter(item => {
+      const { listName, list } = item;
+      return (
+        listName.toLowerCase().startsWith(value.toLowerCase()) 
+        // ||list.some((item) =>
+        //   item.itemName.toLowerCase().startsWith(value.toLowerCase())
+        // )
+      );
+    });
+    setDisplayData(filteredArray)
+  }
+
+  const handleSearchBack = () => {
+    setDisplayData(shoppingLists)
+    console.log("back is clicked  ")
+  }
+
   const styles = StyleSheet.create({
     container: {
       flex: 1,
@@ -78,12 +101,20 @@ const Shopping = () => {
       width: "100%",
       backgroundColor: Colors["creamyWhite"],
     },
+    scroll: {
+      width: '100%',
+      alignItems: 'center',
+    },
+
     header: {
       flexDirection: "row",
-      justifyContent: "flex-end",
+      alignItems: "center",
+      justifyContent: "space-between",
       width: "100%",
       paddingVertical: 10,
       paddingHorizontal: 20,
+      gap: 10,
+      marginVertical: 10,
     },
     contentContainer: {
       width: "100%",
@@ -93,13 +124,14 @@ const Shopping = () => {
   });
 
   const renderingCategories = () => {
-    return shoppingLists.map((shoppingList) => {
+    return displayData.map((shoppingList) => {
       return (
         <ShoppingList
           key={shoppingList.id}
           data={shoppingList}
           onUpdateList={(list) => handleUpdateListEntry(shoppingList.id, list)}
           onRemoveList={() => handleRemoveListEntry(shoppingList.id)}
+          
         />
       );
     });
@@ -108,21 +140,31 @@ const Shopping = () => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <LabelledIcon
-          label="New List"
-          iconPos={0}
-          iconName="add"
-          variant="add"
-          onNew={handleNewListEntry}
-          data={null}
-        />
+          <SearchBar placeholder="Search List" onSearch={handleSearch} onBack={handleSearchBack} />
+          <TouchableOpacity onPress={() => { console.log("Filter Pressed"); }}>
+            <Icon name='filter' size={32} color={Colors.primaryBlack} />
+          </TouchableOpacity>
       </View>
       <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.contentContainer}
-      >
-        {renderingCategories()}
-      </ScrollView>
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={styles.contentContainer}
+        > 
+        <View style={{ width: '100%', alignSelf: 'flex-end', padding: 5, margin: 4 }}>
+          <LabelledIcon
+            label="New List"
+            iconPos={0}
+            iconName="add"
+            variant="add"
+            onNew={handleNewListEntry}
+            data={null}
+          />
+        </View>
+        {displayData.length > 0 
+        ? (renderingCategories()) 
+        : (<Text> No results found</Text>
+        )}
+
+        </ScrollView>
     </View>
   );
 };
