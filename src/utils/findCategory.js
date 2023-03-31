@@ -9,8 +9,8 @@ export default function findCategory(category) {
       color: Colors.baking,
     },
     {
-      name: 'Breverages',
-      color: Colors.breverages,
+      name: 'Beverages',
+      color: Colors.beverages,
     },
     {
       name: 'Canned',

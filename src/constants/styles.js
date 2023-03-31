@@ -1,4 +1,4 @@
-export default colors = {
+const colors = {
     
     // Primary colors
     "white": "#FFFFFF",
@@ -14,7 +14,7 @@ export default colors = {
 
     // Category colors
     "baking": "#B3A96C",
-    "breverages": "#A5B7C9",
+    "beverages": "#A5B7C9",
     "canned": "#A5B7C9",
     "nuts": "#74855D",
     "dairy": "#F0A047",
@@ -35,3 +35,5 @@ export default colors = {
     "friendlyBrown": "#A18146",
     "friendlyBeige": "#F4E1B2",
 };
+
+export default colors;

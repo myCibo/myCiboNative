@@ -5,7 +5,7 @@ const CategoryImage = ({ name = 'default', size = 100 }) => {
 
   const imageSource = {
     'Baking': require("assets/images/baking.png"),
-    'Breverages': require("assets/images/breverages.png"),
+    'Beverages': require("assets/images/beverages.png"),
     'Canned': require("assets/images/canned.png"),
     'Condiments': require("assets/images/condiments.png"),
     'Dairy': require("assets/images/dairy.png"),
