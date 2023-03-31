@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
-import { View, KeyboardAvoidingView, Platform, Dimensions, Keyboard } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
+import { View, KeyboardAvoidingView, Platform, Dimensions, Keyboard, TouchableOpacity, Text, Image } from "react-native";
+import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 import Icon from "../components/atoms/Icon";
@@ -12,10 +12,33 @@ import ScanScreen from "../screens/Scan";
 import ShoppingScreen from "../screens/Shopping";
 import DynamicRecipe from "../screens/DynamicRecipe";
 
+import myCiboText from "../../assets/images/myCiboText.png"
+import ProfileIcon from "../components/atoms/ProfileIcon"
+
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
+
+
+
+const HeaderRight = () => {
+  return (
+    <View style={{ width: 35, height: 35, marginRight: 15 }}>
+      <ProfileIcon style={{ width: 80, height: 25 }} />
+    </View>
+  );
+};
+
+const MyTabScreenOptions = {
+  headerTitle: "",
+  headerStyle: { height: 94 },
+  headerRight: () => <HeaderRight />,
+};
+
+
+
 function MyTabs() {
+
   return (
     <Tab.Navigator
       screenOptions={({ route, color, size }) => ({
@@ -41,11 +64,11 @@ function MyTabs() {
           // let iconPadding =
           //   route.name === "Scan" ? { paddingLeft: 10, paddingRight: 10 } : {};
 
-            // iconBgStyle = {
-            //   backgroundColor: Colors['white'],
-            //   borderRadius: 30,
-            // };
-            // iconColor = Colors['primaryRed'];
+          // iconBgStyle = {
+          //   backgroundColor: Colors['white'],
+          //   borderRadius: 30,
+          // };
+          // iconColor = Colors['primaryRed'];
           let iconPadding = {};
           let iconBorderStyle = {};
 
@@ -62,7 +85,7 @@ function MyTabs() {
           }
 
           return (
-            <View style={[{ 
+            <View style={[{
             },
             ]}>
               <View
@@ -95,22 +118,38 @@ function MyTabs() {
         },
       })}
     >
-      <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Fridge" component={FridgeScreen} />
-      <Tab.Screen name="Scan" component={ScanScreen} />
-      <Tab.Screen name="Recipes" component={RecipeScreen} />
-      <Tab.Screen name="Lists" component={ShoppingScreen} />
+
+
+
+<Tab.Screen name="Home" component={HomeScreen}
+        options={() => ({
+          headerTitle: "",
+          headerStyle: { height: 94, },
+          headerLeft: () => (
+            <View style={{ width: 100, height: 25, marginLeft: 15, marginBottom: 2 }}>
+              <Image source={myCiboText} style={{ width: 100, height: 30 }} />
+            </View>
+          ),
+          headerRight: () => <HeaderRight />
+        })}
+      />      
+      <Tab.Screen name="Fridge" component={FridgeScreen} options={MyTabScreenOptions} />
+      <Tab.Screen name="Scan" component={ScanScreen} options={MyTabScreenOptions} />
+      <Tab.Screen name="Recipes" component={RecipeScreen} options={MyTabScreenOptions} />
+      <Tab.Screen name="Lists" component={ShoppingScreen} options={MyTabScreenOptions} />
     </Tab.Navigator>
-    
+
   );
 }
 
 const NavigationFooter = () => {
+  // const navigation = useNavigation();
+
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="Main" component={MyTabs} options={{ headerShown: false }} />
-        <Stack.Screen name="DynamicRecipe" component={DynamicRecipe} />
+        <Stack.Screen name="Main" component={MyTabs} options={{ headerShown: false }}/>
+        <Stack.Screen name="DynamicRecipe" component={DynamicRecipe} options={MyTabScreenOptions}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

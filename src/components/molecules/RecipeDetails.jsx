@@ -15,6 +15,7 @@ const RecipeDetails = ({timeInMinutes, serving, healthScore}) => {
       flexDirection: 'row',
       height: 50,
       width: 338,
+      //width325
 
       borderRadius:4,
       marginTop:36,
