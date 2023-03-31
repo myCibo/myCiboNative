@@ -29,10 +29,6 @@ export default function findCategory(category) {
       color: Colors.frozen,
     },
     {
-      name: 'Fruits',
-      color: Colors.fruit,
-    },
-    {
       name: 'Grains',
       color: Colors.grain,
     },
@@ -41,12 +37,16 @@ export default function findCategory(category) {
       color: Colors.meat,
     },
     {
-      name: 'Spices',
-      color: Colors.spice,
+      name: 'Nuts',
+      color: Colors.nut,
     },
     {
-      name: 'Vegetables',
-      color: Colors.vegetable,
+      name: 'Produce',
+      color: Colors.produce,
+    },
+    {
+      name: 'Spices',
+      color: Colors.spice,
     }
   ];
 

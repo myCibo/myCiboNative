@@ -10,115 +10,48 @@ import axios from 'axios';
 import countMissingIngredients from '../utils/countMissingIngredients';
 import { calculateExpiresInDays } from '../utils/expirationCalculator';
 import prioritizeIngredients from '../utils/prioritizeIngredients';
+import FridgeHandler from '../handlers/FridgeHandler';
+import UserHandler from '../handlers/UserHandler';
+
+const userHandler = new UserHandler();
+const fridgeHandler = new FridgeHandler();
 
 function HomeScreen() {
-
-  const fridgeCategories = [
-    {
-      id: '1',
-      category: 'Dairy',
-      amount: 2,
-    },
-    {
-      id: '3',
-      category: 'Vegetables',
-      amount: 1,
-    },
-    {
-      id: '4',
-      category: 'Grains',
-      amount: 1,
-    },
-    {
-      id: '5',
-      category: 'Meat',
-      amount: 2,
-    },
-  ];
-
-  const ingredientsDataInitial = [
-    {
-      id: '1',
-      name: 'Milk',
-      category: 'Dairy',
-      unit: 'Litre',
-      amount: 1,
-      purchaseDate: '2023-03-17',
-      expirationDate: '2023-03-24',
-      expirationTime: 7,
-      expiresInDays: null,
-    },
-    {
-      id: '2',
-      name: 'Eggs',
-      category: 'Dairy',
-      unit: 'Item',
-      amount: 1,
-      purchaseDate: '2023-03-17',
-      expirationDate: '2023-04-14',
-      expirationTime: 28,
-      expiresInDays: null,
-    },
-    {
-      id: '3',
-      name: 'Potatoes',
-      category: 'Vegetables',
-      unit: 'Item',
-      amount: 1,
-      purchaseDate: '2023-03-14',
-      expirationDate: '2023-04-14',
-      expirationTime: 30,
-      expiresInDays: null,
-    },
-    {
-      id: '4',
-      name: 'Brown rice',
-      category: 'Grains',
-      unit: 'Grams',
-      amount: 1,
-      purchaseDate: '2023-03-17',
-      expirationDate: '2024-03-17',
-      expirationTime: 365,
-      expiresInDays: null,
-    },
-    {
-      id: '5',
-      name: 'Ground beef',
-      category: 'Meat',
-      unit: 'Grams',
-      amount: 1,
-      purchaseDate: '2023-03-17',
-      expirationDate: '2023-03-20',
-      expirationTime: 3,
-      expiresInDays: null,
-    },
-    {
-      id: '6',
-      name: 'Chicken',
-      category: 'Meat',
-      unit: 'Grams',
-      amount: 1,
-      purchaseDate: '2023-03-17',
-      expirationDate: '2023-03-19',
-      expirationTime: 2,
-      expiresInDays: null,
-    },
-  ].map((ingredient) => ({
-    ...ingredient,
-    expiresInDays: calculateExpiresInDays(ingredient.expirationDate),
-  }));
 
   const navigation = useNavigation();
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [ingredientsData, setIngredientsData] = useState([]);
+  const [categoryCards, setCategoryCards] = useState([]);
 
   const handleLinkPress = (destination) => {
     navigation.navigate(destination);
   };
 
   useEffect(() => {
+    userHandler.getAllUsers((users) => {
+      const userId = users[0].id;
+      fridgeHandler.getFridgeItems(userId, (fridgeItems) => {
+        const ingredients = fridgeItems.map((item) => ({
+          ...item,
+          expiresInDays: calculateExpiresInDays(item.expirationDate),
+        }));
+        setIngredientsData(ingredients);
+      });
+      fridgeHandler.getCategoryCards(userId, (categoryCards) => {
+        setCategoryCards(categoryCards);
+      });
+    });
+  }, []);
+
+  useEffect(() => {
+    if (ingredientsData.length === 0) {
+      setIsLoading(false);
+      return;
+    }
+
     setIsLoading(true);
-    const priorityIngredients = prioritizeIngredients(ingredientsDataInitial);
+    const priorityIngredients = prioritizeIngredients(ingredientsData);
     axios
       .get(
         `https://api.spoonacular.com/recipes/findByIngredients?apiKey=${process.env.API_KEY}&ingredients=${priorityIngredients}&number=5&ranking=1`
@@ -128,7 +61,7 @@ function HomeScreen() {
         const recipes = response.data;
         // console.log('Recipe Object Keys', Object.keys(recipes[0]));
         recipes.forEach((recipe) => {
-          recipe.totalMissingIngredients = countMissingIngredients(recipe.missedIngredients, ingredientsDataInitial);
+          recipe.totalMissingIngredients = countMissingIngredients(recipe.missedIngredients, ingredientsData);
         });
         setData(recipes);
         setIsLoading(false);
@@ -137,7 +70,7 @@ function HomeScreen() {
       .catch((error) => {
         console.log(error);
       });
-  }, []);
+  }, [ingredientsData]);
 
   const styles = {
     contentContainer: {
@@ -196,21 +129,26 @@ function HomeScreen() {
           </TouchableOpacity>
         </View>
         <Carousel
-          data={fridgeCategories}
+          data={categoryCards}
           CardComponent={CategorySquare}
         />
-        <View style={styles.header}>
-          <Text style={styles.headerText}>Recipes</Text>
-          <TouchableOpacity style={styles.headerButton} onPress={() => handleLinkPress('Recipes')}>
-            <Icon name='list' size={24} color={Colors.primaryBlack} />
-            <Text style={styles.headerButtonText}> View All</Text>
-          </TouchableOpacity>
-        </View>
-        <Carousel
-          data={data}
-          CardComponent={RecipeCard}
-        />
+        {ingredientsData[0] && (
+          <>
+            <View style={styles.header}>
+              <Text style={styles.headerText}>Recipes</Text>
+              <TouchableOpacity style={styles.headerButton} onPress={() => handleLinkPress('Recipes')}>
+                <Icon name='list' size={24} color={Colors.primaryBlack} />
+                <Text style={styles.headerButtonText}> View All</Text>
+              </TouchableOpacity>
+            </View>
+            <Carousel
+              data={data}
+              CardComponent={RecipeCard}
+            />
+          </>
+        )}
       </View>
+
     </ScrollView>
 
   );

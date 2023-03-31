@@ -10,11 +10,11 @@ const CategoryImage = ({ name = 'default', size = 100 }) => {
     'Condiments': require("assets/images/condiments.png"),
     'Dairy': require("assets/images/dairy.png"),
     'Frozen': require("assets/images/frozen.png"),
-    'Fruits': require("assets/images/fruits.png"),
     'Grains': require("assets/images/grains.png"),
-    'Meat': require("assets/images/meat.png"),
+    'Proteins': require("assets/images/proteins.png"),
     'Spices': require("assets/images/spices.png"),
-    'Vegetables': require("assets/images/vegetables.png"),
+    'Produce': require("assets/images/produce.png"),
+    'Nuts': require("assets/images/nuts.png"),
     'default': require("assets/images/dairy.png")
   };
 
