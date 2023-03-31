@@ -10,8 +10,15 @@ import {
 import ShoppingList from "../components/molecules/ShoppingList";
 import LabelledIcon from "../components/molecules/LabelledIcon";
 import Colors from "../constants/styles";
+import { useContext } from 'react';
+import UserContext from "../contexts/UserContext";
+import ShoppingListHandler from "../handlers/ShoppingListHandler";
+
+const shoppingListHandler = new ShoppingListHandler();
 
 const Shopping = () => {
+  const user = useContext(UserContext);
+
   const [shoppingLists, setShoppingLists] = useState([
     {
       id: 42,
@@ -42,17 +49,20 @@ const Shopping = () => {
     },
   ]);
 
-  const handleNewListEntry = (data) => {
-    console.log("New list entry: ", data)
+  const handleAddList = (listName) => {
+    console.log("New list entry: ", listName)
     const newList = {
-      id: Date.now(),
-      listName: data,
-      list: [],
+      userId: user.id,
+      listName: listName,
     };
-    setShoppingLists((prevShoppingLists) => [...prevShoppingLists, newList]);
+    shoppingListHandler.createShoppingList(newList, (data) => {
+      console.log('new list', data)
+      const updatedShoppingLists = [...shoppingLists, data];
+      setShoppingLists(updatedShoppingLists);
+    });
   };
 
-  const handleUpdateListEntry = (id, updatedList) => {
+  const handleUpdateList = (id, updatedList) => {
     console.log("Updated list entry: ", id, updatedList);
     setShoppingLists((prevShoppingLists) =>
       prevShoppingLists.map((shoppingList) =>
@@ -63,11 +73,13 @@ const Shopping = () => {
     );
   };
 
-  const handleRemoveListEntry = (id) => {
-    console.log("Removed list entry: ", id)
-    setShoppingLists((prevShoppingLists) =>
-      prevShoppingLists.filter((shoppingList) => shoppingList.id !== id)
-    );
+  const handleDeleteList = (id) => {
+    console.log("Removed list entry: ", id);
+    shoppingListHandler.deleteShoppingList(id, () => {
+      setShoppingLists((prevShoppingLists) =>
+        prevShoppingLists.filter((shoppingList) => shoppingList.id !== id)
+      );
+    });
   };
 
   const styles = StyleSheet.create({
@@ -98,8 +110,8 @@ const Shopping = () => {
         <ShoppingList
           key={shoppingList.id}
           data={shoppingList}
-          onUpdateList={(list) => handleUpdateListEntry(shoppingList.id, list)}
-          onRemoveList={() => handleRemoveListEntry(shoppingList.id)}
+          onUpdateList={(list) => handleUpdateList(shoppingList.id, list)}
+          onRemoveList={() => handleDeleteList(shoppingList.id)}
         />
       );
     });
@@ -113,7 +125,7 @@ const Shopping = () => {
           iconPos={0}
           iconName="add"
           variant="add"
-          onNew={handleNewListEntry}
+          onNew={handleAddList}
           data={null}
         />
       </View>

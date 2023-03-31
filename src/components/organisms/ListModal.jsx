@@ -14,6 +14,14 @@ import ModalSearch from "../molecules/ModalSearch";
 import ModalDropdown from "../molecules/ModalDropdown";
 import { getIngredients, getUnits } from '../../constants/FoodData';
 
+import IngredientHandler from "../../handlers/IngredientHandler";
+import UnitHandler from "../../handlers/UnitHandler";
+import CategoryHandler from "../../handlers/CategoryHandler";
+
+const ingredientHandler = new IngredientHandler();
+const unitHandler = new UnitHandler();
+const categoryHandler = new CategoryHandler();
+
 export default function ListModal({
     showListModal,
     type = 'item',  // type is either 'item' or 'list' or 'edit'
