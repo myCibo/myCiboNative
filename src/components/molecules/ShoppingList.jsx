@@ -106,7 +106,8 @@ export default function ShoppingList({
     container: {
       position: 'relative',
       flex: open ? 1 : 0,
-      minWidth: '100%'
+      minWidth: '100%',
+      // margin:0
     },
     cardContainer: {
       flexDirection: 'row',
@@ -116,7 +117,8 @@ export default function ShoppingList({
       backgroundColor: open ? Colors['primaryGreen'] : Colors['white'],
       borderRadius: 4,
       borderWidth: 1,
-      borderColor: Colors['primaryBlack']
+      borderColor: Colors['primaryBlack'],
+      // backgroundColor:'red',
     },
     cardContainerContent: {
       width: '70%',
