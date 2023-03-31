@@ -1,12 +1,18 @@
 import { useState, useEffect, useRef } from "react";
-import { View, KeyboardAvoidingView, Platform, Dimensions, Keyboard } from "react-native";
+import {
+  View,
+  KeyboardAvoidingView,
+  Platform,
+  Dimensions,
+  Keyboard,
+} from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import CameraScreen from "../screens/CameraScreen";
 import ReceiptDataScreen from "../screens/ReceiptDataScreen";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 import Icon from "../components/atoms/Icon";
-import Colors from "../constants/styles"
+import Colors from "../constants/styles";
 import FridgeScreen from "../screens/Fridge";
 import HomeScreen from "../screens/Home";
 import RecipeScreen from "../screens/Recipes";
@@ -17,15 +23,12 @@ import ProcessingScreen from "../screens/ProcessingScreen";
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
-
 function HomeStack() {
   return (
     <Stack.Navigator initialRouteName="Home">
-      <Stack.Screen
-        name="Home"
-        component={HomeScreen}
-      />
+      <Stack.Screen name="Home" component={HomeScreen} />
       <Stack.Screen name="Fridge" component={FridgeScreen} />
+      <Stack.Screen name="DynamicRecipe" component={DynamicRecipe} />
     </Stack.Navigator>
   );
 }
@@ -33,14 +36,8 @@ function HomeStack() {
 function RecipesStack() {
   return (
     <Stack.Navigator initialRouteName="Recipes">
-      <Stack.Screen
-        name="Recipes"
-        component={RecipeScreen}
-      />
-      <Stack.Screen
-        name="DynamicRecipe"
-        component={DynamicRecipe}
-      />
+      <Stack.Screen name="Recipes" component={RecipeScreen} />
+      <Stack.Screen name="DynamicRecipe" component={DynamicRecipe} />
     </Stack.Navigator>
   );
 }
@@ -51,24 +48,17 @@ function CameraStack() {
       <Stack.Screen
         name="Camera"
         component={CameraScreen}
-        options={{headerShown: false, tabBarVisible: false}}
+        options={{ headerShown: false, tabBarVisible: false }}
         unmountOnBlur={false}
         tabBarVisible={false}
       />
-      <Stack.Screen
-        name="ReceiptDataScreen"
-        component={ReceiptDataScreen}
-      />
-      <Stack.Screen
-        name="ProcessingScreen"
-        component={ProcessingScreen}
-      />
+      <Stack.Screen name="ReceiptDataScreen" component={ReceiptDataScreen} />
+      <Stack.Screen name="ProcessingScreen" component={ProcessingScreen} />
     </Stack.Navigator>
   );
 }
 
 function NavigationFooter() {
-
   const renderTabIcon = (iconName, isFocused) => {
     const iconColor = isFocused ? Colors.primaryRed : Colors.white;
     const backgroundColor = isFocused ? Colors.white : Colors.primaryRed;
@@ -113,7 +103,7 @@ function NavigationFooter() {
             fontSize: 16,
             fontWeight: "bold",
             color: Colors.white,
-          }
+          },
         }}
       >
         <Tab.Screen
@@ -121,32 +111,29 @@ function NavigationFooter() {
           component={HomeStack}
           options={{
             headerShown: false,
-            tabBarLabel: 'Home',
-            tabBarIcon: ({ color, size, focused }) => (
-              renderTabIcon("home", focused)
-            ),
+            tabBarLabel: "Home",
+            tabBarIcon: ({ color, size, focused }) =>
+              renderTabIcon("home", focused),
           }}
         />
         <Tab.Screen
           name="Fridge"
           component={FridgeScreen}
           options={{
-            tabBarLabel: 'Fridge',
-            tabBarIcon: ({ color, size, focused }) => (
-              renderTabIcon("fridge", focused)
-            ),
+            tabBarLabel: "Fridge",
+            tabBarIcon: ({ color, size, focused }) =>
+              renderTabIcon("fridge", focused),
           }}
         />
         <Tab.Screen
           name="Camera"
           component={CameraStack}
           options={{
-            tabBarStyle: { display: 'none' },
+            tabBarStyle: { display: "none" },
             headerShown: false,
-            tabBarLabel: 'Camera',
-            tabBarIcon: ({ color, size, focused }) => (
-              renderTabIcon("camera", focused)
-            ),
+            tabBarLabel: "Camera",
+            tabBarIcon: ({ color, size, focused }) =>
+              renderTabIcon("camera", focused),
           }}
         />
         <Tab.Screen
@@ -154,20 +141,18 @@ function NavigationFooter() {
           component={RecipesStack}
           options={{
             headerShown: false,
-            tabBarLabel: 'Recipes',
-            tabBarIcon: ({ color, size, focused }) => (
-              renderTabIcon("book", focused)
-            ),
+            tabBarLabel: "Recipes",
+            tabBarIcon: ({ color, size, focused }) =>
+              renderTabIcon("book", focused),
           }}
         />
         <Tab.Screen
           name="Shopping Lists"
           component={ShoppingScreen}
           options={{
-            tabBarLabel: 'Lists',
-            tabBarIcon: ({ color, size, focused }) => (
-              renderTabIcon("bag", focused)
-            ),
+            tabBarLabel: "Lists",
+            tabBarIcon: ({ color, size, focused }) =>
+              renderTabIcon("bag", focused),
           }}
         />
       </Tab.Navigator>
