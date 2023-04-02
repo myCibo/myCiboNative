@@ -38,7 +38,6 @@ export function calculateExpiresInDays(expirationDateStr) {
 
 export function calculateExpirationDate(purchaseDateStr, expirationTime) {
   const purchaseDate = new Date(purchaseDateStr);
-  const expirationDate = new Date(purchaseDate);
-  expirationDate.setDate(expirationDate.getDate() + expirationTime);
-  return expirationDate.toISOString().split('T')[0];
+  purchaseDate.setDate(purchaseDate.getDate() + expirationTime);
+  return purchaseDate.toISOString().split('T')[0];
 };

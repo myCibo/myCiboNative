@@ -28,8 +28,9 @@ export default function IngredientItem({
   onUpdate,
   onDelete,
 }) {
-
   const ingredientData = data || {};
+
+  ingredientData.name = ingredientData.name.charAt(0).toUpperCase() + ingredientData.name.slice(1);
 
   const color = getExpirationColor(ingredientData.expiresInDays);
 
@@ -57,7 +58,6 @@ export default function IngredientItem({
     container: {
       padding: 10,
       height: 50,
-      width: "100%",
       backgroundColor: color,
       borderRadius: 8,
       alignItems: "center",
@@ -66,7 +66,7 @@ export default function IngredientItem({
       marginBottom: 10,
     },
     textContainer: {
-      width: "90%",
+      width: "100%",
       justifyContent: "space-between",
       alignItems: "center",
       flexDirection: "row",
@@ -77,6 +77,7 @@ export default function IngredientItem({
     },
     expirationText: {
       fontSize: 12,
+      color: ingredientData.expiresInDays > 0 ? Colors['white'] : Colors['primaryRed'],
     }
   };
 

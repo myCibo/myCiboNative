@@ -1,4 +1,4 @@
-export default colors = {
+const colors = {
     
     // Primary colors
     "white": "#FFFFFF",
@@ -14,16 +14,16 @@ export default colors = {
 
     // Category colors
     "baking": "#B3A96C",
-    "breverage": "#F4E1B2",
+    "beverages": "#A5B7C9",
     "canned": "#A5B7C9",
-    "condiment": "#F3C238",
+    "nuts": "#74855D",
     "dairy": "#F0A047",
     "frozen": "#8F9FC8",
-    "fruit": "#CD592E",
-    "grain": "#CFBF88",
-    "meat": "#D35247",
-    "spice": "#DDAE55",
-    "vegetable": "#6B987A",
+    "condiments": "#EAD675",
+    "grains": "#A18146",
+    "proteins": "#D35247",
+    "spices": "#DDAE55",
+    "produce": "#6B987A",
 
     // Friendly colors
     "friendlyGreen": "#74855D",
@@ -35,3 +35,5 @@ export default colors = {
     "friendlyBrown": "#A18146",
     "friendlyBeige": "#F4E1B2",
 };
+
+export default colors;
