@@ -3,7 +3,7 @@ import { Configuration, OpenAIApi } from "openai";
 
 const API_BASE_URL = "https://api.tabscanner.com";
 const API_VERSION = "2";
-const API_KEY =process.env.TABSCANNER_API_KEY;
+const API_KEY = process.env.TABSCANNER_API_KEY;
 const openAIKey = process.env.OPENAI_API_KEY;
 const openAIConfig = new Configuration({ apiKey: openAIKey });
 
@@ -49,7 +49,12 @@ const TabScanner = {
         {
           role: "system",
           content:
-            "You are an AI language model that helps with processing and cleaning up receipt data. Your task is to extract the lineItems and clean the 'descClean' field from the given receipt line items by removing any characters, numbers, or symbols that are not related to a food item's name. Ensure the cleaned items are in the following JSON format: {lineItems: [{ name, ... }]}. Generate the default shelf life, category, and default unit for the food items. Make sure to clean the names properly before generating the other attributes. Do not follow with any other prompts. Only respond with the JSON object.",
+            "You are an AI that processes and cleans receipt data. Clean the names of the given line items to focus on the core food item (e.g., 'SGM SPAGHETTI PASTA' -> 'Spaghetti Pasta'). Exclude non-food items. Then generate the default shelf life(in days), category (produce, dairy, proteins, grains, nuts, baking, condiments, spices, beverages), and default unit for each item. Return a JSON object in the format: {lineItems: [{ name, defaultUnit, category, defaultShelfLife }, ...]}.",
+        },
+        {
+          role: "assistant",
+          content:
+            "Understood. I will clean the names, remove non-food items, and generate the default shelf life, category, and default unit for each item. Please provide the receipt line items in JSON format.",
         },
         {
           role: "user",
@@ -75,7 +80,7 @@ const TabScanner = {
       });
       if (response.data.status === "done") {
         const processData = await this.processReceiptDataOpenAI(response.data);
-        // console.log(processData, "LOOK AT ME")
+        console.log(response.data, "LOOK AT ME");
         return processData;
       } else if (response.data.status === "pending") {
         await new Promise((resolve) => setTimeout(resolve, 1000));
