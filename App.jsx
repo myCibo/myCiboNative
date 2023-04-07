@@ -4,6 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import UserContext from './src/contexts/UserContext';
 import UserHandler from './src/handlers/UserHandler';
 import NavigationFooter from './src/navigation/NavigationFooter';
+import "react-native-url-polyfill/auto"
 
 const userHandler = new UserHandler();
 
