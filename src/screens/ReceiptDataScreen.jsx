@@ -6,6 +6,7 @@ import SearchBar from '../components/molecules/SearchBar';
 import Icon from '../components/atoms/Icon';
 import Colors from '../constants/styles';
 import LabelledIcon from '../components/molecules/LabelledIcon';
+import calculateExpireDate from '../utils/calculateExpireDate';
 
 const ReceiptDataScreen = ({ route }) => {
   const { data } = route.params;
@@ -22,11 +23,11 @@ const ReceiptDataScreen = ({ route }) => {
   // Parse the JSON string to an object
   const jsonData = JSON.parse(validJsonString);
 
-  console.log("Data received in ReceiptDataScreen:", jsonData.lineItems);
-
+  // console.log("Data received in ReceiptDataScreen:", jsonData.lineItems);
 
   const lineItems = jsonData.lineItems; // Access lineItems using data.result.lineItems
   // const purchaseDate = data.result.date;
+
   const dataArray = lineItems.map((item, index) => ({
     id: (index + 1).toString(),
     name: item.name,
@@ -34,9 +35,9 @@ const ReceiptDataScreen = ({ route }) => {
     amount: 1,
     unit: item.defaultUnit,
     category: item.category,
-    purchaseDate: item.purchaseDate,
+    purchaseDate: null,
     expiresInDays: item.defaultShelfLife,
-    expirationDate: item.expirationDate,
+    expirationDate: calculateExpireDate(item.defaultShelfLife).toString(),
   }));
 
   const [ingredientsData, setIngredientsData] = useState(dataArray);
@@ -44,7 +45,7 @@ const ReceiptDataScreen = ({ route }) => {
 
 
   const handleAddIngredient = (ingredient) => {
-    console.log(ingredient, 'scan screen add ingredient')
+    // console.log(ingredient, 'scan screen add ingredient')
 
     const updatedIngredientsData = [...ingredientsData, ingredient];
     setIngredientsData(updatedIngredientsData);

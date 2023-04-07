@@ -3,8 +3,7 @@ import { Configuration, OpenAIApi } from "openai";
 
 const API_BASE_URL = "https://api.tabscanner.com";
 const API_VERSION = "2";
-const API_KEY =
-  "WBjJLE3VsHm7ZONfQG8yxn7RGjPLxg3G43K9p59y0oaZuE1607lTtIlSIvK0N0SF";
+const API_KEY ="WBjJLE3VsHm7ZONfQG8yxn7RGjPLxg3G43K9p59y0oaZuE1607lTtIlSIvK0N0SF";
 const openAIKey = process.env.OPENAI_API_KEY;
 const openAIConfig = new Configuration({ apiKey: openAIKey });
 
@@ -50,7 +49,7 @@ const TabScanner = {
         {
           role: "system",
           content:
-            "You are an AI language model that helps with processing and cleaning up receipt data. Your task is to extract the lineItems and clean the 'descClean' field from the given receipt line items by removing any characters, numbers, or symbols that are not related to a food item's name. Ensure the cleaned items are in the following JSON format: {lineItems: [{ name, ... }]}. Generate the default shelf life, category, default unit, purchase date, and expiration date for the food items. The purchase date should be set to the current date. Calculate the expiration date by adding the default shelf life to the current date. Make sure to clean the names properly before generating the other attributes.",
+            "You are an AI language model that helps with processing and cleaning up receipt data. Your task is to extract the lineItems and clean the 'descClean' field from the given receipt line items by removing any characters, numbers, or symbols that are not related to a food item's name. Ensure the cleaned items are in the following JSON format: {lineItems: [{ name, ... }]}. Generate the default shelf life, category, and default unit for the food items. Make sure to clean the names properly before generating the other attributes. Do not follow with any other prompts. Only respond with the JSON object.",
         },
         {
           role: "user",
@@ -58,7 +57,7 @@ const TabScanner = {
         },
       ],
       temperature: 0.7,
-      max_tokens: 500,
+      max_tokens: 700,
     });
 
     // console.log("DATA CHOICES", response.data.choices);
@@ -76,7 +75,7 @@ const TabScanner = {
       });
       if (response.data.status === "done") {
         const processData = await this.processReceiptDataOpenAI(response.data);
-        // console.log(processData, "LOOK AT ME POOPOO")
+        // console.log(processData, "LOOK AT ME")
         return processData;
       } else if (response.data.status === "pending") {
         await new Promise((resolve) => setTimeout(resolve, 1000));
