@@ -3,7 +3,7 @@ import { Configuration, OpenAIApi } from "openai";
 
 const API_BASE_URL = "https://api.tabscanner.com";
 const API_VERSION = "2";
-const API_KEY ="WBjJLE3VsHm7ZONfQG8yxn7RGjPLxg3G43K9p59y0oaZuE1607lTtIlSIvK0N0SF";
+const API_KEY =process.env.TABSCANNER_API_KEY;
 const openAIKey = process.env.OPENAI_API_KEY;
 const openAIConfig = new Configuration({ apiKey: openAIKey });
 
