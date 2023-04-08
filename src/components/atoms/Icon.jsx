@@ -32,6 +32,7 @@ import TrashX from 'assets/icons/trash-x.svg';
 import Trash from 'assets/icons/trash.svg';
 import Upload from 'assets/icons/upload.svg';
 import UserCircle from 'assets/icons/user-circle.svg';
+import XBold from 'assets/icons/x-bold.svg';
 
 
 const Icon = ({ name = 'default', size = 100, color = 'white' }) => {
@@ -68,7 +69,9 @@ const Icon = ({ name = 'default', size = 100, color = 'white' }) => {
         'trash': Trash,
         'upload': Upload,
         'user-circle': UserCircle,
-        'default': Home
+        'default': Home,
+        'x-bold': XBold,
+
     };
 
     const IconComponent = icons[name] || icons.default;

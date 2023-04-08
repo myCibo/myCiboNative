@@ -16,7 +16,7 @@ const FridgeScreen = () => {
   const user = useContext(UserContext);
 
   const [ingredientsData, setIngredientsData] = useState([]);
-
+  const [displayData, setDisplayData] = useState(ingredientsData);
 
   useEffect(() => {
     fridgeHandler.getFridgeItems(user.id, (data) => {
@@ -29,7 +29,7 @@ const FridgeScreen = () => {
   }, []);
 
   // group ingredients by category. 
-  const ingredientsByCategory = ingredientsData.reduce((acc, ingredient) => {
+  const ingredientsByCategory = displayData.reduce((acc, ingredient) => {
     if (!acc[ingredient.category]) {
       acc[ingredient.category] = [];
     }
@@ -70,6 +70,32 @@ const FridgeScreen = () => {
     });
   };
 
+
+  //Search Related 
+  const handleSearch = (value) => {
+    const filteredArray = ingredientsData.filter(item => {
+      const lowercaseValue = value.toLowerCase();
+      const lowercaseName = item.name.toLowerCase();
+      const lowercaseCategory = item.category.toLowerCase();
+      const nameWords = lowercaseName.split(' ');
+      const categoryWords = lowercaseCategory.split(' ');
+
+      // Check if the value is in the beginning of any word in the name or category
+      const nameMatch = nameWords.some(word => word.startsWith(lowercaseValue));
+      const categoryMatch = categoryWords.some(word => word.startsWith(lowercaseValue));
+
+      return nameMatch || categoryMatch;
+    });
+
+    setDisplayData(filteredArray)
+  }
+
+  const handleSearchBack = () => {
+    setDisplayData(ingredientsData)
+    console.log("back is clicked  ")
+  }
+
+
   const styles = StyleSheet.create({
     container: {
       flex: 1,
@@ -89,6 +115,8 @@ const FridgeScreen = () => {
       paddingVertical: 10,
       paddingHorizontal: 20,
       gap: 10,
+      marginVertical: 10,
+
     },
     categoryHeader: {
       flexDirection: "row",
@@ -131,12 +159,10 @@ const FridgeScreen = () => {
     ));
   };
 
-
-
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <SearchBar />
+        <SearchBar placeholder="Search Ingredient, Categories" onSearch={handleSearch} onBack={handleSearchBack} />
         <TouchableOpacity
           onPress={() => {
             console.log("Filter");
@@ -150,7 +176,12 @@ const FridgeScreen = () => {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.contentContainer}
       >
-        {renderIngredientsByCategory()}
+
+        {displayData.length > 0 
+        ? (renderIngredientsByCategory()) 
+        : (<Text> No results found</Text>
+        )}
+        
       </ScrollView>
     </View>
   );

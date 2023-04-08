@@ -17,6 +17,9 @@ const CategorySquare = ({
     navigation.navigate("Fridge", {category});
   };
 
+  console.log(categoryData, 'colors')
+  console.log(amount, 'amount')
+
   const styles = StyleSheet.create({
     container: {
       height: 220,

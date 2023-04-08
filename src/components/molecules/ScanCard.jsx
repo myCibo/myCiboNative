@@ -65,7 +65,7 @@ export default function ScanCard({
             backgroundColor: '#fff',
             borderRadius: 4,
             padding: 15,
-            margin: 4,
+            // margin: 4,
             shadowColor: '#363636',
             shadowOffset: { width: 0, height: 1 },
             shadowOpacity: 0.4,

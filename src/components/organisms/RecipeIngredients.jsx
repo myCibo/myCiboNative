@@ -5,24 +5,19 @@ import { View, Text, Image, StyleSheet, FlatList, Linking, SafeAreaView } from '
 //GET https://api.spoonacular.com/recipes/{id}/ingredientWidget.json
 
 const RecipeIngredients = ({ data }) => {
-  // console.log('dataaaaaa');
-  // console.log(data);
 
   const styles = StyleSheet.create({
     card: {
-      width: 340, //hmmmm
+      width: 340, 
       flexDirection: 'row',
       justifyContent: 'flex-start',
       alignContent: 'flex-start',
-      // backgroundColor: '#FFFFFF',
       borderRadius: 4,
       marginTop: 21,
       paddingBottom: 23,
 
       fontSize: 13,
       color: '#424242',
-      fontWeight: 'bold', //yup its ot working :))
-
       borderBottomColor: '#B9B9B9',
       borderBottomWidth: StyleSheet.hairlineWidth,
 
@@ -32,14 +27,12 @@ const RecipeIngredients = ({ data }) => {
       // shadowOpacity: 0.1,
       // shadowRadius: 20,
     },
-    title: {
-      color: '#0D302F',
-      fontSize: 16,
-      textTransform: 'uppercase',
-      marginVertical: 30,
-      fontWeight: 'bold',
-    },
+ 
   });
+
+    const roundToQuarter = (num) => {
+    return Math.round(num * 4) / 4;
+  };
 
   const newArray = [];
   data.forEach((ingredient, index) => {
@@ -47,31 +40,28 @@ const RecipeIngredients = ({ data }) => {
 
     newIngredient.id = index + 1;
     newIngredient.name = ingredient.name;
-    newIngredient.unit = ingredient.amount.us.unit;
-    newIngredient.value = ingredient.amount.us.value;
+    newIngredient.unit = ingredient.measures.metric.unitShort;
+   newIngredient.amount = roundToQuarter(ingredient.measures.metric.amount).toFixed(2);
+
+
+    if (newIngredient.amount.endsWith('.00')) {
+      newIngredient.amount = newIngredient.amount.slice(0, -3);
+    }
 
     newArray.push(newIngredient);
   });
 
-  const renderIngredient = ({ item }) => {
-    return (
-      <View style={styles.card}>
-        <Text>{item.value} </Text>
-        <Text>{item.unit} </Text>
-        <Text>{item.name}</Text>
-      </View>
-    );
-  };
+
+
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View>
-      <Text style={styles.title}>ingredients</Text>
       {newArray.map((ingredient, index) => (
         <View style={styles.card} key={index}>
-          <Text>{ingredient.value} </Text>
-          <Text>{ingredient.unit} </Text>
-          <Text>{ingredient.name}</Text>
+          <Text style={{ fontWeight: '600' }}>{ingredient.amount} </Text>
+          <Text style={{ fontWeight: '600' }}>{ingredient.unit} </Text>
+          <Text style={{ fontWeight: '600', textTransform:'capitalize'}}>{ingredient.name}</Text>
         </View>
       ))}
     </View>
