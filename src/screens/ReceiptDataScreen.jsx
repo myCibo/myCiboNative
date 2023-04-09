@@ -7,6 +7,11 @@ import Icon from '../components/atoms/Icon';
 import Colors from '../constants/styles';
 import LabelledIcon from '../components/molecules/LabelledIcon';
 import calculateExpireDate from '../utils/calculateExpireDate';
+import { Button } from 'react-native-web';
+import CustomButton from '../components/atoms/CustomButton';
+import FridgeHandler from '../handlers/FridgeHandler';
+
+
 
 const ReceiptDataScreen = ({ route }) => {
   const { data } = route.params;
@@ -40,6 +45,17 @@ const ReceiptDataScreen = ({ route }) => {
     expirationDate: calculateExpireDate(item.defaultShelfLife).toString(),
   }));
 
+  useEffect(() => {
+    axios.post("/formatReceiptData", dataArray)
+      .then((res) => {
+        const formattedData = res.data;
+        setIngredientsData(formattedData);
+        setDisplayData(formattedData);
+      }, (error) => {
+        console.log(error);
+      });
+    }, [])
+
   const [ingredientsData, setIngredientsData] = useState(dataArray);
   const [displayData, setDisplayData] = useState(ingredientsData);
 
@@ -64,6 +80,12 @@ const ReceiptDataScreen = ({ route }) => {
   const handleDeleteIngredient = (ingredientId) => {
     const updatedIngredientsData = ingredientsData.filter((item) => item.id !== ingredientId);
     setIngredientsData(updatedIngredientsData);
+  };
+
+  
+  const handleAddFridge = () => {
+    const fridgeHandler = new FridgeHandler();
+    fridgeHandler.createManyFridgeItems(dataArray)
   };
 
 
@@ -140,6 +162,7 @@ const ReceiptDataScreen = ({ route }) => {
         </View>
 
       </ScrollView>
+      <CustomButton text="Add to Fridge" onPress={handleAddFridge}/>
     </View>
   );
 };
