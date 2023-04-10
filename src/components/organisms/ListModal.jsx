@@ -12,15 +12,13 @@ import CustomButton from "../atoms/CustomButton";
 import ModalInput from "../molecules/ModalInput";
 import ModalSearch from "../molecules/ModalSearch";
 import ModalDropdown from "../molecules/ModalDropdown";
-import { getIngredients, getUnits } from '../../constants/FoodData';
+// import { getIngredients, getUnits } from '../../constants/FoodData';
 
 import IngredientHandler from "../../handlers/IngredientHandler";
 import UnitHandler from "../../handlers/UnitHandler";
-import CategoryHandler from "../../handlers/CategoryHandler";
 
 const ingredientHandler = new IngredientHandler();
 const unitHandler = new UnitHandler();
-const categoryHandler = new CategoryHandler();
 
 export default function ListModal({
     showListModal,
@@ -30,18 +28,26 @@ export default function ListModal({
     onSave = () => { console.log('onSaveList default') },
 }) {
 
-    const ingredientList = getIngredients();
-    const unitList = getUnits();
-    const shoppingListObject = data || {};
+    const [ingredientList, setIngredientList] = useState([]);
+    const [unitList, setUnitList] = useState([]);
 
-    const [selectedItem, setSelectedItem] = useState(null);
-    const [selectedUnit, setSelectedUnit] = useState(null);
+    useEffect(() => {
+        ingredientHandler.getAllIngredients(data => setIngredientList(data));
+        unitHandler.getAllUnits(data => setUnitList(data));
+    }, []);
+
+
+    const [modalData, setModalData] = useState(data);
+    const [selectedItem, setSelectedItem] = useState(modalData || null);
+    const [selectedIngredientId, setSelectedIngredientId] = useState(modalData?.ingredientId || null);
+    const [selectedUnit, setSelectedUnit] = useState(modalData?.unit || null);
+    const [selectedUnitId, setSelectedUnitId] = useState(modalData?.unitId || null);
     const [selectedQuantity, setSelectedQuantity] = useState(null);
-    const [listName, setListName] = useState(shoppingListObject?.name || '');
+    const [listName, setListName] = useState(modalData?.name || '');
     const [disabled, setDisabled] = useState(true);
 
     useEffect(() => {
-        if (type === 'item' && selectedItem && selectedUnit && selectedQuantity) {
+        if (type === 'item' && selectedItem && selectedIngredientId && selectedUnit && selectedUnitId && selectedQuantity) {
             setDisabled(false);
         } else if (type !== 'item' && listName) {
             setDisabled(false);
@@ -53,7 +59,9 @@ export default function ListModal({
     const resetState = () => {
         console.log("Resetting state")
         setSelectedItem(null);
+        setSelectedIngredientId(null);
         setSelectedUnit(null);
+        setSelectedUnitId(null);
         setSelectedQuantity(null);
         setListName('');
     };
@@ -79,7 +87,9 @@ export default function ListModal({
         if (type === 'item') {
             newItem = {
                 itemName: selectedItem.name,
+                ingredientId: selectedIngredientId,
                 unit: selectedUnit,
+                unitId: selectedUnitId,
                 amount: selectedQuantity,
             }
             console.log('onSaveItem', newItem)
@@ -95,12 +105,15 @@ export default function ListModal({
     const handleItemSelect = (item) => {
         console.log("Item selected", item);
         setSelectedItem(item);
-        setSelectedUnit(item.unit);
+        setSelectedIngredientId(item.id);
+        setSelectedUnit(item.unit.name);
+        setSelectedUnitId(item.unitId);
     };
 
     const handleUnitSelect = (unit) => {
         console.log("Unit selected", unit);
-        setSelectedUnit(unit);
+        setSelectedUnit(unit.name);
+        setSelectedUnitId(unit.id);
     };
 
     const handleQuantityChange = (quantity) => {
@@ -109,7 +122,6 @@ export default function ListModal({
     };
 
     const handleListNameChange = (name) => {
-        console.log("List name changed", name);
         setListName(name);
     };
 

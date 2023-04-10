@@ -47,13 +47,32 @@ const Shopping = () => {
 
   const handleUpdateList = (id, updatedList) => {
     console.log("Updated list entry: ", id, updatedList);
-    const updatedShoppingLists = shoppingLists.map((shoppingList) =>
-      shoppingList.id === id
-        ? { ...shoppingList, listItems: updatedList }
-        : shoppingList
-    );
-    setShoppingLists(updatedShoppingLists);
-    setDisplayData(updatedShoppingLists);
+    const newList = {}
+    if (!updatedList.listItems) {
+      newList.id = id
+      newList.name = updatedList.name
+      newList.listItems = []
+    } else {
+      newList.id = id
+      newList.name = updatedList.name
+      newList.listItems = updatedList.listItems.map((item) => ({
+        shoppingListId: id,
+        ingredientId: item.ingredientId,
+        amount: item.amount,
+        unitId: item.unitId,
+      }))
+    }
+    console.log("new list", newList)
+    shoppingListHandler.updateShoppingList(id, newList, (data) => {
+      const updatedShoppingLists = shoppingLists.map((shoppingList) => {
+        if (shoppingList.id === id) {
+          return data;
+        }
+        return shoppingList;
+      });
+      setShoppingLists(updatedShoppingLists);
+      setDisplayData(updatedShoppingLists);
+    });
   };
 
   const handleDeleteList = (id) => {
@@ -66,7 +85,7 @@ const Shopping = () => {
       setDisplayData(updatedShoppingLists);
     });
   };
-  
+
 
   const handleSearch = (value) => {
     const filteredArray = shoppingLists.filter(item => {
@@ -118,11 +137,12 @@ const Shopping = () => {
 
   const renderingShoppingLists = () => {
     return displayData.map((shoppingList) => {
+      {console.log("shoppingList", shoppingList)}
       return (
         <ShoppingList
           key={shoppingList.id}
           data={shoppingList}
-          onUpdateList={(listItems) => handleUpdateList(shoppingList.id, listItems)}
+          onUpdateList={(newListData) => handleUpdateList(shoppingList.id, newListData)}
           onRemoveList={() => handleDeleteList(shoppingList.id)}
         />
       );

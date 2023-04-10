@@ -39,6 +39,7 @@ export default function ShoppingList({
   const [listCount, setListCount] = useState(shoppingListObject?.listItems?.length || 0);
   const [listItems, setListItems] = useState(shoppingListObject?.listItems || []);
 
+  console.log("listItemsTop", listItems)
 
   const [showOptionsModal, setShowOptionsModal] = useState(false);
   const [showListModal, setShowListModal] = useState(false);
@@ -64,12 +65,10 @@ export default function ShoppingList({
     console.log("updatedList", updatedListItems)
     setListItems(updatedListItems);
     setListCount(updatedListItems.length);
-    console.log("made it here")
     const updatedData = {
       ...data,
       listItems: updatedListItems
     };
-    console.log("updatedData -- end of the line", updatedData)
     onUpdateList(updatedData);
   };
 
@@ -180,9 +179,9 @@ export default function ShoppingList({
           <Text style={styles.dropdownFont}>Name</Text>
           <Text style={styles.dropdownFont}>Amount</Text>
         </View>
-        {listItems.map((item) => {
+        {listItems.map((item, index) => {
           return (
-            <ShoppingListItem key={item.id} item={item} onRemove={handleRemoveItem} />
+            <ShoppingListItem key={index} item={item} onRemove={handleRemoveItem} />
           );
         })}
         <View style={[styles.dropdownRow, styles.dropdownFooter]}>
