@@ -8,7 +8,7 @@ const RecipeIngredients = ({ data }) => {
 
   const styles = StyleSheet.create({
     card: {
-      width: 340, 
+      width: 340,
       flexDirection: 'row',
       justifyContent: 'flex-start',
       alignContent: 'flex-start',
@@ -27,10 +27,10 @@ const RecipeIngredients = ({ data }) => {
       // shadowOpacity: 0.1,
       // shadowRadius: 20,
     },
- 
+
   });
 
-    const roundToQuarter = (num) => {
+  const roundToQuarter = (num) => {
     return Math.round(num * 4) / 4;
   };
 
@@ -41,7 +41,7 @@ const RecipeIngredients = ({ data }) => {
     newIngredient.id = index + 1;
     newIngredient.name = ingredient.name;
     newIngredient.unit = ingredient.measures.metric.unitShort;
-   newIngredient.amount = roundToQuarter(ingredient.measures.metric.amount).toFixed(2);
+    newIngredient.amount = roundToQuarter(ingredient.measures.metric.amount).toFixed(2);
 
 
     if (newIngredient.amount.endsWith('.00')) {
@@ -57,14 +57,14 @@ const RecipeIngredients = ({ data }) => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View>
-      {newArray.map((ingredient, index) => (
-        <View style={styles.card} key={index}>
-          <Text style={{ fontWeight: '600' }}>{ingredient.amount} </Text>
-          <Text style={{ fontWeight: '600' }}>{ingredient.unit} </Text>
-          <Text style={{ fontWeight: '600', textTransform:'capitalize'}}>{ingredient.name}</Text>
-        </View>
-      ))}
-    </View>
+        {newArray.map((ingredient, index) => (
+          <View style={styles.card} key={index}>
+            <Text style={{ fontWeight: '600' }}>{ingredient.amount} </Text>
+            <Text style={{ fontWeight: '600' }}>{ingredient.unit} </Text>
+            <Text style={{ fontWeight: '600', textTransform: 'capitalize' }}>{ingredient.name}</Text>
+          </View>
+        ))}
+      </View>
     </SafeAreaView>
   );
 };
