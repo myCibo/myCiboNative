@@ -37,7 +37,7 @@ export default function ListModal({
     const [selectedItem, setSelectedItem] = useState(null);
     const [selectedUnit, setSelectedUnit] = useState(null);
     const [selectedQuantity, setSelectedQuantity] = useState(null);
-    const [listName, setListName] = useState(shoppingListObject?.listName || '');
+    const [listName, setListName] = useState(shoppingListObject?.name || '');
     const [disabled, setDisabled] = useState(true);
 
     useEffect(() => {
@@ -78,7 +78,6 @@ export default function ListModal({
         let newItem = {};
         if (type === 'item') {
             newItem = {
-                id: Date.now(),
                 itemName: selectedItem.name,
                 unit: selectedUnit,
                 amount: selectedQuantity,

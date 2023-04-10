@@ -23,9 +23,10 @@ export default function ShoppingList({
 
   // data is an object with the following structure:
   // {
-  //   listId: "1234",
-  //   listName: "Walmart",
-  //   list: [
+  //   id: "ADUBHSA-ASDbusdb-ASDUBASD",
+  //   name: "Walmart",
+  //   userId: "A2132HSA-A41usdb-A52562",
+  //   listItems: [
   //       { id: 1, itemName: "Milk", amount: "24", unit: "Ounces" },
   //       { id: 2, itemName: "Eggs", amount: "12", unit: "Unit" },
   //       { id: 3, itemName: "Bread", amount: "1", unit: "Unit" },
@@ -34,9 +35,9 @@ export default function ShoppingList({
 
   const shoppingListObject = data || {};
 
-  const [listName, setListName] = useState(shoppingListObject?.listName || null);
-  const [listCount, setListCount] = useState(shoppingListObject?.list?.length || 0);
-  const [list, setList] = useState(shoppingListObject?.list || []);
+  const [name, setName] = useState(shoppingListObject?.name || null);
+  const [listCount, setListCount] = useState(shoppingListObject?.listItems?.length || 0);
+  const [listItems, setListItems] = useState(shoppingListObject?.listItems || []);
 
 
   const [showOptionsModal, setShowOptionsModal] = useState(false);
@@ -59,39 +60,37 @@ export default function ShoppingList({
   };
 
   const handleRemoveItem = (itemId) => {
-    console.log("Remove item", itemId);
-    console.log("list", list)
-    const updatedList = list.filter((item) => item.id !== itemId);
-    console.log("updatedList", updatedList)
-    setList(updatedList);
-    setListCount(updatedList.length);
+    const updatedListItems = listItems.filter((item) => item.id !== itemId);
+    console.log("updatedList", updatedListItems)
+    setListItems(updatedListItems);
+    setListCount(updatedListItems.length);
     console.log("made it here")
     const updatedData = {
       ...data,
-      list: updatedList
+      listItems: updatedListItems
     };
     console.log("updatedData -- end of the line", updatedData)
     onUpdateList(updatedData);
   };
 
-  const handleListModalEdit = (newListName) => {
-    console.log("listModalObject", newListName);
-    setListName(newListName);
+  const handleListModalEdit = (newName) => {
+    console.log("listModalObject", newName);
+    setName(newName);
     const updatedData = {
       ...data,
-      listName: newListName
+      name: newName
     };
     onUpdateList(updatedData);
   };
 
   const handleNewListItem = (newItem) => {
     console.log("new item", newItem);
-    const updatedList = [...list, newItem];
-    setList(updatedList);
-    setListCount(updatedList.length);
+    const updatedListItems = [...listItems, newItem];
+    setListItems(updatedListItems);
+    setListCount(updatedListItems.length);
     const updatedData = {
       ...data,
-      list: updatedList
+      listItems: updatedListItems
     };
     onUpdateList(updatedData);
   };
@@ -181,19 +180,17 @@ export default function ShoppingList({
           <Text style={styles.dropdownFont}>Name</Text>
           <Text style={styles.dropdownFont}>Amount</Text>
         </View>
-        {list.map((item) => {
+        {listItems.map((item) => {
           return (
-            <View key={item.id} style={styles.dropdownRow}>
-              <ShoppingListItem item={item} onRemove={handleRemoveItem} />
-            </View>
+            <ShoppingListItem key={item.id} item={item} onRemove={handleRemoveItem} />
           );
         })}
         <View style={[styles.dropdownRow, styles.dropdownFooter]}>
-          <LabelledIcon 
-            icon="plus" 
-            label=" New Item" 
-            variant="newListItem" 
-            color={Colors['fontBlack']} 
+          <LabelledIcon
+            icon="plus"
+            label=" New Item"
+            variant="newListItem"
+            color={Colors['fontBlack']}
             fontColor={Colors['fontBlack']}
             onNew={handleNewListItem}
           />
@@ -212,7 +209,7 @@ export default function ShoppingList({
               <Icon name={'arrow-down'} color={open ? Colors['white'] : Colors['primaryBlack']} size={15} />
             </View>
             <View style={styles.cardContainerText}>
-              <Text style={styles.text}>{listName}</Text>
+              <Text style={styles.text}>{name}</Text>
               <Text style={[styles.text, { color: open ? Colors['white'] : Colors['fontGray'] }]}>{listCount}</Text>
             </View>
           </View>
