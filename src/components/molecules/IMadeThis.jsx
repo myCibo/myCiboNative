@@ -17,54 +17,24 @@ export default function IMadeThis({ apiData }) {
     // console.log(apiData)
     const user = useContext(UserContext);
 
+    const updateDb = (updatedObj) => {
 
-const checkItemInShoppingLists = (itemName) => {
-  const userId = user.id;
-  
-  shoppingListHandler.getAllShoppingLists(userId, (shoppingLists) => {
-    for (const shoppingList of shoppingLists) {
-      const listId = shoppingList.id;
-      shoppingListHandler.getShoppingListItems(listId, (items) => {
-        const foundItem = items.find(item => item.name === itemName);
-        // const foundItem = items.find(item => item.name === itemName && !item.checked);
-        return foundItem? true:false 
-      });
-    }
-  });
-};
-
-    
-
-    const updateDb = (updatedObj)=>{
-
-        if (updatedObj.amount > 0){
+        if (updatedObj.amount > 0) {
             console.log("no problemo")
 
-            //update the fridge in db
-            // fridgeHandler.updateFridgeItem(updatedObj.id, updatedObj, (data) => {
-            //     console.log(`Item ${updatedObj.id} updated in fridge db`);
-            //   });
+            // update the fridge in db
+            fridgeHandler.updateFridgeItem(updatedObj.id, updatedObj, (data) => {
+                console.log(`Item ${updatedObj.id} updated in fridge db`);
+              });
 
-        }else{
-            
-            //delete in groccery 
-            // fridgeHandler.deleteFridgeItem(updatedObj.id, (data) => {
-            //     console.log(`Item ${updatedObj.id} deleted from grocery db`);
-            //   });
+        } else {
 
-            //add item to shopping list:
-            //check if the item already exist in any lists 
-            const itemListed = checkItemInShoppingLists(updatedObj.name)  
-            if(!itemListed){
-                console.log("item has been added ")
-                   //***if not check if the shopping list with name "For Recipes" exist 
-                   //***if yes add the item.name to it 
-                   //***if not mke the list and then add it
+           // delete in groccery 
+            fridgeHandler.deleteFridgeItem(updatedObj.id, (data) => {
+                console.log(`Item ${updatedObj.id} deleted from grocery db`);
+              });
 
-            }else{
-                console.log("item is already in list ")
-            }
-
+            //Add the To shopping list 
         }
 
     }
@@ -92,7 +62,8 @@ const checkItemInShoppingLists = (itemName) => {
                         updateDb(dbObj)
 
                     } else {
-                        //*** Unmatched units:
+                        //*** Unmatched units
+                        //we need to call backend to convert them :
                         console.log(`Different units, db:${dbUnit}, api:${apiUnit}`);
                     }
 
