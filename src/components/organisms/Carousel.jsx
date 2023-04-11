@@ -33,20 +33,20 @@ const Carousel = ({
 
     const styles = StyleSheet.create({
         container: {
-            width: '100%', 
+            width: '100%',
             alignSelf: 'center',
         },
         headerStyles: {
             marginLeft: 15,
         },
-        flatList:{
-            paddingHorizontal: 20, 
-            backgroundColor: Colors['creamyWhite'], 
-            gap: 10 
+        flatList: {
+            paddingHorizontal: 20,
+            backgroundColor: Colors['creamyWhite'],
+            gap: 10
 
         }
-        
-        
+
+
     });
 
     return (
