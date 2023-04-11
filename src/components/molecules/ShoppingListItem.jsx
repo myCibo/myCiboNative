@@ -14,6 +14,8 @@ export default function ShoppingListItem({
 }) {
     const [checked, setChecked] = useState(false);
 
+    console.log('shoppinglist', item);
+
     const handleChecked = () => {
         setChecked(!checked);
     };

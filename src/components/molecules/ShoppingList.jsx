@@ -21,25 +21,12 @@ export default function ShoppingList({
   onRemoveList,
 }) {
 
-  // data is an object with the following structure:
-  // {
-  //   id: "ADUBHSA-ASDbusdb-ASDUBASD",
-  //   name: "Walmart",
-  //   userId: "A2132HSA-A41usdb-A52562",
-  //   listItems: [
-  //       { id: 1, itemName: "Milk", amount: "24", unit: "Ounces" },
-  //       { id: 2, itemName: "Eggs", amount: "12", unit: "Unit" },
-  //       { id: 3, itemName: "Bread", amount: "1", unit: "Unit" },
-  //   ],
-  // }
-
   const shoppingListObject = data || {};
 
   const [name, setName] = useState(shoppingListObject?.name || null);
   const [listCount, setListCount] = useState(shoppingListObject?.listItems?.length || 0);
   const [listItems, setListItems] = useState(shoppingListObject?.listItems || []);
 
-  console.log("listItemsTop", listItems)
 
   const [showOptionsModal, setShowOptionsModal] = useState(false);
   const [showListModal, setShowListModal] = useState(false);
@@ -98,6 +85,8 @@ export default function ShoppingList({
     console.log("Remove list");
     onRemoveList();
   };
+
+  console.log("shoppingListObject", shoppingListObject)
 
 
   const styles = {
