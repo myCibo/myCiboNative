@@ -4,8 +4,8 @@ import axios from "axios";
 export default class MainHandler {
 
   constructor() {
-    // this.baseURL = process.env.DEV_BACKEND_URL;
-    this.baseURL = process.env.BACKEND_URL;
+    this.baseURL = process.env.DEV_BACKEND_URL;
+    // this.baseURL = process.env.BACKEND_URL;
     this.api = axios.create({ baseURL: this.baseURL });
   }
 

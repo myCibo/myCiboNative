@@ -93,9 +93,18 @@ function DynamicRecipe() {
     //     setShowModal(false);
     // };
 
+
     useEffect(() => {
         if (!data?.analyzedInstructions) {
-            axios.get(`https://api.spoonacular.com/recipes/${data.id}/information?apiKey=${process.env.API_KEY}`)
+            const options = {
+                method: 'GET',
+                url: `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/${data.id}/information`,
+                headers: {
+                    'X-RapidAPI-Key': process.env.RAPIDAPI_KEY,
+                    'X-RapidAPI-Host': process.env.RAPIDAPI_HOST
+                }
+            };
+            axios.request(options)
                 .then((response) => {
                     const newData = response.data
                     setTitle(newData.title)

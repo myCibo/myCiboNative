@@ -51,10 +51,24 @@ function HomeScreen() {
 
     setIsLoading(true);
     const priorityIngredients = prioritizeIngredients(ingredientsData);
+
+    const options = {
+      method: 'GET',
+      url: 'https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/findByIngredients',
+      params: {
+        ingredients: priorityIngredients,
+        number: '5',
+        ignorePantry: 'true',
+        ranking: '1'
+      },
+      headers: {
+        'X-RapidAPI-Key': process.env.RAPIDAPI_KEY,
+        'X-RapidAPI-Host': process.env.RAPIDAPI_HOST
+      }
+    };
+
     axios
-      .get(
-        `https://api.spoonacular.com/recipes/findByIngredients?apiKey=${process.env.API_KEY}&ingredients=${priorityIngredients}&number=0&ranking=1`
-      )
+      .request(options)
       .then((response) => {
         // console.log(response.data)
         const recipes = response.data;
