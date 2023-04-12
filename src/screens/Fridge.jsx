@@ -25,8 +25,10 @@ const FridgeScreen = () => {
         expiresInDays: calculateExpiresInDays(ingredient.expirationDate),
       }));
       setIngredientsData(updatedData);
+      setDisplayData(updatedData);
     });
   }, []);
+  
 
   // group ingredients by category. 
   const ingredientsByCategory = displayData.reduce((acc, ingredient) => {
@@ -47,6 +49,7 @@ const FridgeScreen = () => {
       data.expiresInDays = calculateExpiresInDays(data.expirationDate);
       const updatedIngredientsData = [...ingredientsData, data];
       setIngredientsData(updatedIngredientsData);
+      setDisplayData(updatedIngredientsData);
     });
   };
 
@@ -60,6 +63,7 @@ const FridgeScreen = () => {
         return item;
       });
       setIngredientsData(updatedIngredientsData);
+      setDisplayData(updatedIngredientsData);
     });
   };
 
@@ -67,6 +71,7 @@ const FridgeScreen = () => {
     fridgeHandler.deleteFridgeItem(ingredientId, () => {
       const updatedIngredientsData = ingredientsData.filter((item) => item.id !== ingredientId);
       setIngredientsData(updatedIngredientsData);
+      setDisplayData(updatedIngredientsData);
     });
   };
 

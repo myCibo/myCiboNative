@@ -6,30 +6,62 @@ import SearchBar from '../components/molecules/SearchBar';
 import Icon from '../components/atoms/Icon';
 import Colors from '../constants/styles';
 import LabelledIcon from '../components/molecules/LabelledIcon';
+import calculateExpireDate from '../utils/calculateExpireDate';
+import { Button } from 'react-native-web';
+import CustomButton from '../components/atoms/CustomButton';
+import FridgeHandler from '../handlers/FridgeHandler';
+
+
 
 const ReceiptDataScreen = ({ route }) => {
   const { data } = route.params;
-  console.log("Data received in ReceiptDataScreen:", data);
 
-  const lineItems = data.result.lineItems; // Access lineItems using data.result.lineItems
-  const purchaseDate = data.result.date;
+  // Regular expression to match JSON string with double quotes
+  const jsonRegex = /\{[\s\S]*\}/;
+
+  // Extract the JSON string from the message content
+  const jsonString = data[0].message.content.match(jsonRegex)[0];
+
+  // Replace any single quotes with double quotes
+  const validJsonString = jsonString.replace(/'/g, "\"");
+
+  // Parse the JSON string to an object
+  const jsonData = JSON.parse(validJsonString);
+
+  // console.log("Data received in ReceiptDataScreen:", jsonData.lineItems);
+
+  const lineItems = jsonData.lineItems; // Access lineItems using data.result.lineItems
+  // const purchaseDate = data.result.date;
+
   const dataArray = lineItems.map((item, index) => ({
     id: (index + 1).toString(),
-    name: item.descClean,
-    amount: item.qty === 0 ? 1 : item.qty, // Set default qty to 1 if it's 0
-    unit: item.unit,
-    category: "",
-    purchaseDate: purchaseDate,
-    expiresInDays: null,
-    expirationDate: null,
+    name: item.name,
+    // amount: item.qty === 0 ? 1 : item.qty, // Set default qty to 1 if it's 0
+    amount: 1,
+    unit: item.defaultUnit,
+    category: item.category,
+    purchaseDate: null,
+    expiresInDays: item.defaultShelfLife,
+    expirationDate: calculateExpireDate(item.defaultShelfLife).toString(),
   }));
+
+  useEffect(() => {
+    axios.post("/formatReceiptData", dataArray)
+      .then((res) => {
+        const formattedData = res.data;
+        setIngredientsData(formattedData);
+        setDisplayData(formattedData);
+      }, (error) => {
+        console.log(error);
+      });
+    }, [])
 
   const [ingredientsData, setIngredientsData] = useState(dataArray);
   const [displayData, setDisplayData] = useState(ingredientsData);
 
 
   const handleAddIngredient = (ingredient) => {
-    console.log(ingredient, 'scan screen add ingredient')
+    // console.log(ingredient, 'scan screen add ingredient')
 
     const updatedIngredientsData = [...ingredientsData, ingredient];
     setIngredientsData(updatedIngredientsData);
@@ -48,6 +80,12 @@ const ReceiptDataScreen = ({ route }) => {
   const handleDeleteIngredient = (ingredientId) => {
     const updatedIngredientsData = ingredientsData.filter((item) => item.id !== ingredientId);
     setIngredientsData(updatedIngredientsData);
+  };
+
+  
+  const handleAddFridge = () => {
+    const fridgeHandler = new FridgeHandler();
+    fridgeHandler.createManyFridgeItems(dataArray)
   };
 
 
@@ -124,6 +162,7 @@ const ReceiptDataScreen = ({ route }) => {
         </View>
 
       </ScrollView>
+      <CustomButton text="Add to Fridge" onPress={handleAddFridge}/>
     </View>
   );
 };

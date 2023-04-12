@@ -40,7 +40,7 @@ export default class ShoppingListHandler extends MainHandler {
     });
   }
 
-  // id, listname
+  // entire existing list
   updateShoppingList(id, data, callback) {
     this.put(`/shoppingLists/${ id }`, data, (error, data) => {
       if (error) {
