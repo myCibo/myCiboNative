@@ -41,11 +41,18 @@ function RecipeScreen() {
   useEffect(() => {
     setIsLoading(true);
 
-    axios
-      .get(
-        `https://api.spoonacular.com/recipes/random?number=20&apiKey=${process.env.API_KEY}`
+    const options = {
+      method: 'GET',
+      url: 'https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/random',
+      params: {number: '20'},
+      headers: {
+        'X-RapidAPI-Key': process.env.RAPIDAPI_KEY,
+        'X-RapidAPI-Host': process.env.RAPIDAPI_HOST
+      }
+    };
 
-      )
+    axios
+      .request(options)
       .then((response) => {
         const recipes = response.data.recipes;
         const categorizedRecipes = categorizeRecipes(recipes);
@@ -60,17 +67,50 @@ function RecipeScreen() {
 
   const handleSearch = (value) => {
 
-    fetch(`https://api.spoonacular.com/recipes/complexSearch?query=${value}&number=3&apiKey=${process.env.API_KEY}`)
+    const options = {
+      method: 'GET',
+      url: 'https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/complexSearch',
+      params: {
+        query: value,
+        instructionsRequired: 'true',
+        ignorePantry: 'true',
+        number: '5',
+        limitLicense: 'false',
+        ranking: '1'
+      },
+      headers: {
+        'X-RapidAPI-Key': process.env.RAPIDAPI_KEY,
+        'X-RapidAPI-Host': process.env.RAPIDAPI_HOST
+      }
+    };
 
+    axios
+      .request(options)
       .then(response => response.json())
       .then(data => {
+        console.log(data.result);
         setSearchResultArray([]);
         setSearchResultArray(data.results);
 
         setShowMainPage(false)
 
       })
-      .catch(error => console.error(error));
+      .catch((error) => {
+        console.error(error);
+      });
+
+
+    // fetch(`https://api.spoonacular.com/recipes/complexSearch?query=${value}&number=3&apiKey=${process.env.API_KEY}`)
+
+    //   .then(response => response.json())
+    //   .then(data => {
+    //     setSearchResultArray([]);
+    //     setSearchResultArray(data.results);
+
+    //     setShowMainPage(false)
+
+    //   })
+    //   .catch(error => console.error(error));
   };
 
 

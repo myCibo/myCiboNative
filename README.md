@@ -42,3 +42,4 @@ To set up the Expo environment with React Native, follow these steps:
 ### Run
 - Start Expo with ```expo start --tunnel```.\
 
+

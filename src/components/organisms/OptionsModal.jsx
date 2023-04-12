@@ -108,7 +108,7 @@ export default function OptionsModal({
       <View>
         <TouchableOpacity onPress={handleCancelOptionPress}>
           <View style={styles.optionRow}>
-            <Text style={styles.title}>{data.listName || data.name}</Text>
+            <Text style={styles.title}>{data.name}</Text>
             <TouchableOpacity onPress={handleCancelOptionPress}>
               <View>
                 <Icon name="close" size={32} color={Colors['primaryBlack']} />

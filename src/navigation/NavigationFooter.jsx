@@ -65,9 +65,9 @@ function NavigationFooter() {
   const renderTabIcon = (iconName, isFocused) => {
     const iconColor = isFocused ? Colors.primaryRed : Colors.white;
     const backgroundColor = isFocused ? Colors.white : Colors.primaryRed;
-    const iconSize = 25;
+    const iconSize = 35;
     const borderRadius = 25;
-    const padding = 10;
+    const padding = 5;
 
     return (
       <View

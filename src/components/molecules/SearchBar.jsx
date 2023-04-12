@@ -3,7 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-nativ
 import Colors from '../../constants/styles';
 import Icon from '../atoms/Icon';
 
-export default function SearchBar({ placeholder, onSearch, onBack}) {
+export default function SearchBar({ placeholder, onSearch, onBack }) {
   const [searchValue, setSearchValue] = useState('');
   const [isFocused, setIsFocused] = useState(false);
   const inputRef = useRef(null);
@@ -14,7 +14,7 @@ export default function SearchBar({ placeholder, onSearch, onBack}) {
 
   const handleChange = (value) => {
     setSearchValue(value)
-    value !== "" ? onSearch(value): handleBack()
+    value !== "" ? onSearch(value) : handleBack()
   };
 
   const handleFocus = () => {
@@ -25,7 +25,7 @@ export default function SearchBar({ placeholder, onSearch, onBack}) {
     setIsFocused(false);
   };
 
-  const handleBack = () =>{
+  const handleBack = () => {
     setSearchValue('')
     onBack()
     inputRef.current.blur();
@@ -61,27 +61,27 @@ export default function SearchBar({ placeholder, onSearch, onBack}) {
       height: 24,
       alignItems: 'center',
       justifyContent: 'center',
-      color:'red',
+      color: 'red',
     },
-  
+
   });
 
   return (
     <View style={styles.container}>
       <View style={styles.searchContainer}>
-            {isFocused || searchValue.length > 0? (
-              <TouchableOpacity onPress={handleBack}>
-              <View style={styles.leftIcon} >
-                <Icon name="arrow-back" size={24} color={Colors['fontGray']} />
-              </View>
-              </TouchableOpacity>
-            ) : (
-              <TouchableOpacity >
-              <View style={styles.leftIcon}>
-               <Icon name="magnifying-glass" size={24} color={Colors['fontGray']} />
-              </View>
-              </TouchableOpacity>
-            )}
+        {isFocused || searchValue.length > 0 ? (
+          <TouchableOpacity onPress={handleBack}>
+            <View style={styles.leftIcon} >
+              <Icon name="arrow-back" size={24} color={Colors['fontGray']} />
+            </View>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity >
+            <View style={styles.leftIcon}>
+              <Icon name="magnifying-glass" size={24} color={Colors['fontGray']} />
+            </View>
+          </TouchableOpacity>
+        )}
 
         <TextInput
           style={styles.input}

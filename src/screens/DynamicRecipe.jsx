@@ -1,60 +1,141 @@
 import React, { useState, useEffect } from 'react';
-import { View, ScrollView, Dimensions, Text, StyleSheet, Image, ActivityIndicator } from 'react-native';
+import { View, ScrollView, Dimensions, Text, StyleSheet, Image, ActivityIndicator, Button, Modal } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import { useRoute } from "@react-navigation/native";
-import axios from 'axios';
 
+import axios from 'axios';
 import RecipeIngredients from '../components/organisms/RecipeIngredients'
 import RecipeInstruction from '../components/organisms/RecipeInstruction';
 import RecipeDetails from '../components/molecules/RecipeDetails';
+import IMadeThis from '../components/molecules/IMadeThis';
+
 
 
 function DynamicRecipe() {
     const route = useRoute();
+
     const data = route.params;
+    const fakeApiIng = [  {
+        "aisle": "Produce",
+        "amount": 1,
+        "consistency": "SOLID",
+        "id": 9176,
+        "image": "pear.jpg",
+        "measures": {
+          "metric": {
+            "amount": 1,
+            "unitLong": "",
+            "unitShort": "",
+          },
+          "us": {
+            "amount": 1,
+            "unitLong": "",
+            "unitShort": "",
+          },
+        },
+        "meta": [
+          "cubed",
+          "peeled",
+        ],
+        "name": "pear",
+        "nameClean": "pear",
+        "original": "1 Pear Peeled and cubed",
+        "originalName": "Pear Peeled and cubed",
+        "unit": "",
+      },{
+        "aisle": "Produce",
+        "amount": 1,
+        "consistency": "SOLID",
+        "id": 9176,
+        "image": "mango.jpg",
+        "measures": {
+          "metric": {
+            "amount": 1,
+            "unitLong": "",
+            "unitShort": "g",
+          },
+          "us": {
+            "amount": 1,
+            "unitLong": "",
+            "unitShort": "",
+          },
+        },
+        "meta": [
+          "cubed",
+          "peeled",
+        ],
+        "name": "sharp cheddar cheese",
+        "nameClean": "sharp cheddar cheese",
+        "original": "1 sharp cheddar cheese Roasted",
+        "originalName": "cheddar cheese roasted",
+        "unit": "",
+      }
+
+]
 
     const [title, setTitle] = useState("");
     const [image, setImage] = useState("");
     const [analyzedInstructions, setAnalyzedInstructions] = useState("");
-    const [extendedIngredients, setExtendedIngredients] = useState("");
+    const [extendedIngredients, setExtendedIngredients] = useState(fakeApiIng);
     const [servings, setServings] = useState("");
     const [readyInMinutes, setReadyInMinutes] = useState("");
     const [healthScore, setHealthScore] = useState("");
     const [isLoading, setIsLoading] = useState(true);
+    const [showModal, setShowModal] = useState(false);
+
+    
+    
+
+
+
+    // const handleClose = () => {
+    //     setShowModal(false);
+    // };
 
 
     useEffect(() => {
         if (!data?.analyzedInstructions) {
-          axios.get(`https://api.spoonacular.com/recipes/${data.id}/information?apiKey=${process.env.API_KEY}`)
-            .then((response) => {
-              const newData = response.data
-              setTitle(newData.title)
-              setImage(newData.image)
-              setAnalyzedInstructions(newData.analyzedInstructions)
-              setExtendedIngredients(newData.extendedIngredients)
-              setServings(newData.servings)
-              setReadyInMinutes(newData.readyInMinutes)
-              setHealthScore(newData.healthScore)
-            })
-            .catch((error) => {
-              console.log(error);
-            })
-            .finally(() => {
-              setIsLoading(false);
-            });
+            const options = {
+                method: 'GET',
+                url: `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/${data.id}/information`,
+                headers: {
+                    'X-RapidAPI-Key': process.env.RAPIDAPI_KEY,
+                    'X-RapidAPI-Host': process.env.RAPIDAPI_HOST
+                }
+            };
+            axios.request(options)
+                .then((response) => {
+                    const newData = response.data
+                    setTitle(newData.title)
+                    setImage(newData.image)
+                    setAnalyzedInstructions(newData.analyzedInstructions)
+                    // setExtendedIngredients(newData.extendedIngredients)
+                    setServings(newData.servings)
+                    setReadyInMinutes(newData.readyInMinutes)
+                    setHealthScore(newData.healthScore)
+
+                })
+                .catch((error) => {
+                    console.log(error);
+                })
+                .finally(() => {
+                    setIsLoading(false);
+                });
         } else {
-          setTitle(data.title)
-          setImage(data.image)
-          setAnalyzedInstructions(data.analyzedInstructions)
-          setExtendedIngredients(data.extendedIngredients)
-          setServings(data.servings)
-          setReadyInMinutes(data.readyInMinutes)
-          setHealthScore(data.healthScore)
-          setIsLoading(false);
+            setTitle(data.title)
+            setImage(data.image)
+            setAnalyzedInstructions(data.analyzedInstructions)
+            // setExtendedIngredients(data.extendedIngredients)
+            setServings(data.servings)
+            setReadyInMinutes(data.readyInMinutes)
+            setHealthScore(data.healthScore)
+            setIsLoading(false);
         }
-      }, [data.id]);
-      
+    }, [data.id]);
+
+
+
 
     const styles = StyleSheet.create({
         headerContainer: {
@@ -101,6 +182,24 @@ function DynamicRecipe() {
             margin: 20,
 
         },
+        button: {
+            width: 320,
+            height: 50,
+            backgroundColor: '#6B987A',
+        },
+        popup: {
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        },
+        popupText: {
+            fontSize: 20,
+            marginBottom: 20,
+            textAlign: 'center',
+            color: '#FFF',
+        },
+
     });
 
 
@@ -141,6 +240,17 @@ function DynamicRecipe() {
 
                 <Text style={styles.title}>preparation</Text>
                 {analyzedInstructions?.length > 0 && <RecipeInstruction data={analyzedInstructions} />}
+                
+                <IMadeThis apiData= {fakeApiIng}/>
+
+
+                {/* <Button title="Open Popup" onPress={handlePress} color="#6B987A" style={styles.button} />
+                <Modal visible={showModal} animationType="slide" transparent={true}>
+                    <View style={styles.popup}>
+                        <Text style={styles.popupText}>Hello, World!</Text>
+                        <Button title="Close" onPress={handleClose} />
+                    </View>
+                </Modal> */}
             </View>
         </ScrollView>
     );

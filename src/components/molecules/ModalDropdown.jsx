@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableWithoutFeedback, TouchableHighlight } from 'react-native';
+import { View, Text, StyleSheet, TouchableWithoutFeedback, TouchableHighlight, Platform } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import Icon from '../atoms/Icon';
 import Colors from '../../constants/styles';
@@ -13,9 +13,9 @@ export default function ModalDropdown({
 
     useEffect(() => {
         if (selected) {
-          setSelectedItemName(selected);
+            setSelectedItemName(selected);
         }
-      }, [selected]);
+    }, [selected]);
 
     const [open, setOpen] = useState(false);
     const [selectedItemName, setSelectedItemName] = useState(selected || null);
