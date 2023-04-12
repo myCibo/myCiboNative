@@ -5,13 +5,11 @@ import Colors from '../../constants/styles';
 import ItemModal from '../organisms/ItemModal';
 import ListModal from '../organisms/ListModal';
 import FridgeHandler from '../../handlers/FridgeHandler';
-import ShoppingListHandler from "../../handlers/ShoppingListHandler";
 import UserContext from '../../contexts/UserContext';
 
 
 // import localIconSources from './localIconSources';
 const fridgeHandler = new FridgeHandler();
-const shoppingListHandler = new ShoppingListHandler();
 
 export default function IMadeThis({ apiData }) {
 
@@ -67,6 +65,28 @@ export default function IMadeThis({ apiData }) {
     const handlePress = () => {
         fridgeHandler.getFridgeItems(user.id, (dbData) => {
             // console.log(dbData)
+
+
+            //first we need to match the recipe ingredient name with a result from the fridge. If there is a match move on to units
+
+                // we need unit data from the db to compare the existing units, their volumes with those in fridge
+                
+                // for example a fridge item with amount: 12, unitId: 1 could be like 12 grams, or 120ml.
+
+                // we can then grab the unit data from the constant unit data to try and match the recipe data with a unit from our list.
+
+                // if there is a match
+
+                    // we then convert the recipe unit into one of our database units, so that it can have the right format to enter into the database
+
+                    // we will then substract this amount from the existing fridge item (this can result in a negative value)
+
+                // if there is no match
+
+                    // we substract half of the existing fridge item
+
+            // we map all this to an array and call the backend with a recipeHandler
+
             const filteredDbArray = dbData.map(dbObj => {
                 const matchingApiObj = apiData.find(apiObj => apiObj.name === dbObj.name);
 
