@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { View, TextInput, StyleSheet, TouchableWithoutFeedback, TouchableHighlight, Text } from 'react-native';
+import { View, TextInput, StyleSheet, TouchableWithoutFeedback, TouchableHighlight, Text, Keyboard, Platform, TouchableOpacity } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import Icon from "../atoms/Icon";
 import Colors from "../../constants/styles";
@@ -12,9 +12,11 @@ export default function ModalSearch({
 }) {
 
   const [searchQuery, setSearchQuery] = useState(selected?.name || '');
-  const [dropdownVisible, setDropdownVisible] = useState(false);
+  // const [dropdownVisible, setDropdownVisible] = useState(false);
   const [currentData, setCurrentData] = useState(data);
   const [isFocused, setIsFocused] = useState(false);
+  const [isDropdownVisible, setIsDropdownVisible] = useState(false);
+
 
   const handleSearch = (text) => {
     const newData = data.filter((item) => {
@@ -25,32 +27,43 @@ export default function ModalSearch({
     setCurrentData(newData);
     setSearchQuery(text);
 
-    setDropdownVisible(true);
+    setIsDropdownVisible(true);
     if (text === '' || newData.length === 0) {
-      setDropdownVisible(false);
+      setIsDropdownVisible(false);
     }
   };
 
   const handleSelectItem = (item) => {
     console.log('handleSelectedItem', item);
+    if (item === null) {
+      setSearchQuery('');
+      onChange(null);
+      return;
+    }
     setSearchQuery(item.name);
     onChange(item);
-    setDropdownVisible(false);
+    Keyboard.dismiss();
+    setIsDropdownVisible(false);
   };
 
-  const handleBlur = () => {
-    setIsFocused(false);
-    setDropdownVisible(false);
-  };
+  const handleCloseIcon = () => {
+    handleSelectItem(null);
+    setIsDropdownVisible(false)
+  }
 
-  const handleFocus = () => {
-    setIsFocused(true);
-  };
+  // const handleBlur = () => {
+  //   setIsFocused(false);
+  //   setDropdownVisible(false);
+  // };
+
+  // const handleFocus = () => {
+  //   setIsFocused(true);
+  // };
 
   const styles = StyleSheet.create({
     container: {
       flex: 1,
-      height: dropdownVisible ? 6 * 48 : 48,
+      height: isDropdownVisible ? 6 * 48 : 48,
       position: 'relative',
     },
     searchContainer: {
@@ -62,17 +75,17 @@ export default function ModalSearch({
       backgroundColor: Colors['white'],
       borderTopLeftRadius: 4,
       borderTopRightRadius: 4,
-      borderBottomLeftRadius: dropdownVisible ? 0 : 4,
-      borderBottomRightRadius: dropdownVisible ? 0 : 4,
+      borderBottomLeftRadius: isDropdownVisible ? 0 : 4,
+      borderBottomRightRadius: isDropdownVisible ? 0 : 4,
       ...Platform.select({
         ios: {
           shadowColor: 'black',
           shadowOffset: { width: 0, height: 2 },
-          shadowOpacity: dropdownVisible ? 0.2 : 0,
+          shadowOpacity: isDropdownVisible ? 0.2 : 0,
           shadowRadius: 4,
         },
         android: {
-          elevation: dropdownVisible ? 5 : 0,
+          elevation: isDropdownVisible ? 5 : 0,
         },
       }),
     },
@@ -128,9 +141,9 @@ export default function ModalSearch({
   });
 
   const renderCloseIcon = () => {
-    if (searchQuery !== '' && isFocused) {
+    if (searchQuery !== '') {
       return (
-        <TouchableWithoutFeedback onPress={() => { setSearchQuery(''), setDropdownVisible(false) }}>
+        <TouchableWithoutFeedback onPress={() => { handleCloseIcon() }}>
           <View style={styles.icon}>
             <Icon name="close" size={32} color={Colors['fontGray']} />
           </View>
@@ -140,47 +153,55 @@ export default function ModalSearch({
   }
 
   const renderDropdown = () => {
-    return (
-      <View style={styles.dropdownContainer}>
-        <FlatList
-          data={currentData}
-          renderItem={({ item, index }) => (
-            <TouchableHighlight
-              onPress={() => handleSelectItem(item)}
-              activeOpacity={0.9}
-              underlayColor={Colors['lightGreen']}
-            >
-              <View style={index === data.length - 1 ? styles.lastDropdownRow : styles.dropdownRow}>
-                <Text>{item.name}</Text>
-              </View>
-            </TouchableHighlight>
-          )}
-          keyExtractor={(item) => item.id}
-        />
-      </View>
-    )
-  }
-
-  return (
-    <View style={styles.container}>
-      <View style={styles.searchContainer}>
-        <View style={styles.searchInput}>
-          <View style={styles.icon}>
-            <Icon name="magnifying-glass" size={32} color={Colors['fontGray']} />
-          </View>
-          <TextInput
-            placeholder={placeholder}
-            value={searchQuery}
-            onChangeText={handleSearch}
-            onFocus={handleFocus}
-            onBlur={handleBlur}
-            style={styles.input}
+    if (isDropdownVisible) {
+      return (
+        <View style={styles.dropdownContainer}>
+          <FlatList
+            data={currentData}
+            renderItem={({ item, index }) => (
+              <TouchableHighlight
+                onPress={() => handleSelectItem(item)}
+                activeOpacity={0.9}
+                underlayColor={Colors['lightGreen']}
+              >
+                <View style={index === data.length - 1 ? styles.lastDropdownRow : styles.dropdownRow}>
+                  <Text>{item.name}</Text>
+                </View>
+              </TouchableHighlight>
+            )}
+            keyExtractor={(item) => item.id}
           />
         </View>
-        {renderCloseIcon()}
-      </View>
-      {dropdownVisible && renderDropdown()}
-    </View >
+      );
+    }
+  };
 
+
+  return (
+    <TouchableOpacity
+      style={styles.container}
+      onPress={() => setIsDropdownVisible(false)}
+      activeOpacity={1}
+    >
+      <View style={styles.container}>
+        <View style={styles.searchContainer}>
+          <View style={styles.searchInput}>
+            <View style={styles.icon}>
+              <Icon name="magnifying-glass" size={32} color={Colors['fontGray']} />
+            </View>
+            <TextInput
+              placeholder={placeholder}
+              value={searchQuery}
+              onChangeText={handleSearch}
+              style={styles.input}
+              onFocus={() => setIsDropdownVisible(true)}
+              onBlur={() => { }}
+            />
+          </View>
+          {renderCloseIcon()}
+        </View>
+        {renderDropdown()}
+      </View>
+    </TouchableOpacity>
   );
 };

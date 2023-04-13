@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, Image, StyleSheet, TouchableOpacity, Platform } from "react-native";
 import findCategory from "../../utils/findCategory";
 import CategoryImage from "../atoms/CategoryImage";
 import Colors from "../../constants/styles";

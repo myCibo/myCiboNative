@@ -139,6 +139,11 @@ export default function ItemModal({
 
   const handleItemSelect = (item) => {
     console.log("Item selected", item);
+    if (item === null) {
+      setSelectedItem(null);
+      setSelectedIngredientId(null);
+      return;
+    }
     setSelectedItem(item);
     setSelectedIngredientId(item.id);
     setSelectedUnit(item.unit.name);

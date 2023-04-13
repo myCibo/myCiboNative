@@ -2,7 +2,7 @@ import {
     StyleSheet,
     Text,
     View,
-    TouchableOpacity,
+    TouchableOpacity
 } from "react-native";
 import { useState, useEffect } from "react";
 import Modal from "react-native-modal";
@@ -103,6 +103,10 @@ export default function ListModal({
     };
 
     const handleItemSelect = (item) => {
+        if (item === null) {
+            setSelectedItem(null);
+            setSelectedIngredientId(null);
+        }
         console.log("Item selected", item);
         setSelectedItem(item);
         setSelectedIngredientId(item.id);
