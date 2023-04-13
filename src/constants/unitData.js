@@ -2,8 +2,8 @@ const unitData =
     [
         {
             id: 1,
-            name: 'bunch',
-            volume: 3,
+            name: 'Bunch',
+            volume: 5,
             type: 'count'
         },
         {
@@ -15,54 +15,78 @@ const unitData =
         {
             id: 3,
             name: 'Cup',
+            volume: 236.5882365,
+            type: 'ml'
         },
         {
             id: 4,
             name: 'Tablespoon',
+            volume: 14.786764781,
+            type: 'ml'
         },
         {
             id: 5,
             name: 'Ounce',
+
         },
         {
             id: 6,
             name: 'Pizza',
+            volume: 1,
+            type: 'count'
         },
         {
             id: 7,
             name: 'Waffle',
+            volume: 1,
+            type: 'count'
         },
         {
             id: 8,
             name: 'Teaspoon',
+            volume: 4.928921594,
+            type: 'ml'
         },
         {
             id: 9,
             name: 'Sandwich',
+            volume: 1,
+            type: 'count'
         },
         {
             id: 10,
             name: 'Pound',
+            volume: 453.59237,
+            type: 'g'
         },
         {
             id: 11,
             name: 'Gallon',
+            volume: 3785.411784,
+            type: 'ml'
         },
         {
             id: 12,
             name: 'Quart',
+            volume: 946.352946,
+            type: 'ml'
         },
         {
             id: 13,
             name: 'Pint',
+            volume: 473.176473,
+            type: 'ml'
         },
         {
             id: 14,
             name: 'Fluid ounce',
+            volume: 29.573529562,
+            type: 'ml'
         },
         {
             id: 15,
             name: 'Dash',
+
         },
         {
             id: 16,
@@ -180,6 +204,8 @@ const unitData =
             id: 44,
             name: 'Item',
         },
+
+        //repeatative names, different types
     ]
 
 
