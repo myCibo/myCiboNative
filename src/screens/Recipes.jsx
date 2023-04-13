@@ -44,7 +44,7 @@ function RecipeScreen() {
     const options = {
       method: 'GET',
       url: 'https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/random',
-      params: {number: '20'},
+      params: { number: '20' },
       headers: {
         'X-RapidAPI-Key': process.env.RAPIDAPI_KEY,
         'X-RapidAPI-Host': process.env.RAPIDAPI_HOST
@@ -169,19 +169,19 @@ function RecipeScreen() {
 
   return (
     <View style={{ flex: 1 }}>
-        <View style={styles.header}>
-          <SearchBar placeholder="Search Recipe" onSearch={() => handleSearch} onBack={() => handleBack} />
-          <TouchableOpacity onPress={() => { console.log("Filter"); }}>
-            <Icon name='filter' size={32} color={Colors.primaryBlack} />
-          </TouchableOpacity>
-        </View>
+      <View style={styles.header}>
+        <SearchBar placeholder="Search Recipe" onSearch={() => handleSearch} onBack={() => handleBack} />
+        <TouchableOpacity onPress={() => { console.log("Filter"); }}>
+          <Icon name='filter' size={32} color={Colors.primaryBlack} />
+        </TouchableOpacity>
+      </View>
       <ScrollView style={styles.contentContainer}>
         <View style={styles.container}>
           {/* Search Result  */}
           {!showMainPage && searchResultArray.length === 0 && (
             <Text> No results found</Text>
           )}
-  
+
           {!showMainPage && searchResultArray.length > 0 && (
             <>
               {searchResultArray.map((recipe, index) => (
@@ -191,7 +191,7 @@ function RecipeScreen() {
               ))}
             </>
           )}
-  
+
           {/* Main Page */}
           {showMainPage && (
             <>
@@ -208,7 +208,7 @@ function RecipeScreen() {
     </View>
   );
 
-            }
+}
 
 
 const styles = StyleSheet.create({
@@ -232,7 +232,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors['creamyWhite'],
     // backgroundColor: "red", // Set a background color for the header
 
-    
+
     top: 0, // Set the top position to 0
     zIndex: 1, // Set a z-index to make the header appear on top of the content
   },

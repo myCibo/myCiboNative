@@ -12,9 +12,7 @@ export default function ModalSearch({
 }) {
 
   const [searchQuery, setSearchQuery] = useState(selected?.name || '');
-  // const [dropdownVisible, setDropdownVisible] = useState(false);
   const [currentData, setCurrentData] = useState(data);
-  const [isFocused, setIsFocused] = useState(false);
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
 
 
