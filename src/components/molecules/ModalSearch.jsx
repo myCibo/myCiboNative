@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { View, TextInput, StyleSheet, TouchableWithoutFeedback, TouchableHighlight, Text, Keyboard, Platform, TouchableOpacity } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import Icon from "../atoms/Icon";
@@ -49,14 +49,20 @@ export default function ModalSearch({
     setIsDropdownVisible(false)
   }
 
-  // const handleBlur = () => {
-  //   setIsFocused(false);
-  //   setDropdownVisible(false);
-  // };
+  const handleInputFocus = () => {
+    setIsDropdownVisible(true);
+    if (textInputRef.current) {
+      textInputRef.current.focus();
+    } else {
+      setTimeout(() => {
+        if (textInputRef.current) {
+          textInputRef.current.focus();
+        }
+      }, 100);
+    }
+  };
 
-  // const handleFocus = () => {
-  //   setIsFocused(true);
-  // };
+
 
   const styles = StyleSheet.create({
     container: {
@@ -127,7 +133,7 @@ export default function ModalSearch({
     searchInput: {
       flexDirection: 'row',
       alignItems: 'center',
-      width: '70%',
+      flex: 1,
     },
     input: {
       fontSize: 16,
@@ -174,6 +180,7 @@ export default function ModalSearch({
     }
   };
 
+  const textInputRef = useRef(null);
 
   return (
     <TouchableOpacity
@@ -183,7 +190,12 @@ export default function ModalSearch({
     >
       <View style={styles.container}>
         <View style={styles.searchContainer}>
-          <View style={styles.searchInput}>
+
+          <TouchableOpacity
+            style={styles.searchInput}
+            onPress={handleInputFocus}
+            activeOpacity={1}
+          >
             <View style={styles.icon}>
               <Icon name="magnifying-glass" size={32} color={Colors['fontGray']} />
             </View>
@@ -195,7 +207,7 @@ export default function ModalSearch({
               onFocus={() => setIsDropdownVisible(true)}
               onBlur={() => { }}
             />
-          </View>
+          </TouchableOpacity>
           {renderCloseIcon()}
         </View>
         {renderDropdown()}

@@ -1,6 +1,5 @@
-import { useState, useEffect } from "react";
-import { View, TextInput, StyleSheet, TouchableOpacity, TouchableHighlight, Text } from 'react-native';
-import { FlatList } from 'react-native-gesture-handler';
+import { useState, useEffect, useRef } from "react";
+import { View, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
 import Icon from "../atoms/Icon";
 import Colors from "../../constants/styles";
 
@@ -16,7 +15,7 @@ export default function ModalInput({
 
 
   const handleAmount = (text) => {
-    if (text.length <= 3 && !isNaN(text)) {
+    if (text.length <= 6 && !isNaN(text)) {
       setAmountValue(text);
       onChange(text);
     }
@@ -25,6 +24,12 @@ export default function ModalInput({
   const handleText = (text) => {
     setTextValue(text);
     onChange(text);
+  };
+
+  const handleInputFocus = () => {
+    if (textInputRef.current) {
+      textInputRef.current.focus();
+    }
   };
 
   useEffect(() => {
@@ -36,14 +41,14 @@ export default function ModalInput({
 
   const styles = StyleSheet.create({
     container: {
-      width: type === 'number' ? 100 : '100%',
+      width: type === 'number' ? 130 : '100%',
       height: 48,
       position: 'relative',
     },
     insideContainer: {
       flexDirection: 'row',
       alignItems: 'center',
-      width: type === 'number' ? 100 : '100%',
+      width: type === 'number' ? 130 : '100%',
       paddingHorizontal: type === 'number' ? 0 : 16,
       height: 48,
       backgroundColor: Colors['white'],
@@ -53,6 +58,7 @@ export default function ModalInput({
       paddingHorizontal: 16,
     },
     input: {
+      flex: 1,
       fontSize: 16,
       color: Colors['fontBlack'],
     },
@@ -70,6 +76,8 @@ export default function ModalInput({
     }
   }
 
+  const textInputRef = useRef(null);
+
   return (
     <View style={styles.container}>
       {type === "number" && (
@@ -78,21 +86,25 @@ export default function ModalInput({
             <Icon name="hash" size={16} color={Colors['fontGray']} />
           </View>
           <TextInput
+            ref={textInputRef}
             placeholder={placeholder}
             keyboardType="numeric"
             value={amountValue}
             onChangeText={handleAmount}
             style={styles.input}
+            onFocus={handleInputFocus}
           />
         </View>
       )}
       {type === "text" && (
         <View style={styles.insideContainer}>
           <TextInput
+            ref={textInputRef}
             placeholder={placeholder}
             value={textValue}
             onChangeText={handleText}
             style={styles.input}
+            onFocus={handleInputFocus}
           />
           {renderCloseIcon()}
         </View>
