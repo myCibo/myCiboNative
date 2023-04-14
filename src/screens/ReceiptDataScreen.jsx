@@ -36,7 +36,7 @@ const ReceiptDataScreen = ({ route }) => {
 
   const lineItems = jsonData.lineItems; // Access lineItems using data.result.lineItems
   // const purchaseDate = data.result.date;
-  const currentDate = new Date();
+  const currentDate = new Date().toISOString().split('T')[0];
   // const [formattedData, setFormattedData] = useState([]);
 
 
@@ -49,7 +49,7 @@ const ReceiptDataScreen = ({ route }) => {
     category: item.category.charAt(0).toUpperCase() + item.category.slice(1),
     purchaseDate: new Date().toISOString().split('T')[0],
     expiresInDays: item.defaultShelfLife,
-    expirationDate: calculateExpirationDate(new Date().toISOString().split('T')[0], item.defaultShelfLife).toString(),
+    expirationDate: calculateExpirationDate(currentDate, item.defaultShelfLife).toString(),
     expirationTime: item.defaultShelfLife,
     ingredientId: item.ingredientId,
     categoryId: item.categoryId,
@@ -70,8 +70,8 @@ const ReceiptDataScreen = ({ route }) => {
           item.categoryId = item.categoryId;
           item.unitId = item.unitId;
           item.amount = item.amount;
-          item.purchaseDate = null;
-          item.expirationDate = null;
+          item.purchaseDate = item.purchaseDate;
+          item.expirationDate =  calculateExpirationDate(new Date().toISOString().split('T')[0], item.defaultShelfLife).toString();
           item.expirationTime = item.expirationTime;
           return item
         });
