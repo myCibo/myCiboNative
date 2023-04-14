@@ -13,6 +13,7 @@ import prioritizeIngredients from '../utils/prioritizeIngredients';
 import FridgeHandler from '../handlers/FridgeHandler';
 import { useContext } from 'react';
 import UserContext from '../contexts/UserContext';
+import CustomButton from '../components/atoms/CustomButton';
 
 const fridgeHandler = new FridgeHandler();
 
@@ -30,18 +31,22 @@ function HomeScreen() {
   };
 
   useEffect(() => {
-    const userId = user.id;
-    fridgeHandler.getFridgeItems(userId, (fridgeItems) => {
-      const ingredients = fridgeItems.map((item) => ({
-        ...item,
-        expiresInDays: calculateExpiresInDays(item.expirationDate),
-      }));
-      setIngredientsData(ingredients);
+    const unsubscribe = navigation.addListener('focus', () => {
+      const userId = user.id;
+      fridgeHandler.getFridgeItems(userId, (fridgeItems) => {
+        const ingredients = fridgeItems.map((item) => ({
+          ...item,
+          expiresInDays: calculateExpiresInDays(item.expirationDate),
+        }));
+        setIngredientsData(ingredients);
+      });
+      fridgeHandler.getCategoryCards(userId, (categoryCards) => {
+        setCategoryCards(categoryCards);
+      });
     });
-    fridgeHandler.getCategoryCards(userId, (categoryCards) => {
-      setCategoryCards(categoryCards);
-    });
-  }, []);
+  
+    return unsubscribe;
+  }, [navigation]);
 
   useEffect(() => {
     if (ingredientsData.length === 0) {
@@ -120,6 +125,9 @@ function HomeScreen() {
       justifyContent: 'center',
       alignItems: 'center',
     },
+    footer: {
+      padding: 20,
+    },
   };
 
   if (isLoading) {
@@ -160,6 +168,9 @@ function HomeScreen() {
             />
           </>
         )}
+        <View style={styles.footer}>
+          <CustomButton onPress={async () => { await user.logout() }} text="Log out" />
+        </View>
       </View>
 
     </ScrollView>

@@ -28,7 +28,7 @@ const FridgeScreen = () => {
       setDisplayData(updatedData);
     });
   }, []);
-  
+
 
   // group ingredients by category. 
   const ingredientsByCategory = displayData.reduce((acc, ingredient) => {
@@ -135,6 +135,14 @@ const FridgeScreen = () => {
       fontSize: 24,
       fontWeight: "bold",
     },
+    no: {
+      alignItems: "center",
+      justifyContent: "center",
+      marginTop: 100,
+    },
+    fast: {
+      padding: 30,
+    }
   });
 
   // render the ingredients under each category
@@ -182,11 +190,22 @@ const FridgeScreen = () => {
         contentContainerStyle={styles.contentContainer}
       >
 
-        {displayData.length > 0 
-        ? (renderIngredientsByCategory()) 
-        : (<Text> No results found</Text>
-        )}
-        
+        {displayData.length > 0
+          ? (renderIngredientsByCategory())
+          : (<View style={styles.no}>
+            <Text> No results found</Text>
+            <View style={styles.fast}>
+              <LabelledIcon
+                label="Add Item"
+                iconPos={1}
+                iconName='add'
+                variant='item'
+                onNew={handleAddFridgeItem}
+              />
+            </View>
+          </View>
+          )}
+
       </ScrollView>
     </View>
   );

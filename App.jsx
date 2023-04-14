@@ -5,29 +5,54 @@ import UserContext from './src/contexts/UserContext';
 import UserHandler from './src/handlers/UserHandler';
 import NavigationFooter from './src/navigation/NavigationFooter';
 import "react-native-url-polyfill/auto"
-
+import * as Google from 'expo-auth-session/providers/google';
+import axios from 'axios';
+import CustomButton from './src/components/atoms/CustomButton';
 const userHandler = new UserHandler();
 
 export default function App() {
+
   const [user, setUser] = useState(null);
+  const [isLoggedOut, setIsLoggedOut] = useState(true);
+  const [request, response, promptAsync] = Google.useAuthRequest({
+    expoClientId: "552993921134-4lfc1ep9u4c3ud0h73tqtrhte75ldbtn.apps.googleusercontent.com",
+    androidClientId: '552993921134-tj76atrjgaav85pfoovenbgadoi5bnfa.apps.googleusercontent.com',
+    selectAccount: true,
+    // iosClientId: 'GOOGLE_GUID.apps.googleusercontent.com',
+  });
 
   useEffect(() => {
-    const getUser = async () => {
-      let storedUser = await AsyncStorage.getItem('user');
-      if (!storedUser) {
-        const users = await userHandler.getAllUsersPromise();
-        const currentUser = users[0];
-        storedUser = currentUser.id;
-        await AsyncStorage.setItem('user', storedUser);
-        setUser(currentUser);
-      } else {
-        const currentUser = await userHandler.getUserByIdPromise(storedUser);
-        setUser(currentUser);
+    (async () => {
+      const storedUser = JSON.parse(await AsyncStorage.getItem('user'));
+      if (storedUser) {
+        storedUser.logout = async () => { setUser(null); await AsyncStorage.removeItem('user'); setIsLoggedOut(true); }
+        setUser(storedUser);
+        setIsLoggedOut(false);
       }
-    };
+    })()
 
-    getUser();
-  }, []);
+    if (!user && !isLoggedOut) {
+      if (response?.type === 'success') {
+        (async () => {
+          const userData = await axios.get(
+            "https://www.googleapis.com/userinfo/v2/me",
+            {
+              headers: { Authorization: `Bearer ${response.params.access_token}` },
+            }
+          ).then(res => res.data);
+
+          console.log('here', userData)
+          const backendUser = await axios.post(`${process.env.BACKEND_URL}/login`, userData).then(res => res.data);
+          console.log('there', backendUser)
+          if (backendUser) {
+            await AsyncStorage.setItem('user', JSON.stringify(backendUser));
+            backendUser.logout = async () => { setUser(null); await AsyncStorage.removeItem('user'); setIsLoggedOut(true); }
+            setUser(backendUser);
+          }
+        })();
+      }
+    }
+  }, [response]);
 
   const styles = {
     loader: {
@@ -37,18 +62,11 @@ export default function App() {
     },
   };
 
-  if (!user) {
-    return (
-      <View style={styles.loader}>
-        {/* <Text>Anything inside this view will show up while loading thre page </Text>*/}
-        <ActivityIndicator size="large" color="#b82d1b" />
-      </View>
-    );
-  }
-
-  return (
+  return (user ? (
     <UserContext.Provider value={user}>
       <NavigationFooter />
-    </UserContext.Provider>
+    </UserContext.Provider>) : (<View style={styles.loader}>
+      <CustomButton onPress={() => { promptAsync(); setIsLoggedOut(false) }} text="Login with Google" />
+    </View>)
   );
 }

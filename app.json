@@ -25,6 +25,11 @@
     },
     "web": {
       "favicon": "assets/images/myCiboTomato.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "278c5820-2495-47ae-a9e3-b24df592e6af"
+      }
     }
   }
 }

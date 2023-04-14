@@ -44,7 +44,7 @@ function RecipeScreen() {
     const options = {
       method: 'GET',
       url: 'https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/random',
-      params: {number: '20'},
+      params: {number: '10'},
       headers: {
         'X-RapidAPI-Key': process.env.RAPIDAPI_KEY,
         'X-RapidAPI-Host': process.env.RAPIDAPI_HOST
@@ -58,7 +58,6 @@ function RecipeScreen() {
         const categorizedRecipes = categorizeRecipes(recipes);
         setData(categorizedRecipes);
         setIsLoading(false);
-
       })
       .catch((error) => {
         console.log(error);
@@ -88,29 +87,27 @@ function RecipeScreen() {
       .request(options)
       .then(response => response.json())
       .then(data => {
-        console.log(data.result);
+        // console.log(data.result);
         setSearchResultArray([]);
         setSearchResultArray(data.results);
-
         setShowMainPage(false)
-
       })
       .catch((error) => {
         console.error(error);
       });
 
 
-    // fetch(`https://api.spoonacular.com/recipes/complexSearch?query=${value}&number=3&apiKey=${process.env.API_KEY}`)
+    fetch(`https://api.spoonacular.com/recipes/complexSearch?query=${value}&number=3&apiKey=${process.env.API_KEY}`)
 
-    //   .then(response => response.json())
-    //   .then(data => {
-    //     setSearchResultArray([]);
-    //     setSearchResultArray(data.results);
+      .then(response => response.json())
+      .then(data => {
+        setSearchResultArray([]);
+        setSearchResultArray(data.results);
 
-    //     setShowMainPage(false)
+        setShowMainPage(false)
 
-    //   })
-    //   .catch(error => console.error(error));
+      })
+      .catch(error => console.error(error));
   };
 
 

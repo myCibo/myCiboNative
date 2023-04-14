@@ -7,13 +7,17 @@ import Icon from '../components/atoms/Icon';
 import Colors from '../constants/styles';
 import LabelledIcon from '../components/molecules/LabelledIcon';
 import calculateExpireDate from '../utils/calculateExpireDate';
-import { Button } from 'react-native-web';
 import CustomButton from '../components/atoms/CustomButton';
 import FridgeHandler from '../handlers/FridgeHandler';
-
+import axios from 'axios';
+import { useContext } from 'react';
+import UserContext from '../contexts/UserContext';
+import {calculateExpirationDate} from '../utils/expirationCalculator';
 
 
 const ReceiptDataScreen = ({ route }) => {
+  const user = useContext(UserContext);
+
   const { data } = route.params;
 
   // Regular expression to match JSON string with double quotes
@@ -32,29 +36,65 @@ const ReceiptDataScreen = ({ route }) => {
 
   const lineItems = jsonData.lineItems; // Access lineItems using data.result.lineItems
   // const purchaseDate = data.result.date;
+  const currentDate = new Date().toISOString().split('T')[0];
+  // const [formattedData, setFormattedData] = useState([]);
+
 
   const dataArray = lineItems.map((item, index) => ({
-    id: (index + 1).toString(),
     name: item.name,
     // amount: item.qty === 0 ? 1 : item.qty, // Set default qty to 1 if it's 0
+    id: index,
     amount: 1,
     unit: item.defaultUnit,
-    category: item.category,
-    purchaseDate: null,
+    category: item.category.charAt(0).toUpperCase() + item.category.slice(1),
+    purchaseDate: new Date().toISOString().split('T')[0],
     expiresInDays: item.defaultShelfLife,
-    expirationDate: calculateExpireDate(item.defaultShelfLife).toString(),
+    expirationDate: calculateExpirationDate(currentDate, item.defaultShelfLife).toString(),
+    expirationTime: item.defaultShelfLife,
+    ingredientId: item.ingredientId,
+    categoryId: item.categoryId,
+    unitId: item.unitId,
   }));
+  const [dataLoaded, setDataLoaded] = useState(false);
+
 
   useEffect(() => {
-    axios.post("/formatReceiptData", dataArray)
+    axios.post(`${process.env.BACKEND_URL}/formatReceiptData`, dataArray)
       .then((res) => {
         const formattedData = res.data;
+        console.log('FORMARTED DATA', formattedData);
+        // setFormattedData(formattedData);
+        const fridgeData= formattedData.map((item, index) => {
+          try {
+          return {
+            ...item,
+          scanId : index,
+          // ingredientId: item.ingredientId;
+          // item.categoryId = item.categoryId;
+          // item.unitId = item.unitId;
+          // item.amount = item.amount;
+          // item.purchaseDate = item.purchaseDate;
+          expirationDate : calculateExpirationDate(new Date().toISOString().split('T')[0], item.defaultShelfLife).toString(),
+          // item.expirationTime = item.expirationTime;
+          }
+        } catch (error) {
+          console.log(error);
+          console.log(item);
+          return null;
+        }
+        }).filter(item => item !== null);
+
+        console.log("THIS IS FRIDGE DATA",fridgeData);
+
         setIngredientsData(formattedData);
         setDisplayData(formattedData);
+        setDataLoaded(true); 
+        console.log('Data loaded:', dataLoaded);
       }, (error) => {
         console.log(error);
+        console.log('Data loaded:', dataLoaded);
       });
-    }, [])
+    }, []);
 
   const [ingredientsData, setIngredientsData] = useState(dataArray);
   const [displayData, setDisplayData] = useState(ingredientsData);
@@ -77,16 +117,28 @@ const ReceiptDataScreen = ({ route }) => {
     setIngredientsData(updatedIngredientsData);
   };
 
-  const handleDeleteIngredient = (ingredientId) => {
-    const updatedIngredientsData = ingredientsData.filter((item) => item.id !== ingredientId);
-    setIngredientsData(updatedIngredientsData);
+  const handleDeleteIngredient = (scanId) => {
+
+    console.log("before delete", displayData);
+    console.log("UPDATED INGREDIENTS DATA", displayData.filter((item) => item.scanId !== scanId));
+    setIngredientsData(ingredientsData => ingredientsData.filter((item) => item.scanId !== scanId));
+    setDisplayData(displayData => displayData.filter((item) => item.scanId !== scanId));
   };
 
   
   const handleAddFridge = () => {
+    const userId = user.id;
+    // console.log("USER ID",userId)
+    const newItem = {
+      userId: userId,
+      itemsData: ingredientsData,
+    };
+    console.log("INGREDIENTS DATA", ingredientsData)
+    console.log("NEW ITEM", newItem.itemsData[0]);
     const fridgeHandler = new FridgeHandler();
-    fridgeHandler.createManyFridgeItems(dataArray)
+    fridgeHandler.createManyFridgeItems(newItem);
   };
+
 
 
   //Search Related 
@@ -154,8 +206,8 @@ const ReceiptDataScreen = ({ route }) => {
         <View style={{ alignItems: 'center' }}>
           {displayData.length > 0 ? (
             displayData.map((item, index) => (
-              <View key={item.id} style={{ marginBottom: index === displayData.length - 1 ? 0 : 12 }}>
-                <ScanCard data={item} onUpdate={handleUpdateIngredient} onDelete={handleDeleteIngredient} />
+              <View key={index} style={{ marginBottom: index === displayData.length - 1 ? 0 : 12 }}>
+                <ScanCard data={item} onUpdate={handleUpdateIngredient} onDelete={() => handleDeleteIngredient(item.scanId)} />
               </View>
             ))
           ) : (<Text> No results found</Text>)}
