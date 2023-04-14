@@ -78,7 +78,6 @@ function HomeScreen() {
         });
         setData(recipes);
         setIsLoading(false);
-
       })
       .catch((error) => {
         console.log(error);

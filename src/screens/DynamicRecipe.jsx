@@ -16,76 +16,49 @@ function DynamicRecipe() {
     const route = useRoute();
 
     const data = route.params;
-    const fakeApiIng = [  {
-        "aisle": "Produce",
-        "amount": 1,
-        "consistency": "SOLID",
-        "id": 9176,
-        "image": "pear.jpg",
-        "measures": {
-          "metric": {
-            "amount": 1,
-            "unitLong": "",
-            "unitShort": "",
-          },
-          "us": {
-            "amount": 1,
-            "unitLong": "",
-            "unitShort": "",
-          },
-        },
-        "meta": [
-          "cubed",
-          "peeled",
-        ],
-        "name": "pear",
-        "nameClean": "pear",
-        "original": "1 Pear Peeled and cubed",
-        "originalName": "Pear Peeled and cubed",
-        "unit": "",
-      },{
-        "aisle": "Produce",
-        "amount": 1,
-        "consistency": "SOLID",
-        "id": 9176,
-        "image": "mango.jpg",
-        "measures": {
-          "metric": {
-            "amount": 1,
-            "unitLong": "",
-            "unitShort": "g",
-          },
-          "us": {
-            "amount": 1,
-            "unitLong": "",
-            "unitShort": "",
-          },
-        },
-        "meta": [
-          "cubed",
-          "peeled",
-        ],
-        "name": "sharp cheddar cheese",
-        "nameClean": "sharp cheddar cheese",
-        "original": "1 sharp cheddar cheese Roasted",
-        "originalName": "cheddar cheese roasted",
-        "unit": "",
-      }
+    // console.log(data)
 
-]
+//fakedata
+    const fakeIngredients = [  
+      {
+        "aisle": "Produce",
+        "amount": 0.005,
+        "consistency": "SOLID",
+        "id": 11114,
+        "image": "savoy-cabbage.jpg",
+        "measures":  {
+          "metric":  {
+            "amount": 0.0005,
+            "unitLong": "kilogram",
+            "unitShort": "kilogram",
+          },
+          "us":  {
+            "amount": 0.0005,
+            "unitLong": "kilogram",
+            "unitShort": "kilogram",
+          },
+        },
+        "name": "bananas",
+        "nameClean": "bananas",
+        "original": "bananas",
+        "originalName": "savoy cabbage",
+        "unit": "kilogram",
+      },
+    ]
+
 
     const [title, setTitle] = useState("");
     const [image, setImage] = useState("");
     const [analyzedInstructions, setAnalyzedInstructions] = useState("");
-    const [extendedIngredients, setExtendedIngredients] = useState(fakeApiIng);
+    const [extendedIngredients, setExtendedIngredients] = useState(data);
+    // const [extendedIngredients, setExtendedIngredients] = useState(fakeData);
+
     const [servings, setServings] = useState("");
     const [readyInMinutes, setReadyInMinutes] = useState("");
     const [healthScore, setHealthScore] = useState("");
     const [isLoading, setIsLoading] = useState(true);
     const [showModal, setShowModal] = useState(false);
 
-    
-    
 
 
 
@@ -101,7 +74,7 @@ function DynamicRecipe() {
                     setTitle(newData.title)
                     setImage(newData.image)
                     setAnalyzedInstructions(newData.analyzedInstructions)
-                    // setExtendedIngredients(newData.extendedIngredients)
+                    setExtendedIngredients(newData.extendedIngredients)
                     setServings(newData.servings)
                     setReadyInMinutes(newData.readyInMinutes)
                     setHealthScore(newData.healthScore)
@@ -117,14 +90,13 @@ function DynamicRecipe() {
             setTitle(data.title)
             setImage(data.image)
             setAnalyzedInstructions(data.analyzedInstructions)
-            // setExtendedIngredients(data.extendedIngredients)
+            setExtendedIngredients(data.extendedIngredients)
             setServings(data.servings)
             setReadyInMinutes(data.readyInMinutes)
             setHealthScore(data.healthScore)
             setIsLoading(false);
         }
     }, [data.id]);
-
 
 
 
@@ -232,16 +204,9 @@ function DynamicRecipe() {
                 <Text style={styles.title}>preparation</Text>
                 {analyzedInstructions?.length > 0 && <RecipeInstruction data={analyzedInstructions} />}
                 
-                <IMadeThis apiData= {fakeApiIng}/>
+                <IMadeThis apiData= {fakeIngredients}/>
 
-
-                {/* <Button title="Open Popup" onPress={handlePress} color="#6B987A" style={styles.button} />
-                <Modal visible={showModal} animationType="slide" transparent={true}>
-                    <View style={styles.popup}>
-                        <Text style={styles.popupText}>Hello, World!</Text>
-                        <Button title="Close" onPress={handleClose} />
-                    </View>
-                </Modal> */}
+                {/* <IMadeThis apiData= {data.extendedIngredients}/> */}
             </View>
         </ScrollView>
     );

@@ -1,13 +1,10 @@
 import React, { useState, useContext } from 'react';
 import { TouchableOpacity, Text, Image, View, Button, StyleSheet } from 'react-native';
-import Icon from '../atoms/Icon';
-import Colors from '../../constants/styles';
-import ItemModal from '../organisms/ItemModal';
-import ListModal from '../organisms/ListModal';
 import UserContext from '../../contexts/UserContext';
-import UnitData from '../../constants/unitData';
 import FridgeHandler from '../../handlers/FridgeHandler';
 import RecipeHandler from '../../handlers/RecipeHandler';
+import {getUnits} from '../../constants/unitData';
+
 
 
 // import localIconSources from './localIconSources';
@@ -15,7 +12,8 @@ const fridgeHandler = new FridgeHandler();
 const recipeHandler = new RecipeHandler();
 
 export default function IMadeThis({ apiData }) {
-    // console.log(apiData)
+    console.log(apiData)
+   
 
     const styles = StyleSheet.create({
         button: {
@@ -41,21 +39,17 @@ export default function IMadeThis({ apiData }) {
 
 
     const user = useContext(UserContext);
+    const unitData = getUnits();
     const [ingObjArray, setIngObjArray] = useState([]);
-
-    const convertUnit = (apiAmount, apiUnit, dbUnit) => {
-
-        //get the unitData object that is right  & do math 
-        const filteredUnitData = UnitData.filter(
-            unitObj => unitObj.name === apiUnit && unitObj.type === dbUnit);
-
-        return filteredUnitData.length > 0
-            ? filteredUnitData[0].volume * apiAmount
-            : apiAmount / 2; //hmmm
-    }
 
 
     const updateDb = (ingObjArray) => {
+        // console.log("We are in update Db &objecttt that is getting passe dto dbbbnbbbbbbbb")
+        
+        console.log("----------")
+        console.log(ingObjArray)
+        console.log("----------")
+        console.log(user.id)
 
         //call the handler to pass the array of objects to update
         recipeHandler.iMadeThis(user.id, ingObjArray, (data) => {
@@ -64,34 +58,67 @@ export default function IMadeThis({ apiData }) {
 
     }
 
+    const convertUnit = (apiAmount, apiUnit, dbUnit) => {
+
+        //get the unitData object that is right  & do math 
+        const filteredUnitData = unitData.filter(
+            unitObj => unitObj.name == apiUnit && unitObj.type == dbUnit);
+
+        return filteredUnitData.length > 0
+            ? filteredUnitData[0].volume * apiAmount
+            : apiAmount / 2; //hmmm
+            
+    }
+
 
     const handlePress = () => {
+        console.log("userId is " + user.id)
         fridgeHandler.getFridgeItems(user.id, (dbData) => {
-            // console.log(dbData)
+            console.log(dbData);
 
             const filteredDbArray = dbData.map(dbObj => {
-                const matchingApiObj = apiData.find(apiObj => apiObj.name === dbObj.name);
+                const matchingApiObj = apiData.find(apiObj => {
+                    console.log( "db: "+dbObj.name, "api: "+apiObj.name)
+
+                    //what if one is plural
+                    //just grab the first one
+
+                    
+                    return apiObj.name === dbObj.name
+
+                });
                 
                 if (matchingApiObj) {
                     // Matched names: 
-                    console.log(`Matching Ing: ${matchingApiObj.name}`);
-                    const dbAmount = Number(dbObj.amount);
-                    const apiAmount = Number(matchingApiObj.measures.metric.amount);
-                    const dbUnit = dbObj.unit;
-                    const apiUnit = matchingApiObj.measures.metric.unitShort;
+                    // console.log(`Matching Ing: ${matchingApiObj.name}`);
+                    let dbAmount = Number(dbObj.amount);
+                    let apiAmount = Number(matchingApiObj.measures.metric.amount);
+                    let dbUnit = dbObj.unit;
+
+                    let apiUnit = matchingApiObj.measures.metric.unitShort === "" 
+                    ? "count" 
+                    : matchingApiObj.measures.metric.unitShort;
+                    
 
                     if (dbUnit !== apiUnit) {
                         //Unmatched units
                         // amount, current and desired unit
-                        console.log(`Different units, db:${dbUnit}, api:${apiUnit}`);
+                        // console.log(`Different units, dbunit, amount :${dbUnit}-${dbAmount}, apiunit, amount:${apiUnit}-${apiAmount}}`);
                         apiAmount = convertUnit(apiAmount, apiUnit, dbUnit)
+                        // console.log(`same  units NOW, dbunit, amount:${dbUnit}-${dbAmount}, apiunit, amount:${apiUnit}-${apiAmount}}`);
+
                     }
 
-                    // Matched Units : 
+                   // // Matched Units : 
                     dbObj.amount = (dbAmount - apiAmount).toString();
-                    setIngObjArray([...ingObjArray, dbObj])
+                    console.log(`dbObj.amount is ${dbObj.amount}`)
+                    const updatedIngredientsData = [...ingObjArray, dbObj];
+                    setIngObjArray(updatedIngredientsData);
                 }
             });
+
+            console.log("ingObjArray is ")
+            console.log(ingObjArray)
 
 
             ingObjArray.length > 0
