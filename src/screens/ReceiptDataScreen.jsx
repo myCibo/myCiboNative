@@ -65,6 +65,7 @@ const ReceiptDataScreen = ({ route }) => {
         console.log('FORMARTED DATA', formattedData);
         // setFormattedData(formattedData);
         const fridgeData= formattedData.map((item, index) => {
+          try {
           return {
             ...item,
           scanId : index,
@@ -76,7 +77,12 @@ const ReceiptDataScreen = ({ route }) => {
           expirationDate : calculateExpirationDate(new Date().toISOString().split('T')[0], item.defaultShelfLife).toString(),
           // item.expirationTime = item.expirationTime;
           }
-        });
+        } catch (error) {
+          console.log(error);
+          console.log(item);
+          return null;
+        }
+        }).filter(item => item !== null);
 
         console.log("THIS IS FRIDGE DATA",fridgeData);
 
