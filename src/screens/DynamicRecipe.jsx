@@ -16,7 +16,7 @@ function DynamicRecipe() {
     const route = useRoute();
 
     const data = route.params;
-    // console.log(data)
+    console.log('dynamic recipes', data)
 
 //fakedata
     const fakeIngredients = [  
@@ -50,7 +50,7 @@ function DynamicRecipe() {
     const [title, setTitle] = useState("");
     const [image, setImage] = useState("");
     const [analyzedInstructions, setAnalyzedInstructions] = useState("");
-    const [extendedIngredients, setExtendedIngredients] = useState(data);
+    const [extendedIngredients, setExtendedIngredients] = useState("");
     // const [extendedIngredients, setExtendedIngredients] = useState(fakeData);
 
     const [servings, setServings] = useState("");
@@ -67,7 +67,7 @@ function DynamicRecipe() {
     // };
 
     useEffect(() => {
-        if (!data?.analyzedInstructions) {
+        // if (!data?.analyzedInstructions) {
             axios.get(`https://api.spoonacular.com/recipes/${data.id}/information?apiKey=${process.env.API_KEY}`)
                 .then((response) => {
                     const newData = response.data
@@ -78,7 +78,6 @@ function DynamicRecipe() {
                     setServings(newData.servings)
                     setReadyInMinutes(newData.readyInMinutes)
                     setHealthScore(newData.healthScore)
-
                 })
                 .catch((error) => {
                     console.log(error);
@@ -86,16 +85,16 @@ function DynamicRecipe() {
                 .finally(() => {
                     setIsLoading(false);
                 });
-        } else {
-            setTitle(data.title)
-            setImage(data.image)
-            setAnalyzedInstructions(data.analyzedInstructions)
-            setExtendedIngredients(data.extendedIngredients)
-            setServings(data.servings)
-            setReadyInMinutes(data.readyInMinutes)
-            setHealthScore(data.healthScore)
-            setIsLoading(false);
-        }
+        // } else {
+        //     setTitle(data.title)
+        //     setImage(data.image)
+        //     setAnalyzedInstructions(data.analyzedInstructions)
+        //     setExtendedIngredients(data.extendedIngredients)
+        //     setServings(data.servings)
+        //     setReadyInMinutes(data.readyInMinutes)
+        //     setHealthScore(data.healthScore)
+        //     setIsLoading(false);
+        // }
     }, [data.id]);
 
 
@@ -204,9 +203,9 @@ function DynamicRecipe() {
                 <Text style={styles.title}>preparation</Text>
                 {analyzedInstructions?.length > 0 && <RecipeInstruction data={analyzedInstructions} />}
                 
-                <IMadeThis apiData= {fakeIngredients}/>
+                {/* <IMadeThis apiData= {fakeIngredients}/> */}
 
-                {/* <IMadeThis apiData= {data.extendedIngredients}/> */}
+                <IMadeThis apiData={extendedIngredients}/>
             </View>
         </ScrollView>
     );

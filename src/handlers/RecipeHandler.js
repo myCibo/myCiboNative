@@ -9,8 +9,11 @@ export default class RecipeHandler extends MainHandler {
     console.error('Error:', error);
   }
 
-  iMadeThis(userid, array, callback) {
-    this.put(`/recipes/userid/${ userid }`, array, (error, data) => {
+
+
+  iMadeThis(userid, itemsArray, callback) {
+    console.log("iMadeThis", userid, itemsArray)
+    this.put(`/recipes/userid/${ userid }`, itemsArray, (error, data) => {
       if (error) {
         this.errorHandler(error);
         return;

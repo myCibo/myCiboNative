@@ -11,8 +11,10 @@ import {getUnits} from '../../constants/unitData';
 const fridgeHandler = new FridgeHandler();
 const recipeHandler = new RecipeHandler();
 
-export default function IMadeThis({ apiData }) {
-    console.log(apiData)
+export default function IMadeThis({ 
+    apiData 
+}) {
+    // console.log('apiData', apiData)
    
 
     const styles = StyleSheet.create({
@@ -49,10 +51,15 @@ export default function IMadeThis({ apiData }) {
         console.log("----------")
         console.log(ingObjArray)
         console.log("----------")
-        console.log(user.id)
+        // console.log(user.id)
+
+        const recipeCallObject = {
+            itemsArray: ingObjArray,
+        }
 
         //call the handler to pass the array of objects to update
-        recipeHandler.iMadeThis(user.id, ingObjArray, (data) => {
+        recipeHandler.iMadeThis(user.id, recipeCallObject, (data) => {
+            console.log(data)
             console.log(`data has been updated in fridge db`)
         });
 
@@ -72,13 +79,13 @@ export default function IMadeThis({ apiData }) {
 
 
     const handlePress = () => {
-        console.log("userId is " + user.id)
+        // console.log("userId is " + user.id)
         fridgeHandler.getFridgeItems(user.id, (dbData) => {
-            console.log(dbData);
+            // console.log(dbData);
 
             const filteredDbArray = dbData.map(dbObj => {
                 const matchingApiObj = apiData.find(apiObj => {
-                    console.log( "db: "+dbObj.name, "api: "+apiObj.name)
+                    // console.log( "db: "+dbObj.name, "api: "+apiObj.name)
 
                     //what if one is plural
                     //just grab the first one
@@ -111,14 +118,14 @@ export default function IMadeThis({ apiData }) {
 
                    // // Matched Units : 
                     dbObj.amount = (dbAmount - apiAmount).toString();
-                    console.log(`dbObj.amount is ${dbObj.amount}`)
+                    // console.log(`dbObj.amount is ${dbObj.amount}`)
                     const updatedIngredientsData = [...ingObjArray, dbObj];
                     setIngObjArray(updatedIngredientsData);
                 }
             });
 
-            console.log("ingObjArray is ")
-            console.log(ingObjArray)
+            // console.log("ingObjArray is ")
+            // console.log(ingObjArray)
 
 
             ingObjArray.length > 0
