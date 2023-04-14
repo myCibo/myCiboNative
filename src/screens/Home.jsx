@@ -13,6 +13,7 @@ import prioritizeIngredients from '../utils/prioritizeIngredients';
 import FridgeHandler from '../handlers/FridgeHandler';
 import { useContext } from 'react';
 import UserContext from '../contexts/UserContext';
+import CustomButton from '../components/atoms/CustomButton';
 
 const fridgeHandler = new FridgeHandler();
 
@@ -160,6 +161,7 @@ function HomeScreen() {
             />
           </>
         )}
+        <CustomButton onPress={async () => {await user.logout()}} text="Log out" />
       </View>
 
     </ScrollView>

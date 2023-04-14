@@ -61,7 +61,7 @@ function CameraStack() {
   );
 }
 
-function NavigationFooter() {
+function NavigationFooter({logout}) {
   const renderTabIcon = (iconName, isFocused) => {
     const iconColor = isFocused ? Colors.primaryRed : Colors.white;
     const backgroundColor = isFocused ? Colors.white : Colors.primaryRed;
