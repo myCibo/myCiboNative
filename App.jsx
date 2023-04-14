@@ -13,7 +13,7 @@ const userHandler = new UserHandler();
 export default function App() {
 
   const [user, setUser] = useState(null);
-  const [isLoggedOut, setIsLoggedOut] = useState(false);
+  const [isLoggedOut, setIsLoggedOut] = useState(true);
   const [request, response, promptAsync] = Google.useAuthRequest({
     expoClientId: "552993921134-4lfc1ep9u4c3ud0h73tqtrhte75ldbtn.apps.googleusercontent.com",
     androidClientId: '552993921134-tj76atrjgaav85pfoovenbgadoi5bnfa.apps.googleusercontent.com',
@@ -23,11 +23,11 @@ export default function App() {
 
   useEffect(() => {
     (async () => {
-
       const storedUser = JSON.parse(await AsyncStorage.getItem('user'));
       if (storedUser) {
         storedUser.logout = async () => { setUser(null); await AsyncStorage.removeItem('user'); setIsLoggedOut(true) }
         setUser(storedUser);
+        setIsLoggedOut(false);
       }
     })()
   }, []);
