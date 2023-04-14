@@ -55,6 +55,17 @@ export default function DatePicker({
       width: '100%',
       backgroundColor: Colors['white'],
       borderRadius: 4,
+      ...Platform.select({
+        ios: {
+          shadowColor: 'black',
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 0.2,
+          shadowRadius: 4,
+        },
+        android: {
+          elevation: 2,
+        },
+      }),
     },
     item: {
       fontSize: 16,
