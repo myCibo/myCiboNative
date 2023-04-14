@@ -12,7 +12,7 @@ import FridgeHandler from '../handlers/FridgeHandler';
 import axios from 'axios';
 import { useContext } from 'react';
 import UserContext from '../contexts/UserContext';
-import calculateExpirationDate from '../utils/expirationCalculator';
+import {calculateExpirationDate} from '../utils/expirationCalculator';
 
 
 const ReceiptDataScreen = ({ route }) => {
@@ -37,6 +37,7 @@ const ReceiptDataScreen = ({ route }) => {
   const lineItems = jsonData.lineItems; // Access lineItems using data.result.lineItems
   // const purchaseDate = data.result.date;
   const currentDate = new Date();
+  // const [formattedData, setFormattedData] = useState([]);
 
 
   const dataArray = lineItems.map((item, index) => ({
@@ -48,25 +49,36 @@ const ReceiptDataScreen = ({ route }) => {
     category: item.category.charAt(0).toUpperCase() + item.category.slice(1),
     purchaseDate: new Date().toISOString().split('T')[0],
     expiresInDays: item.defaultShelfLife,
-    expirationDate: calculateExpireDate(item.defaultShelfLife).toString(),
+    expirationDate: calculateExpirationDate(new Date().toISOString().split('T')[0], item.defaultShelfLife).toString(),
     expirationTime: item.defaultShelfLife
   }));
+  const [dataLoaded, setDataLoaded] = useState(false);
+
 
   useEffect(() => {
     axios.post(`${process.env.BACKEND_URL}/formatReceiptData`, dataArray)
       .then((res) => {
         const formattedData = res.data;
         console.log('FORMARTED DATA', formattedData);
-        formattedData.map((item, index) => {
+        // setFormattedData(formattedData);
+        const fridgeData= formattedData.map((item, index) => {
           item.scanId = index;
-          item.expirationDate = calculateExpirationDate(item.purchaseDate, item.expiresInDays);
-        })
-          // delete item.scanId;
+          item.ingredientId = item.ingredientId;
+          item.categoryId = item.categoryId;
+          item.unitId = item.unitId;
+          item.amount = item.amount;
+          item.purchaseDate = new Date(item.purchaseDate).toISOString().split('T')[0];
+          item.expirationDate = new Date(item.expirationDate).toISOString().split('T')[0];
+          item.expirationTime = item.expirationTime;
+        });
 
-        setIngredientsData(formattedData);
+        setIngredientsData(fridgeData);
         setDisplayData(formattedData);
+        setDataLoaded(true); 
+        console.log('Data loaded:', dataLoaded);
       }, (error) => {
         console.log(error);
+        console.log('Data loaded:', dataLoaded);
       });
     }, []);
 
@@ -107,10 +119,12 @@ const ReceiptDataScreen = ({ route }) => {
       userId: userId,
       itemsData: ingredientsData,
     };
+    console.log("INGREDIENTS DATA", ingredientsData)
     console.log("NEW ITEM", newItem.itemsData[0]);
     const fridgeHandler = new FridgeHandler();
     fridgeHandler.createManyFridgeItems(newItem);
   };
+
 
 
   //Search Related 
@@ -186,7 +200,7 @@ const ReceiptDataScreen = ({ route }) => {
         </View>
 
       </ScrollView>
-      <CustomButton text="Add to Fridge" onPress={handleAddFridge}/>
+      <CustomButton text="Add to Fridge" onPress={handleAddFridge} disabled={dataLoaded}/>
     </View>
   );
 };
