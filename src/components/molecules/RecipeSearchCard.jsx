@@ -6,6 +6,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   Linking,
+  Platform
 } from 'react-native';
 import LabelInventory from '../atoms/LabelInventory';
 import { useNavigation } from '@react-navigation/native';
