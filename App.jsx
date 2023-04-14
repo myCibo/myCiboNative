@@ -25,12 +25,34 @@ export default function App() {
     (async () => {
       const storedUser = JSON.parse(await AsyncStorage.getItem('user'));
       if (storedUser) {
-        storedUser.logout = async () => { setUser(null); await AsyncStorage.removeItem('user'); setIsLoggedOut(true) }
+        storedUser.logout = async () => { setUser(null); await AsyncStorage.removeItem('user'); setIsLoggedOut(true); }
         setUser(storedUser);
         setIsLoggedOut(false);
       }
     })()
-  }, []);
+
+    if (!user && !isLoggedOut) {
+      if (response?.type === 'success') {
+        (async () => {
+          const userData = await axios.get(
+            "https://www.googleapis.com/userinfo/v2/me",
+            {
+              headers: { Authorization: `Bearer ${response.params.access_token}` },
+            }
+          ).then(res => res.data);
+
+          console.log('here', userData)
+          const backendUser = await axios.post(`${process.env.BACKEND_URL}/login`, userData).then(res => res.data);
+          console.log('there', backendUser)
+          if (backendUser) {
+            await AsyncStorage.setItem('user', JSON.stringify(backendUser));
+            backendUser.logout = async () => { setUser(null); await AsyncStorage.removeItem('user'); setIsLoggedOut(true); }
+            setUser(backendUser);
+          }
+        })();
+      }
+    }
+  }, [response]);
 
   const styles = {
     loader: {
@@ -39,27 +61,6 @@ export default function App() {
       alignItems: 'center',
     },
   };
-
-  if (!user && !isLoggedOut) {
-    if (response?.type === 'success') {
-      (async () => {
-        const userData = await axios.get(
-          "https://www.googleapis.com/userinfo/v2/me",
-          {
-            headers: { Authorization: `Bearer ${response.params.access_token}` },
-          }
-        ).then(res => res.data);
-
-        const backendUser = await axios.post(`${process.env.BACKEND_URL}/login`, userData).then(res => res.data);
-
-        if (backendUser) {
-          await AsyncStorage.setItem('user', JSON.stringify(backendUser));
-          backendUser.logout = async () => { setUser(null); await AsyncStorage.removeItem('user'); setIsLoggedOut(true) }
-          setUser(backendUser);
-        }
-      })();
-    }
-  }
 
   return (user ? (
     <UserContext.Provider value={user}>
