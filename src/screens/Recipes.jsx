@@ -58,7 +58,6 @@ function RecipeScreen() {
         const categorizedRecipes = categorizeRecipes(recipes);
         setData(categorizedRecipes);
         setIsLoading(false);
-
       })
       .catch((error) => {
         console.log(error);
