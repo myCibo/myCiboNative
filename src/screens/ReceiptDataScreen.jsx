@@ -50,7 +50,10 @@ const ReceiptDataScreen = ({ route }) => {
     purchaseDate: new Date().toISOString().split('T')[0],
     expiresInDays: item.defaultShelfLife,
     expirationDate: calculateExpirationDate(new Date().toISOString().split('T')[0], item.defaultShelfLife).toString(),
-    expirationTime: item.defaultShelfLife
+    expirationTime: item.defaultShelfLife,
+    ingredientId: item.ingredientId,
+    categoryId: item.categoryId,
+    unitId: item.unitId,
   }));
   const [dataLoaded, setDataLoaded] = useState(false);
 
@@ -67,12 +70,15 @@ const ReceiptDataScreen = ({ route }) => {
           item.categoryId = item.categoryId;
           item.unitId = item.unitId;
           item.amount = item.amount;
-          item.purchaseDate = new Date(item.purchaseDate).toISOString().split('T')[0];
-          item.expirationDate = new Date(item.expirationDate).toISOString().split('T')[0];
+          item.purchaseDate = null;
+          item.expirationDate = null;
           item.expirationTime = item.expirationTime;
+          return item
         });
 
-        setIngredientsData(fridgeData);
+        console.log("THIS IS FRIDGE DATA",fridgeData);
+
+        setIngredientsData(formattedData);
         setDisplayData(formattedData);
         setDataLoaded(true); 
         console.log('Data loaded:', dataLoaded);
@@ -200,7 +206,7 @@ const ReceiptDataScreen = ({ route }) => {
         </View>
 
       </ScrollView>
-      <CustomButton text="Add to Fridge" onPress={handleAddFridge} disabled={dataLoaded}/>
+      <CustomButton text="Add to Fridge" onPress={handleAddFridge}/>
     </View>
   );
 };
