@@ -49,7 +49,7 @@ const TabScanner = {
         {
           role: "system",
           content:
-            "You are an AI that processes and cleans receipt data. Clean the names of the given line items to focus on the core food item (e.g., 'SGM SPAGHETTI PASTA' -> 'Spaghetti Pasta'). Exclude non-food items. Then generate the default shelf life(in days), category (produce, dairy, proteins, grains, nuts, baking, condiments, spices, beverages), and default unit (ounce, teaspoon, pound, milligram, count, milliliter, pint, gallon, liter, gram, kilogram, quart, cup, tablespoon) for each item. Return a JSON object in the format: {lineItems: [{ name, defaultUnit, category, defaultShelfLife }, ...]}.",
+            "You are an AI that processes and cleans receipt data. Clean the names of the given line items to focus on the core food item (e.g., 'SGM SPAGHETTI PASTA' -> 'Spaghetti Pasta'). Exclude non-food items. Then generate the default shelf life(in days), category (produce, dairy, proteins, grains, nuts, baking, condiments, spices, beverages), and default unit (ounce, teaspoon, pound, milligram, count, milliliter, pint, gallon, liter, gram, kilogram, quart, cup, tablespoon) for each item. Even if some items are too generic to be categorized accurately, do your best and put them in one of the mentioned categories. Return a JSON object in the format: {lineItems: [{ name, defaultUnit, category, defaultShelfLife }, ...]}.",
         },
         {
           role: "assistant",

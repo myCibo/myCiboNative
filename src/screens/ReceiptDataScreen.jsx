@@ -7,12 +7,12 @@ import Icon from '../components/atoms/Icon';
 import Colors from '../constants/styles';
 import LabelledIcon from '../components/molecules/LabelledIcon';
 import calculateExpireDate from '../utils/calculateExpireDate';
-import { Button } from 'react-native-web';
 import CustomButton from '../components/atoms/CustomButton';
 import FridgeHandler from '../handlers/FridgeHandler';
 import axios from 'axios';
 import { useContext } from 'react';
 import UserContext from '../contexts/UserContext';
+import calculateExpirationDate from '../utils/expirationCalculator';
 
 
 const ReceiptDataScreen = ({ route }) => {
@@ -49,6 +49,7 @@ const ReceiptDataScreen = ({ route }) => {
     purchaseDate: new Date().toISOString().split('T')[0],
     expiresInDays: item.defaultShelfLife,
     expirationDate: calculateExpireDate(item.defaultShelfLife).toString(),
+    expirationTime: item.defaultShelfLife
   }));
 
   useEffect(() => {
@@ -58,6 +59,7 @@ const ReceiptDataScreen = ({ route }) => {
         console.log('FORMARTED DATA', formattedData);
         formattedData.map((item, index) => {
           item.scanId = index;
+          item.expirationDate = calculateExpirationDate(item.purchaseDate, item.expiresInDays);
         })
           // delete item.scanId;
 
