@@ -168,9 +168,9 @@ function HomeScreen() {
             />
           </>
         )}
-        <View style={styles.footer}>
+        {/* <View style={styles.footer}>
           <CustomButton onPress={async () => { await user.logout() }} text="Log out" />
-        </View>
+        </View> */}
       </View>
 
     </ScrollView>

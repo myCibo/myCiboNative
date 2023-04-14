@@ -15,7 +15,7 @@ import UserContext from '../contexts/UserContext';
 import {calculateExpirationDate} from '../utils/expirationCalculator';
 
 
-const ReceiptDataScreen = ({ route }) => {
+const ReceiptDataScreen = ({ route, navigation }) => {
   const user = useContext(UserContext);
 
   const { data } = route.params;
@@ -137,6 +137,7 @@ const ReceiptDataScreen = ({ route }) => {
     console.log("NEW ITEM", newItem.itemsData[0]);
     const fridgeHandler = new FridgeHandler();
     fridgeHandler.createManyFridgeItems(newItem);
+    navigation.navigate('Fridge');
   };
 
 

@@ -11,48 +11,30 @@ import CustomButton from './src/components/atoms/CustomButton';
 const userHandler = new UserHandler();
 
 export default function App() {
-
   const [user, setUser] = useState(null);
-  const [isLoggedOut, setIsLoggedOut] = useState(true);
-  const [request, response, promptAsync] = Google.useAuthRequest({
-    expoClientId: "552993921134-4lfc1ep9u4c3ud0h73tqtrhte75ldbtn.apps.googleusercontent.com",
-    androidClientId: '552993921134-tj76atrjgaav85pfoovenbgadoi5bnfa.apps.googleusercontent.com',
-    selectAccount: true,
-    // iosClientId: 'GOOGLE_GUID.apps.googleusercontent.com',
-  });
 
   useEffect(() => {
-    (async () => {
-      const storedUser = JSON.parse(await AsyncStorage.getItem('user'));
-      if (storedUser) {
-        storedUser.logout = async () => { setUser(null); await AsyncStorage.removeItem('user'); setIsLoggedOut(true); }
-        setUser(storedUser);
-        setIsLoggedOut(false);
-      }
-    })()
+    const getUser = async () => {
+      let storedUser = await AsyncStorage.getItem('user');
+      if (!storedUser) {
+        // console.log("no user found")
+        const users = await userHandler.getAllUsersPromise();
 
-    if (!user && !isLoggedOut) {
-      if (response?.type === 'success') {
-        (async () => {
-          const userData = await axios.get(
-            "https://www.googleapis.com/userinfo/v2/me",
-            {
-              headers: { Authorization: `Bearer ${response.params.access_token}` },
-            }
-          ).then(res => res.data);
-
-          console.log('here', userData)
-          const backendUser = await axios.post(`${process.env.BACKEND_URL}/login`, userData).then(res => res.data);
-          console.log('there', backendUser)
-          if (backendUser) {
-            await AsyncStorage.setItem('user', JSON.stringify(backendUser));
-            backendUser.logout = async () => { setUser(null); await AsyncStorage.removeItem('user'); setIsLoggedOut(true); }
-            setUser(backendUser);
-          }
-        })();
+        
+        const currentUser = users[1];
+        storedUser = currentUser.id;
+        await AsyncStorage.setItem('user', storedUser);
+        console.log(currentUser)
+        setUser(currentUser);
+      } else {
+        // console.log("no user found")
+        const currentUser = await userHandler.getUserByIdPromise(storedUser);
+        setUser(currentUser);
       }
-    }
-  }, [response]);
+    };
+    
+    getUser();
+  }, []);
 
   const styles = {
     loader: {
@@ -62,11 +44,18 @@ export default function App() {
     },
   };
 
-  return (user ? (
+  if (!user) {
+    return (
+      <View style={styles.loader}>
+        {/* <Text>Anything inside this view will show up while loading thre page </Text>*/}
+        <ActivityIndicator size="large" color="#b82d1b" />
+      </View>
+    );
+  }
+
+  return (
     <UserContext.Provider value={user}>
       <NavigationFooter />
-    </UserContext.Provider>) : (<View style={styles.loader}>
-      <CustomButton onPress={() => { promptAsync(); setIsLoggedOut(false) }} text="Login with Google" />
-    </View>)
+    </UserContext.Provider>
   );
 }
